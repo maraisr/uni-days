@@ -521,7 +521,7 @@ def draw_legend(draw_stack):
             'render_fn': partial(draw_legend_title, len(draw_stack))
         }
     ]
-    # we then append the tokens, as we compute them
+    # we then append the tokens, because we compute them
      + list(
         map(
             lambda node: {
