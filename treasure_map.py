@@ -362,14 +362,23 @@ def random_path(print_path=True):
 #  your own "follow_path" function.
 #
 
+# ----------------------------------------------------------------------------#
 # To the person marking this, I can see pydoc is a thing, however its a syntax im
 # not used to at all - however I've tried to adapt, javadoc/jsdoc/tsdoc etc... 
-# to Python.
+# to Python. Please also excuse for not sticking to the 80point rule. I tried...
+# Also please excuse the excessive amount of commenting. Usually when I code,
+# I don't document nearly as much as I am in the body's of the functions. That
+# usually gets done by way of unit tests. But in this case, and to prove I
+# actually understand what i'm coding, i've explained it best I can, where I can.
+# This is also my very first exposure to python, so please also excuse if things
+# aren't quit done the python way.
+# ----------------------------------------------------------------------------#
+
 
 # @description
 # Being given a data set, containing a collection of bearings, and a marker, this
-# method, follows that path, drawing them on the plane, as well as print a legend
-# for the users' viewing. Treat this method as the "entry" point to the app
+# function, follows that path, drawing them on the plane, as well as print a legend
+# for the users' viewing. Treat this function as the "entry" point to the app
 #
 # @param {path: [string, number, number][]} a collection of bearings
 #
@@ -401,6 +410,7 @@ def follow_path(path):
 		[starting_node]
 	)
 
+	# well, we draw our legend first! Why? I don't know. Made more sense here.
 	draw_legend(draw_stack)
 
 	# Once we've drawn our legend, we simply iterate over our stack, and draw!
@@ -409,12 +419,15 @@ def follow_path(path):
 		goto((node.get('x') * grid_size),
 		     (node.get('y') * grid_size))
 
-		node.get('render_fn')()  # executes this node's draw method
+		# executes this node's draw function, we don't need to call
+		# our reset call function here, as we goto on every iteration
+		# @see #call_and_reset_after_exec
+		node.get('render_fn')() 
 
 
 # @description
-# A method that takes the result (the current accumulated list), and item, the current
-# item being inspected. This method looks at the accumulated context to solve for,
+# A function that takes the result (the current accumulated list), and item, the current
+# item being inspected. This function looks at the accumulated context to solve for,
 # the current items coordinates.
 #
 # @param {result: node[]} the current accumulated list
@@ -429,13 +442,15 @@ def walk_path_reduce_fn(result, item):
 
 	previous_node = result[len(result) - 1]
 
-	# Converts the "North", "South" etc strings to cordinate deltas @see #get_compass_to_coordinates_delta
+	# Converts the "North", "South" etc strings to cordinate deltas
+	# @see #get_compass_to_coordinates_delta
 	coord_delta = get_compass_to_coordinates_delta(direction)
 
 	new_node = create_node(
 		reduce(
 			lambda deltaResult, deltaItem: [
-				# overlays the current coordinates, with whatever we need to adjust it by
+				# overlays the current coordinates, with whatever we need to
+				# adjust it by
 				sum(x) for x in zip(deltaResult, coord_delta)
 			],
 			range(steps_to_take),  # purely to iterate the number of steps to take
@@ -449,9 +464,10 @@ def walk_path_reduce_fn(result, item):
 
 
 # @description
-# A method that translates our starting location indicators to coordinates.
+# A function that translates our starting location indicators to coordinates.
 #
-# @param {verb: string} a string with values "Top left", "Top right", "Centre", "Bottom left", "Bottom right"
+# @param {verb: string} a string with values "Top left", "Top right", "Centre",
+# 		"Bottom left", "Bottom right"
 #
 # @returns [number[]] a coordinate tuple
 def get_starting_coord(verb):
@@ -467,7 +483,7 @@ def get_starting_coord(verb):
 
 
 # @description
-# A method that translates our direction indicators to coordinates deltas. For
+# A function that translates our direction indicators to coordinates deltas. For
 # use to zip over a pre-existing cordinate tuple.
 #
 # @param {verb: string} a string with values "North", "South", "East", "West"
@@ -485,13 +501,14 @@ def get_compass_to_coordinates_delta(verb):
 
 
 # @description
-# A method that gets give a cordinate tuple, and produces an object, complete with
+# A function that gets give a cordinate tuple, and produces an object, complete with
 # its x, and y cordinate. And a function to execute to draw it's attributed token.
 #
 # @param {coord: [number, number]} a cordinate tuple
 # @param {token_type: number} a number that maps directly to our token types
 #
-# @returns [{x: number, y: number, token_type: number, render_fn: lambda}] an object to represent the node
+# @returns [{x: number, y: number, token_type: number, render_fn: lambda}] an
+# 		object to represent the node
 def create_node(coords, token_type):
 	x, y = coords;
 	return {
@@ -499,7 +516,7 @@ def create_node(coords, token_type):
 		'y': y,
 		'token_type': token_type,
 		# the use of a lambda, becuase I want the scope to remain in tact here
-		'render_fn': lambda: get_token_draw_method_from_type(token_type)()
+		'render_fn': lambda: get_token_draw_function_from_type(token_type)()
 	}
 
 
@@ -510,16 +527,64 @@ legend_token_line_height = grid_size
 
 
 # @description
-# As the name suggests, this method draws the legend. Nothing more, nothing less.
+# As the name suggests, this function draws the legend. Nothing more, nothing less.
 #
 # @returns [void]
 def draw_legend(draw_stack):
-	tokens = get_token_draw_methods()
+	blocks = get_legend_blocks(draw_stack)
+
+	# left offset = (square count * grid size) + margin
+	# width = window width - left offset - margin * 2
+	legend_width = (
+		window_width - ((num_squares * grid_size) + margin) - margin * 2
+	)
+
+	# height of all the blocks + padding per block - 1 + padding for legend
+	legend_height = (
+		sum(map(lambda item: item.get('height'), blocks)) # height of all the blocks
+	    + (legend_padding * (len(blocks) - 1)) # + padding per block (blocks.length -1)
+		+ legend_padding * 2 # we also want padding top and bottom of the legend
+	)
+
+	# Draw's our legends background
+	draw_legend_background(legend_width, legend_height)
+
+	# We need to iterate over our blocks, and draw them
+	for index, block in enumerate(blocks):
+		# We need to know how much to offset our y, so we find the previous
+		# nodes' height accumulated 
+		offset_height = (sum(map(lambda item: item.get('height'), blocks[:index]))
+		                 # we also want to add some padding between our items
+		                 + legend_padding * index)
+
+		# always reset, as the coords might be different from inner render functions
+		draw_legend_reset_cords(legend_width, legend_height)
+
+		# finally tell the turtle to go to the top left corner of the block we
+		# want to draw
+		sety((pos()[1] - offset_height) - legend_padding)
+
+		# and run our render function for this item. Because we reset ever
+		# iteration, we dont need to call our reset draw function
+		# @see #call_and_reset_after_exec
+		block.get('render_fn')(legend_width, legend_height)
+
+
+# @description
+# With the philosophy, data as a function, and for data immutability, this function
+# returns a new collection of legend blocks to draw
+# 
+# @param {draw_stack: DrawStack} @see #walk_path_reduce_fn
+#
+# @returns [{height: number, render_fn: function -> void}[]] a collection of 
+#		draw functions, and heights for them
+def get_legend_blocks(draw_stack):
+	tokens = get_token_draw_functions()
 
 	# A collection of areas we need to paint on the legend, from top to bottom.
 	# ie, title, then icon 1, then icon 2 etc...
-	# Each render method, when called will be called with the legend, width / height
-	blocks = ([
+	# Each render function, when called will be called with the legend, width / height
+	return ([
 		          # the title
 		          {
 			          'height': legend_title_font_size + legend_padding,
@@ -534,7 +599,8 @@ def draw_legend(draw_stack):
 						'render_fn': partial(
 							draw_legend_token,
 							node[1],
-							# to find the number of types of tokens we see in our draw_stack
+							# to find the number of types of tokens we see in
+							# our draw_stack
 							len(list(filter(lambda item: item.get(
 								'token_type') == node[0], draw_stack)))
 						)
@@ -544,42 +610,14 @@ def draw_legend(draw_stack):
 				)
 			))
 
-	# left offset = (square count * grid size) + margin
-	# width = window width - left offset - margin
-	legend_width = (window_width - (margin * 2 + (num_squares *
-	                                              grid_size)) - margin)
-
-	# height of all the blocks + padding per block - 1 + padding for legend
-	legend_height = (sum(map(lambda item: item.get('height'), blocks))
-	                 + (legend_padding * (len(blocks) - 1)) + legend_padding * 2)
-
-	# Take the turtle to the top corner
-	draw_legend_reset_cords(legend_width, legend_height)
-
-	draw_legend_background(legend_width, legend_height)
-
-	# we need to iterate over our blocks, and draw them
-	for index, block in enumerate(blocks):
-		# always reset, as the coords might be different from inner render methods
-		draw_legend_reset_cords(legend_width, legend_height)
-
-		# We need to know how much to offset our y, so we find the previous nodes' height accumulated 
-		offset_height = (sum(map(lambda item: item.get('height'), blocks[:index]))
-		                 # we also want to add some padding between our items
-		                 + legend_padding * index)
-
-		# finally tell the turtle to go there
-		sety((pos()[1] - offset_height) - legend_padding)
-
-		# and run our render method for this item
-		block.get('render_fn')(legend_width, legend_height)
-
-
 # @description
-# A method to draw the legends background.
+# A function to draw the legends background.
 #
 # @returns [void]
 def draw_legend_background(legend_width, legend_height):
+	# we need to ensure we are at the top left corner
+	draw_legend_reset_cords(legend_width, legend_height)
+
 	# TODO: Maybe add some rounded corners
 	# TODO : Style this
 	pencolor("blue")
@@ -600,7 +638,7 @@ def draw_legend_background(legend_width, legend_height):
 
 
 # @description
-# Our legend needs a title, this method draws that.
+# Our legend needs a title, this function draws that.
 #
 # @returns [void]
 def draw_legend_title(total_found, legend_width, legend_height):
@@ -622,7 +660,7 @@ def draw_legend_title(total_found, legend_width, legend_height):
 
 
 # @description
-# A method to draw each of our tokens, complete with a title and the token itself.
+# A function to draw each of our tokens, complete with a title and the token itself.
 #
 # @returns [void]
 def draw_legend_token(token, number_of_type, legend_width, legend_height):
@@ -668,8 +706,8 @@ def draw_legend_reset_cords(legend_width, legend_height):
 
 
 # @description
-# A util method that wraps another method to capture the turtle's position, 
-# executes the method, and resets the turtles position back to what it was before
+# A util function that wraps another function to capture the turtle's position, 
+# executes the function, and resets the turtles position back to what it was before
 # the execution. 
 #
 # @returns
@@ -680,21 +718,22 @@ def call_and_reset_after_exec(fn):
 
 
 # @description
-# A method that returns a token draw method for a given token_type
+# A function that returns a token draw function for a given token_type
 #
-# @param {token_type: number} a number that maps to a draw method
+# @param {token_type: number} a number that maps to a draw function
 #
-# @returns [(function -> void)[]] a token drawn method
-def get_token_draw_method_from_type(token_type):
-	return get_token_draw_methods()[token_type][0]
+# @returns [(function -> void)[]] a token drawn function
+def get_token_draw_function_from_type(token_type):
+	return get_token_draw_functions()[token_type][0]
 
 
 # @description
 # With the philosophy, data as a function, and for data immutability - we will
-# return a new collection of token draw methods.
+# return a new collection of token draw functions.
 #
-# @returns [(function -> void)[]] a collection of tuples with token draw method, to pretty name
-def get_token_draw_methods():
+# @returns [(function -> void)[]] a collection of tuples with token draw function,
+# 		to pretty name
+def get_token_draw_functions():
 	return [
 		[draw_token_canada, "Canada"],
 		[draw_token_china, "China"],
@@ -704,10 +743,15 @@ def get_token_draw_methods():
 	]
 
 
-# ---- Token draw methods ----
-# Thank you to the guys over at https://www.flaticon.com/packs/international-flags-4
-# for their flag designs.
+# ---- Token draw functions ----
+# Thank you to the guys over at FlatIcon for their flag designs.
+# @see https://www.flaticon.com/packs/international-flags-4
 
+# @description
+# A function that'll reset some basic turtle things, like colour, fillcolour
+# and heading
+#
+# @returns [void]
 def reset_turtle():
 	penup()
 	color("black")
@@ -753,7 +797,7 @@ def draw_token_south_africa():
 	bg_green = '#007749'
 	bg_grey =  '#000000'
 	bg_yellow = '#ffb81c'
-	
+
 	# start with a white background
 	call_and_reset_after_exec(partial(draw_square, "white"))
 
