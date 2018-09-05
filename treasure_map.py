@@ -696,15 +696,17 @@ def get_token_draw_method_from_type(token_type):
 # @returns [(function -> void)[]] a collection of tuples with token draw method, to pretty name
 def get_token_draw_methods():
 	return [
-		[draw_token_css, "CSS"],
+		[draw_token_canada, "Canada"],
+		[draw_token_china, "China"],
 		[draw_token_south_africa, "South Africa"],
-		[draw_token_js, "JavaScript"],
-		[draw_token_npm, "NPM"],
-		[draw_token_turkey, "Turkey"]
+		[draw_token_turkey, "Turkey"],
+		[draw_token_nepal, "Nepal"]
 	]
 
 
 # ---- Token draw methods ----
+# Thank you to the guys over at https://www.flaticon.com/packs/international-flags-4
+# for their flag designs.
 
 def reset_turtle():
 	penup()
@@ -717,9 +719,8 @@ def reset_turtle():
 # TODO
 #
 # @returns
-def draw_token_npm():
-	reset_turtle()
-	write("npm")
+def draw_token_canada():
+	write("canada")
 	
 
 
@@ -727,22 +728,16 @@ def draw_token_npm():
 # TODO
 #
 # @returns
-def draw_token_css():
-	bg_blue = '#006bc0'
-	bg_light_blue = '#0096dc'
-
-	write("css")
+def draw_token_nepal():
+	write("nepal")
 
 
 # @description
 # TODO
 #
 # @returns
-def draw_token_js():
-	bg_yellow = '#e4ba42'
-	grey = '#3f4a43'
-
-	write("js")
+def draw_token_china():
+	write("china")
 
 
 # @description
@@ -753,12 +748,12 @@ def draw_token_south_africa():
 	reset_turtle()
 	origin_x, origin_y = pos()
 
-	bg_red = '#ff4b55'
-	bg_blue = '#41479b'
-	bg_green = '#73af00'
-	bg_grey =  '#464655'
-	bg_yellow = '#ffe15a'
-
+	bg_red = '#e03c31'
+	bg_blue = '#001489'
+	bg_green = '#007749'
+	bg_grey =  '#000000'
+	bg_yellow = '#ffb81c'
+	
 	# start with a white background
 	call_and_reset_after_exec(partial(draw_square, "white"))
 
@@ -846,7 +841,7 @@ def draw_token_turkey():
 	reset_turtle()
 	origin_x, origin_y = pos()
 
-	bg_colour = '#ff4b55'
+	bg_colour = '#e30a17'
 
 	# draw background
 	call_and_reset_after_exec(partial(draw_square, bg_colour))
@@ -860,7 +855,7 @@ def draw_token_turkey():
 
 	fillcolor("white")
 	begin_fill()
-	circle(circle_size, steps=200)
+	circle(circle_size)
 	end_fill()
 
 	# draw smaller circle
@@ -871,7 +866,7 @@ def draw_token_turkey():
 
 	fillcolor(bg_colour)
 	begin_fill()
-	circle(smaller_circle_size, steps=200)
+	circle(smaller_circle_size)
 	end_fill()
 
 	# draw star
