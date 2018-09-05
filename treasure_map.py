@@ -697,7 +697,7 @@ def get_token_draw_method_from_type(token_type):
 def get_token_draw_methods():
 	return [
 		[draw_token_css, "CSS"],
-		[draw_token_docker, "Docker"],
+		[draw_token_south_africa, "South Africa"],
 		[draw_token_js, "JavaScript"],
 		[draw_token_npm, "NPM"],
 		[draw_token_turkey, "Turkey"]
@@ -774,12 +774,93 @@ def draw_token_js():
 # TODO
 #
 # @returns
-def draw_token_docker():
+def draw_token_south_africa():
 	reset_turtle()
+	origin_x, origin_y = pos()
 
-	bg_blue = '#006bc0'
+	bg_red = '#ff4b55'
+	bg_blue = '#41479b'
+	bg_green = '#73af00'
+	bg_grey =  '#464655'
+	bg_yellow = '#ffe15a'
 
-	write("docker")
+	# start with a white background
+	call_and_reset_after_exec(partial(draw_square, "white"))
+
+	# draw the red thing
+	fillcolor(bg_red)
+	seth(90)
+	fd(grid_size)
+	right(90)
+	fd(10)
+	begin_fill()
+	right(45)
+	fd(50)
+	seth(0)
+	fd(55)
+	seth(90)
+	fd(36)
+	end_fill()
+
+	# draw the blue thing
+	goto(origin_x, origin_y)
+	fillcolor(bg_blue)
+	seth(0)
+	fd(10)
+	begin_fill()
+	right(-45)
+	fd(50)
+	seth(0)
+	fd(55)
+	seth(90)
+	fd(-36)
+	end_fill()
+
+	# draw the green thing
+	goto(origin_x, origin_y)
+	fillcolor(bg_green)
+	seth(0)
+	fd(5)
+	begin_fill()
+	right(-45)
+	fd(55)
+	seth(0)
+	fd(56)
+	seth(90)
+	fd(22)
+	seth(180)
+	fd(56)
+	right(45)
+	fd(56)
+	seth(180)
+	fd(4)
+	seth(270)
+	fd(grid_size)
+	end_fill()
+
+	# draw yellow triangle
+	goto(origin_x, origin_y)
+	fillcolor(bg_yellow)
+	seth(90)
+	begin_fill()
+	fd(20)
+	right(45)
+	fd(40)
+	right(-90)
+	fd(40)
+	end_fill()
+
+	# draw black triangle
+	goto(origin_x, origin_y)
+	fillcolor(bg_grey)
+	seth(90)
+	begin_fill()
+	fd(26)
+	right(45)
+	fd(32)
+	right(-90)
+	fd(32)
+	end_fill()
 
 
 # @description
@@ -823,18 +904,19 @@ def draw_token_turkey():
 
 	goto(pos()[0] + 10, pos()[1] - (circle_size - star_size))
 
-	fillcolor("white")
+	draw_star(star_size, "white")
+
+
+def draw_star(size, colour):
+	fillcolor(colour)
 	seth(90)
 	begin_fill()
 	for side in range(5):
-		fd(star_size)
+		fd(size)
 		right(120)
-		fd(star_size)
+		fd(size)
 		right(72 - 120)
 	end_fill()
-
-
-
 	
 # TODO : COMMENT ME
 def draw_square(color):
@@ -886,7 +968,7 @@ title("Do you know your global flags?")
 # ***** argument to the follow_path function.  Your program must
 # ***** work for any data set that can be returned by the
 # ***** random_path function.
-# follow_path()  # <-- used for code development only, not marking
+#follow_path([["Start", "Centre", 1]])  # <-- used for code development only, not marking
 follow_path(random_path())  # <-- used for assessment
 
 # Exit gracefully
