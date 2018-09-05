@@ -613,7 +613,7 @@ def draw_legend_title(total_found, legend_width, legend_height):
 	# TODO: clean up visual, set colours fontsizes, etc...
 
 	write(
-		'%d %s Found!' % (total_found, "Langauge" +
+		'%d %s Found!' % (total_found, "Flag" +
 		                  ('s' if total_found > 1 else '')),
 		False,
 		align="center",
@@ -700,7 +700,7 @@ def get_token_draw_methods():
 		[draw_token_docker, "Docker"],
 		[draw_token_js, "JavaScript"],
 		[draw_token_npm, "NPM"],
-		[draw_token_cpp, "C++"]
+		[draw_token_turkey, "Turkey"]
 	]
 
 
@@ -721,6 +721,31 @@ def draw_token_npm():
 	reset_turtle()
 
 	bg_red = '#d52a29'
+	block_thickness = 10
+
+	fillcolor(bg_red)
+
+	seth(90)
+	
+	begin_fill()
+	forward(grid_size)
+	right(90)
+	forward(block_thickness)
+	right(90)
+	forward(grid_size)
+	right(90)
+	forward(block_thickness)
+	end_fill()
+	seth(0)
+	forward(grid_size - block_thickness)
+	begin_fill()
+	seth(90)
+	forward(grid_size)
+	right(90)
+	forward(block_thickness)
+	right(90)
+	end_fill()
+	
 
 
 # @description
@@ -758,15 +783,72 @@ def draw_token_docker():
 
 
 # @description
-# TODO
+# Draws the Turkish flag
 #
-# @returns
-def draw_token_cpp():
-	bg_blue_1 = '#004284'
-	bg_blue_2 = '#00579e'
-	bg_blue_1 = '#6399d4'
+# @returns [void]
+def draw_token_turkey():
+	reset_turtle()
+	origin_x, origin_y = pos()
 
-	write("c++")
+	bg_colour = '#ff4b55'
+
+	# draw background
+	call_and_reset_after_exec(partial(draw_square, bg_colour))
+
+	pu()
+
+	# draw white circle
+	circle_size = 24;
+
+	goto(origin_x + circle_size + 10, origin_y + grid_size / 2 + circle_size)
+
+	fillcolor("white")
+	begin_fill()
+	circle(circle_size, steps=200)
+	end_fill()
+
+	# draw smaller circle
+	smaller_circle_size = circle_size * 0.8;
+
+	# Please excuse the magic numbers here
+	goto(pos()[0] + 9, pos()[1] - 5)
+
+	fillcolor(bg_colour)
+	begin_fill()
+	circle(smaller_circle_size, steps=200)
+	end_fill()
+
+	# draw star
+	star_size = 8
+
+	goto(pos()[0] + 10, pos()[1] - (circle_size - star_size))
+
+	fillcolor("white")
+	seth(90)
+	begin_fill()
+	for side in range(5):
+		fd(star_size)
+		right(120)
+		fd(star_size)
+		right(72 - 120)
+	end_fill()
+
+
+
+	
+# TODO : COMMENT ME
+def draw_square(color):
+	fillcolor(color)
+	seth(90)
+	begin_fill()
+	forward(grid_size)
+	right(90)
+	forward(grid_size)
+	right(90)
+	forward(grid_size)
+	right(90)
+	forward(grid_size)
+	end_fill()
 
 
 # --------------------------------------------------------------------#
@@ -795,7 +877,7 @@ tracer(False)
 # Give the drawing canvas a title
 # ***** Replace this title with a description of your solution's theme
 # ***** and its tokens
-title("Lets see if you can find all the langauges")
+title("Do you know your global flags?")
 
 # Call the student's function to follow the path
 # ***** While developing your program you can call the follow_path
