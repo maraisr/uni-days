@@ -494,7 +494,7 @@ def create_node(coords, token_type):
         'x': x,
         'y': y,
         'token_type': token_type,
-        # the use of a lambda, in case we ever need something else to happen when we draw a token
+        # the use of a lambda, becuase I want the scope to remain in tact here
         'render_fn': lambda: get_token_draw_method_from_type(token_type)()
     }
 
@@ -570,11 +570,12 @@ def draw_legend(draw_stack):
         block.get('render_fn')(legend_width, legend_height)
 
 # @description
-# TODO
+# A method to draw the legends background.
 #
-# @returns
+# @returns [void]
 def draw_legend_background(legend_width, legend_height):
     # TODO: Maybe add some rounded corners
+    # TODO : Style this
     pencolor("blue")
     fillcolor("white")
     setheading(90)
@@ -592,9 +593,9 @@ def draw_legend_background(legend_width, legend_height):
     end_fill()
 
 # @description
-# TODO
+# Our legend needs a title, this method draws that.
 #
-# @returns
+# @returns [void]
 def draw_legend_title(total_found, legend_width, legend_height):
 
     # Move the turtle to the middle of the legend
@@ -614,9 +615,9 @@ def draw_legend_title(total_found, legend_width, legend_height):
     )
 
 # @description
-# TODO
+# A method to draw each of our tokens, complete with a title and the token itself.
 #
-# @returns
+# @returns [void]
 def draw_legend_token(token, number_of_type, legend_width, legend_height):
 
     token_render_fn, token_name = token;
