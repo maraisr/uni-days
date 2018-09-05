@@ -1,5 +1,4 @@
-
-#-----Statement of Authorship----------------------------------------#
+# -----Statement of Authorship----------------------------------------#
 #
 #  This is an individual assessment item.  By submitting this
 #  code I agree that it represents my own work.  I am aware of
@@ -16,10 +15,10 @@
 #  software plagiarism analysis using the MoSS system
 #  (http://theory.stanford.edu/~aiken/moss/).
 #
-#--------------------------------------------------------------------#
+# --------------------------------------------------------------------#
 
 
-#-----Task Description-----------------------------------------------#
+# -----Task Description-----------------------------------------------#
 #
 #  TREASURE MAP
 #
@@ -39,10 +38,10 @@
 #  your final solution as a single Python 3 file, whether or not you
 #  complete both parts of the assignment.
 #
-#--------------------------------------------------------------------#
+# --------------------------------------------------------------------#
 
 
-#-----Preamble-------------------------------------------------------#
+# -----Preamble-------------------------------------------------------#
 #
 # This section imports necessary functions and defines constant
 # values used for creating the drawing canvas.  You should not change
@@ -74,11 +73,12 @@ font_size = 18  # size of characters for the coords
 starting_points = ['Top left', 'Top right', 'Centre',
                    'Bottom left', 'Bottom right']
 
+
 #
-#--------------------------------------------------------------------#
+# --------------------------------------------------------------------#
 
 
-#-----Functions for Creating the Drawing Canvas----------------------#
+# -----Functions for Creating the Drawing Canvas----------------------#
 #
 # The functions in this section are called by the main program to
 # manage the drawing canvas for your image.  You should not change
@@ -89,64 +89,63 @@ starting_points = ['Top left', 'Top right', 'Centre',
 
 # Set up the canvas and draw the background for the overall image
 def create_drawing_canvas():
+	# Set up the drawing window with enough space for the grid and
+	# legend
+	setup(window_width, window_height)
+	setworldcoordinates(-margin, -margin, window_width - margin,
+	                    window_height - margin)
 
-    # Set up the drawing window with enough space for the grid and
-    # legend
-    setup(window_width, window_height)
-    setworldcoordinates(-margin, -margin, window_width - margin,
-                        window_height - margin)
+	# Draw as quickly as possible
+	tracer(False)
 
-    # Draw as quickly as possible
-    tracer(False)
+	# Choose a neutral background colour (if you want to draw your
+	# own background put the code here, but do not change any of the
+	# following code that draws the grid)
+	bgcolor('light grey')
 
-    # Choose a neutral background colour (if you want to draw your
-    # own background put the code here, but do not change any of the
-    # following code that draws the grid)
-    bgcolor('light grey')
+	# Get ready to draw the grid
+	penup()
+	color('slate grey')
+	width(2)
 
-    # Get ready to draw the grid
-    penup()
-    color('slate grey')
-    width(2)
+	# Draw the horizontal grid lines
+	setheading(0)  # face east
+	for y_coord in range(0, (num_squares + 1) * grid_size, grid_size):
+		penup()
+		goto(0, y_coord)
+		pendown()
+		forward(num_squares * grid_size)
 
-    # Draw the horizontal grid lines
-    setheading(0)  # face east
-    for y_coord in range(0, (num_squares + 1) * grid_size, grid_size):
-        penup()
-        goto(0, y_coord)
-        pendown()
-        forward(num_squares * grid_size)
+	# Draw the vertical grid lines
+	setheading(90)  # face north
+	for x_coord in range(0, (num_squares + 1) * grid_size, grid_size):
+		penup()
+		goto(x_coord, 0)
+		pendown()
+		forward(num_squares * grid_size)
 
-    # Draw the vertical grid lines
-    setheading(90)  # face north
-    for x_coord in range(0, (num_squares + 1) * grid_size, grid_size):
-        penup()
-        goto(x_coord, 0)
-        pendown()
-        forward(num_squares * grid_size)
+	# Draw each of the labels on the x axis
+	penup()
+	y_offset = -27  # pixels
+	for x_coord in range(0, (num_squares + 1) * grid_size, grid_size):
+		goto(x_coord, y_offset)
+		write(str(x_coord), align='center',
+		      font=('Arial', font_size, 'normal'))
 
-    # Draw each of the labels on the x axis
-    penup()
-    y_offset = -27  # pixels
-    for x_coord in range(0, (num_squares + 1) * grid_size, grid_size):
-        goto(x_coord, y_offset)
-        write(str(x_coord), align='center',
-              font=('Arial', font_size, 'normal'))
+	# Draw each of the labels on the y axis
+	penup()
+	x_offset, y_offset = -5, -10  # pixels
+	for y_coord in range(0, (num_squares + 1) * grid_size, grid_size):
+		goto(x_offset, y_coord + y_offset)
+		write(str(y_coord), align='right',
+		      font=('Arial', font_size, 'normal'))
 
-    # Draw each of the labels on the y axis
-    penup()
-    x_offset, y_offset = -5, -10  # pixels
-    for y_coord in range(0, (num_squares + 1) * grid_size, grid_size):
-        goto(x_offset, y_coord + y_offset)
-        write(str(y_coord), align='right',
-              font=('Arial', font_size, 'normal'))
-
-    # Reset everything ready for the student's solution
-    pencolor('black')
-    width(1)
-    penup()
-    home()
-    tracer(True)
+	# Reset everything ready for the student's solution
+	pencolor('black')
+	width(1)
+	penup()
+	home()
+	tracer(True)
 
 
 # End the program and release the drawing canvas to the operating
@@ -154,16 +153,17 @@ def create_drawing_canvas():
 # program ends - call the function with False as the argument to
 # prevent this.
 def release_drawing_canvas(hide_cursor=True):
-    tracer(True)  # ensure any drawing still in progress is displayed
-    if hide_cursor:
-        hideturtle()
-    done()
+	tracer(True)  # ensure any drawing still in progress is displayed
+	if hide_cursor:
+		hideturtle()
+	done()
+
 
 #
-#--------------------------------------------------------------------#
+# --------------------------------------------------------------------#
 
 
-#-----Test Data for Use During Code Development----------------------#
+# -----Test Data for Use During Code Development----------------------#
 #
 # The "fixed" data sets in this section are provided to help you
 # develop and test your code.  You can use them as the argument to
@@ -271,13 +271,14 @@ fixed_path_99 = [['Start', 'Top left', randint(0, 4)]] + \
                 [['South', 1, randint(0, 4)]] + \
                 [['East', 1, randint(0, 4)] for step in range(6)]
 
+
 # If you want to create your own test data sets put them here
 
 #
-#--------------------------------------------------------------------#
+# --------------------------------------------------------------------#
 
 
-#-----Function for Assessing Your Solution---------------------------#
+# -----Function for Assessing Your Solution---------------------------#
 #
 # The function in this section will be used to assess your solution.
 # Do not change any of the code in this section.
@@ -295,66 +296,67 @@ fixed_path_99 = [['Start', 'Top left', randint(0, 4)]] + \
 # understand this code to complete the assignment.
 #
 def random_path(print_path=True):
-    # Select one of the five starting points, with a random token
-    path = [['Start', choice(starting_points), randint(0, 4)]]
-    # Determine our location in grid coords (assuming num_squares is odd)
-    start_coords = {'Top left': [0, num_squares - 1],
-                    'Bottom left': [0, 0],
-                    'Top right': [num_squares - 1, num_squares - 1],
-                    'Centre': [num_squares // 2, num_squares // 2],
-                    'Bottom right': [num_squares - 1, 0]}
-    location = start_coords[path[0][1]]
-    # Keep track of squares visited
-    been_there = [location]
-    # Create a path up to 19 steps long (so at most there will be 20 tokens)
-    for step in range(randint(0, 19)):
-        # Find places to go in each possible direction, calculating both
-        # the new grid square and the instruction required to take
-        # us there
-        go_north = [[[location[0], new_square],
-                     ['North', new_square - location[1], token]]
-                    for new_square in range(location[1] + 1, num_squares)
-                    for token in [0, 1, 2, 3, 4]
-                    if not ([location[0], new_square] in been_there)]
-        go_south = [[[location[0], new_square],
-                     ['South', location[1] - new_square, token]]
-                    for new_square in range(0, location[1])
-                    for token in [0, 1, 2, 3, 4]
-                    if not ([location[0], new_square] in been_there)]
-        go_west = [[[new_square, location[1]],
-                    ['West', location[0] - new_square, token]]
-                   for new_square in range(0, location[0])
-                   for token in [0, 1, 2, 3, 4]
-                   if not ([new_square, location[1]] in been_there)]
-        go_east = [[[new_square, location[1]],
-                    ['East', new_square - location[0], token]]
-                   for new_square in range(location[0] + 1, num_squares)
-                   for token in [0, 1, 2, 3, 4]
-                   if not ([new_square, location[1]] in been_there)]
-        # Choose a free square to go to, if any exist
-        options = go_north + go_south + go_east + go_west
-        if options == []:  # nowhere left to go, so stop!
-            break
-        target_coord, instruction = choice(options)
-        # Remember being there
-        been_there.append(target_coord)
-        location = target_coord
-        # Add the move to the list of instructions
-        path.append(instruction)
-    # To assist with debugging and marking, print the list of
-    # instructions to be followed to the shell window
-    print('Welcome to the Treasure Hunt!')
-    print('Here are the steps you must follow...')
-    for instruction in path:
-        print(instruction)
-    # Return the random path
-    return path
+	# Select one of the five starting points, with a random token
+	path = [['Start', choice(starting_points), randint(0, 4)]]
+	# Determine our location in grid coords (assuming num_squares is odd)
+	start_coords = {'Top left': [0, num_squares - 1],
+	                'Bottom left': [0, 0],
+	                'Top right': [num_squares - 1, num_squares - 1],
+	                'Centre': [num_squares // 2, num_squares // 2],
+	                'Bottom right': [num_squares - 1, 0]}
+	location = start_coords[path[0][1]]
+	# Keep track of squares visited
+	been_there = [location]
+	# Create a path up to 19 steps long (so at most there will be 20 tokens)
+	for step in range(randint(0, 19)):
+		# Find places to go in each possible direction, calculating both
+		# the new grid square and the instruction required to take
+		# us there
+		go_north = [[[location[0], new_square],
+		             ['North', new_square - location[1], token]]
+		            for new_square in range(location[1] + 1, num_squares)
+		            for token in [0, 1, 2, 3, 4]
+		            if not ([location[0], new_square] in been_there)]
+		go_south = [[[location[0], new_square],
+		             ['South', location[1] - new_square, token]]
+		            for new_square in range(0, location[1])
+		            for token in [0, 1, 2, 3, 4]
+		            if not ([location[0], new_square] in been_there)]
+		go_west = [[[new_square, location[1]],
+		            ['West', location[0] - new_square, token]]
+		           for new_square in range(0, location[0])
+		           for token in [0, 1, 2, 3, 4]
+		           if not ([new_square, location[1]] in been_there)]
+		go_east = [[[new_square, location[1]],
+		            ['East', new_square - location[0], token]]
+		           for new_square in range(location[0] + 1, num_squares)
+		           for token in [0, 1, 2, 3, 4]
+		           if not ([new_square, location[1]] in been_there)]
+		# Choose a free square to go to, if any exist
+		options = go_north + go_south + go_east + go_west
+		if options == []:  # nowhere left to go, so stop!
+			break
+		target_coord, instruction = choice(options)
+		# Remember being there
+		been_there.append(target_coord)
+		location = target_coord
+		# Add the move to the list of instructions
+		path.append(instruction)
+	# To assist with debugging and marking, print the list of
+	# instructions to be followed to the shell window
+	print('Welcome to the Treasure Hunt!')
+	print('Here are the steps you must follow...')
+	for instruction in path:
+		print(instruction)
+	# Return the random path
+	return path
+
 
 #
-#--------------------------------------------------------------------#
+# --------------------------------------------------------------------#
 
 
-#-----Student's Solution---------------------------------------------#
+# -----Student's Solution---------------------------------------------#
 #
 #  Complete the assignment by replacing the dummy function below with
 #  your own "follow_path" function.
@@ -373,42 +375,41 @@ def random_path(print_path=True):
 #
 # @returns void
 def follow_path(path):
+	start_location = path.pop(0)
 
-    start_location = path.pop(0)
+	# First we iterate through our list of "unnormalized paths", and
+	# convert them to (x, y) coordinates, attributing the
+	# token we must draw. With the nature of the input, the start is
+	# delt with far differently than the rest of the locations. So
+	# we'll deal with that first.
 
-    # First we iterate through our list of "unnormalized paths", and
-    # convert them to (x, y) coordinates, attributing the
-    # token we must draw. With the nature of the input, the start is
-    # delt with far differently than the rest of the locations. So
-    # we'll deal with that first.
+	starting_node = create_node(
+		# we need to translate the "Top left" etc.. to actual coordinates
+		get_starting_coord(start_location[1]),
+		# the create_node also requires the type of token
+		start_location[2]
+	)
 
-    starting_node = create_node(
-        # we need to translate the "Top left" etc.. to actual coordinates
-        get_starting_coord(start_location[1]),
-        # the create_node also requires the type of token
-        start_location[2]
-    )
+	# our main token "draw_stack", we need to reduce here because unlike
+	# other popular languages, map doesn't give us access to accumulated iterable
+	draw_stack = reduce(
+		# passing in the function we wish to execute at every iteration
+		walk_path_reduce_fn,
+		# the list we wish to iterate
+		path,
+		# and the list we are reducing into, in our case, a list with the start_node
+		[starting_node]
+	)
 
-    # our main token "draw_stack", we need to reduce here because unlike
-    # other popular languages, map doesn't give us access to accumulated iterable
-    draw_stack = reduce(
-        # passing in the function we wish to execute at every iteration
-        walk_path_reduce_fn,
-        # the list we wish to iterate
-        path,
-        # and the list we are reducing into, in our case, a list with the start_node
-        [starting_node]
-    )
+	draw_legend(draw_stack)
 
-    draw_legend(draw_stack)
+	# Once we've drawn our legend, we simply iterate over our stack, and draw!
+	for node in draw_stack:
+		# takes our turtle to the "square"
+		goto((node.get('x') * grid_size),
+		     (node.get('y') * grid_size))
 
-    # Once we've drawn our legend, we simply iterate over our stack, and draw!
-    for node in draw_stack:
-        # takes our turtle to the "square"
-        goto((node.get('x') * grid_size),
-             (node.get('y') * grid_size))
-
-        node.get('render_fn')()  # executes this node's draw method
+		node.get('render_fn')()  # executes this node's draw method
 
 
 # @description
@@ -424,27 +425,28 @@ def follow_path(path):
 #
 # @see #create_node
 def walk_path_reduce_fn(result, item):
-    direction, steps_to_take, token_to_use = item;
+	direction, steps_to_take, token_to_use = item;
 
-    previous_node = result[len(result) - 1]
+	previous_node = result[len(result) - 1]
 
-    # Converts the "North", "South" etc strings to cordinate deltas @see #get_compass_to_coordinates_delta
-    coord_delta = get_compass_to_coordinates_delta(direction)
+	# Converts the "North", "South" etc strings to cordinate deltas @see #get_compass_to_coordinates_delta
+	coord_delta = get_compass_to_coordinates_delta(direction)
 
-    new_node = create_node(
-        reduce(
-            lambda deltaResult, deltaItem: [
-                # overlays the current coordinates, with whatever we need to adjust it by
-                sum(x) for x in zip(deltaResult, coord_delta)
-            ],
-            range(steps_to_take), # purely to iterate the number of steps to take
-            # and the list we are reducing into, the previous nodes x,y coordinates
-            [previous_node.get('x'), previous_node.get('y')]
-        ),
-        token_to_use
-    )
+	new_node = create_node(
+		reduce(
+			lambda deltaResult, deltaItem: [
+				# overlays the current coordinates, with whatever we need to adjust it by
+				sum(x) for x in zip(deltaResult, coord_delta)
+			],
+			range(steps_to_take),  # purely to iterate the number of steps to take
+			# and the list we are reducing into, the previous nodes x,y coordinates
+			[previous_node.get('x'), previous_node.get('y')]
+		),
+		token_to_use
+	)
 
-    return result + [new_node]
+	return result + [new_node]
+
 
 # @description
 # A method that translates our starting location indicators to coordinates.
@@ -453,15 +455,16 @@ def walk_path_reduce_fn(result, item):
 #
 # @returns [number[]] a coordinate tuple
 def get_starting_coord(verb):
-    # To the person marking this, this is the best I could come up
-    # in terms of a switch case. Forgiveness is a virtue!
-    return {
-        'Top left': [0, num_squares - 1],
-        'Top right': [num_squares - 1, num_squares - 1],
-        'Centre': [(num_squares - 1) / 2, (num_squares - 1) / 2],
-        'Bottom left': [0, 0],
-        'Bottom right': [(num_squares - 1), 0]
-    }.get(verb)
+	# To the person marking this, this is the best I could come up
+	# in terms of a switch case. Forgiveness is a virtue!
+	return {
+		'Top left': [0, num_squares - 1],
+		'Top right': [num_squares - 1, num_squares - 1],
+		'Centre': [(num_squares - 1) / 2, (num_squares - 1) / 2],
+		'Bottom left': [0, 0],
+		'Bottom right': [(num_squares - 1), 0]
+	}.get(verb)
+
 
 # @description
 # A method that translates our direction indicators to coordinates deltas. For
@@ -471,14 +474,15 @@ def get_starting_coord(verb):
 #
 # @returns [number[]] a coordinate tuple delta
 def get_compass_to_coordinates_delta(verb):
-    # To the person marking this, this is the best I could come up
-    # in terms of a switch case. Forgiveness is a virtue!
-    return {
-        'North': [0, 1],
-        'South': [0, -1],
-        'East': [1, 0],
-        'West': [-1, 0]
-    }.get(verb)
+	# To the person marking this, this is the best I could come up
+	# in terms of a switch case. Forgiveness is a virtue!
+	return {
+		'North': [0, 1],
+		'South': [0, -1],
+		'East': [1, 0],
+		'West': [-1, 0]
+	}.get(verb)
+
 
 # @description
 # A method that gets give a cordinate tuple, and produces an object, complete with
@@ -489,14 +493,14 @@ def get_compass_to_coordinates_delta(verb):
 #
 # @returns [{x: number, y: number, token_type: number, render_fn: lambda}] an object to represent the node
 def create_node(coords, token_type):
-    x, y = coords;
-    return {
-        'x': x,
-        'y': y,
-        'token_type': token_type,
-        # the use of a lambda, becuase I want the scope to remain in tact here
-        'render_fn': lambda: get_token_draw_method_from_type(token_type)()
-    }
+	x, y = coords;
+	return {
+		'x': x,
+		'y': y,
+		'token_type': token_type,
+		# the use of a lambda, becuase I want the scope to remain in tact here
+		'render_fn': lambda: get_token_draw_method_from_type(token_type)()
+	}
 
 
 # ---- Legend things ----
@@ -504,147 +508,150 @@ legend_title_font_size = 14
 legend_padding = 20
 legend_token_line_height = grid_size
 
+
 # @description
 # As the name suggests, this method draws the legend. Nothing more, nothing less.
 #
 # @returns [void]
 def draw_legend(draw_stack):
-    tokens = get_token_draw_methods()
+	tokens = get_token_draw_methods()
 
-    # A collection of areas we need to paint on the legend, from top to bottom.
-    # ie, title, then icon 1, then icon 2 etc...
-    # Each render method, when called will be called with the legend, width / height
-    blocks = ([
-        # the title
-        {
-            'height': legend_title_font_size + legend_padding,
-            'render_fn': partial(draw_legend_title, len(draw_stack))
-        }
-    ]
-    # we then append the tokens, because we compute them
-     + list(
-        map(
-            lambda node: {
-                'height': legend_token_line_height,
-                'render_fn': partial(
-                    draw_legend_token,
-                    node[1],
-                    # to find the number of types of tokens we see in our draw_stack
-                    len(list(filter(lambda item: item.get(
-                        'token_type') == node[0], draw_stack)))
-                )
-            },
-            # enumerate so we get access to the index ie the token_type
-            enumerate(tokens)
-        )
-    ))
+	# A collection of areas we need to paint on the legend, from top to bottom.
+	# ie, title, then icon 1, then icon 2 etc...
+	# Each render method, when called will be called with the legend, width / height
+	blocks = ([
+		          # the title
+		          {
+			          'height': legend_title_font_size + legend_padding,
+			          'render_fn': partial(draw_legend_title, len(draw_stack))
+		          }
+	          ]
+	          # we then append the tokens, because we compute them
+	          + list(
+				map(
+					lambda node: {
+						'height': legend_token_line_height,
+						'render_fn': partial(
+							draw_legend_token,
+							node[1],
+							# to find the number of types of tokens we see in our draw_stack
+							len(list(filter(lambda item: item.get(
+								'token_type') == node[0], draw_stack)))
+						)
+					},
+					# enumerate so we get access to the index ie the token_type
+					enumerate(tokens)
+				)
+			))
 
-    # left offset = (square count * grid size) + margin
-    # width = window width - left offset - margin
-    legend_width = (window_width - (margin * 2 + (num_squares *
-                                                  grid_size)) - margin)
+	# left offset = (square count * grid size) + margin
+	# width = window width - left offset - margin
+	legend_width = (window_width - (margin * 2 + (num_squares *
+	                                              grid_size)) - margin)
 
-    # height of all the blocks + padding per block - 1 + padding for legend
-    legend_height = (sum(map(lambda item: item.get('height'), blocks))
-                     + (legend_padding * (len(blocks) - 1)) + legend_padding * 2)
+	# height of all the blocks + padding per block - 1 + padding for legend
+	legend_height = (sum(map(lambda item: item.get('height'), blocks))
+	                 + (legend_padding * (len(blocks) - 1)) + legend_padding * 2)
 
-    # Take the turtle to the top corner
-    draw_legend_reset_cords(legend_width, legend_height)
+	# Take the turtle to the top corner
+	draw_legend_reset_cords(legend_width, legend_height)
 
-    draw_legend_background(legend_width, legend_height)
+	draw_legend_background(legend_width, legend_height)
 
-    # we need to iterate over our blocks, and draw them
-    for index, block in enumerate(blocks):
-        # always reset, as the coords might be different from inner render methods
-        draw_legend_reset_cords(legend_width, legend_height)
+	# we need to iterate over our blocks, and draw them
+	for index, block in enumerate(blocks):
+		# always reset, as the coords might be different from inner render methods
+		draw_legend_reset_cords(legend_width, legend_height)
 
-        # We need to know how much to offset our y, so we find the previous nodes' height accumulated 
-        offset_height = (sum(map(lambda item: item.get('height'), blocks[:index]))
-            # we also want to add some padding between our items
-            + legend_padding * index)
+		# We need to know how much to offset our y, so we find the previous nodes' height accumulated 
+		offset_height = (sum(map(lambda item: item.get('height'), blocks[:index]))
+		                 # we also want to add some padding between our items
+		                 + legend_padding * index)
 
-        # finally tell the turtle to go there
-        sety((pos()[1] - offset_height) - legend_padding)
+		# finally tell the turtle to go there
+		sety((pos()[1] - offset_height) - legend_padding)
 
-        # and run our render method for this item
-        block.get('render_fn')(legend_width, legend_height)
+		# and run our render method for this item
+		block.get('render_fn')(legend_width, legend_height)
+
 
 # @description
 # A method to draw the legends background.
 #
 # @returns [void]
 def draw_legend_background(legend_width, legend_height):
-    # TODO: Maybe add some rounded corners
-    # TODO : Style this
-    pencolor("blue")
-    fillcolor("white")
-    setheading(90)
-    begin_fill()
-    pendown()
-    right(90)
-    forward(legend_width)
-    right(90)
-    forward(legend_height)
-    right(90)
-    forward(legend_width)
-    right(90)
-    forward(legend_height)
-    penup()
-    end_fill()
+	# TODO: Maybe add some rounded corners
+	# TODO : Style this
+	pencolor("blue")
+	fillcolor("white")
+	setheading(90)
+	begin_fill()
+	pendown()
+	right(90)
+	forward(legend_width)
+	right(90)
+	forward(legend_height)
+	right(90)
+	forward(legend_width)
+	right(90)
+	forward(legend_height)
+	penup()
+	end_fill()
+
 
 # @description
 # Our legend needs a title, this method draws that.
 #
 # @returns [void]
 def draw_legend_title(total_found, legend_width, legend_height):
+	# Move the turtle to the middle of the legend
+	goto(
+		pos()[0] + legend_width // 2,
+		pos()[1] - (legend_title_font_size + (legend_title_font_size // 2))
+	)
 
-    # Move the turtle to the middle of the legend
-    goto(
-        pos()[0] + legend_width // 2,
-        pos()[1] - (legend_title_font_size + (legend_title_font_size // 2))
-    )
+	# TODO: clean up visual, set colours fontsizes, etc...
 
-    # TODO: clean up visual, set colours fontsizes, etc...
+	write(
+		'%d %s Found!' % (total_found, "Langauge" +
+		                  ('s' if total_found > 1 else '')),
+		False,
+		align="center",
+		font=('Arial', legend_title_font_size, 'bold')
+	)
 
-    write(
-        '%d %s Found!' % (total_found, "Langauge" +
-                          ('s' if total_found > 1 else '')),
-        False,
-        align="center",
-        font=('Arial', legend_title_font_size, 'bold')
-    )
 
 # @description
 # A method to draw each of our tokens, complete with a title and the token itself.
 #
 # @returns [void]
 def draw_legend_token(token, number_of_type, legend_width, legend_height):
+	token_render_fn, token_name = token;
 
-    token_render_fn, token_name = token;
+	goto(
+		pos()[0] + legend_padding,
+		pos()[1] - grid_size
+	)
 
-    goto(
-        pos()[0] + legend_padding,
-        pos()[1] - grid_size
-    )
+	root_pos = pos()  # save pos to come back to later
 
-    root_pos = pos()  # save pos to come back to later
+	title_font_size = 12
 
-    title_font_size = 12
+	# Draw title
+	goto(
+		root_pos[0] + grid_size + legend_padding,
+		root_pos[1] + (grid_size // 2) - (title_font_size // 2)
+	)
 
-    # Draw title
-    goto(
-        root_pos[0] + grid_size + legend_padding,
-        root_pos[1] + (grid_size // 2) - (title_font_size // 2)
-    )
+	# TODO: clean up visual, set colours fontsizes, etc...
 
-    # TODO: clean up visual, set colours fontsizes, etc...
+	write('%s (%d)' % (token_name, number_of_type), False, align="left", font=(
+		'Arial', title_font_size, 'normal'))
 
-    write('%s (%d)' % (token_name, number_of_type), False, align="left", font=(
-        'Arial', title_font_size, 'normal'))
+	goto(*root_pos)
 
-    goto(*root_pos)
+	call_and_reset_after_exec(token_render_fn)
 
-    call_and_reset_after_exec(token_render_fn)
 
 # @description
 # Resets the turtle's coordinates to the top, left of the legend.
@@ -654,10 +661,11 @@ def draw_legend_token(token, number_of_type, legend_width, legend_height):
 #
 # @returns void
 def draw_legend_reset_cords(legend_width, legend_height):
-    goto(
-        ((num_squares * grid_size)) + margin,
-        ((num_squares * grid_size) // 2) + (legend_height // 2)
-    )
+	goto(
+		((num_squares * grid_size)) + margin,
+		((num_squares * grid_size) // 2) + (legend_height // 2)
+	)
+
 
 # @description
 # A util method that wraps another method to capture the turtle's position, 
@@ -666,9 +674,10 @@ def draw_legend_reset_cords(legend_width, legend_height):
 #
 # @returns
 def call_and_reset_after_exec(fn):
-    original_pos = pos()
-    fn()
-    goto(*original_pos)
+	original_pos = pos()
+	fn()
+	goto(*original_pos)
+
 
 # @description
 # A method that returns a token draw method for a given token_type
@@ -677,7 +686,8 @@ def call_and_reset_after_exec(fn):
 #
 # @returns [(function -> void)[]] a token drawn method
 def get_token_draw_method_from_type(token_type):
-    return get_token_draw_methods()[token_type][0]
+	return get_token_draw_methods()[token_type][0]
+
 
 # @description
 # With the philosophy, data as a function, and for data immutability - we will
@@ -685,33 +695,43 @@ def get_token_draw_method_from_type(token_type):
 #
 # @returns [(function -> void)[]] a collection of tuples with token draw method, to pretty name
 def get_token_draw_methods():
-    return [
-        [draw_token_css, "CSS"],
-        [draw_token_docker, "Docker"],
-        [draw_token_js, "JavaScript"],
-        [draw_token_php, "PHP"],
-        [draw_token_cpp, "C++"]
-    ]
+	return [
+		[draw_token_css, "CSS"],
+		[draw_token_docker, "Docker"],
+		[draw_token_js, "JavaScript"],
+		[draw_token_npm, "NPM"],
+		[draw_token_cpp, "C++"]
+	]
+
 
 # ---- Token draw methods ----
+
+def reset_turtle():
+	penup()
+	color("black")
+	fillcolor("white")
+	seth(90)
+
 
 # @description
 # TODO
 #
 # @returns
-def draw_token_php():
-    bg_purple = '#8f9ed1'
-    write("php")
+def draw_token_npm():
+	reset_turtle()
+
+	bg_red = '#d52a29'
+
 
 # @description
 # TODO
 #
 # @returns
 def draw_token_css():
-    bg_blue = '#006bc0'
-    bg_light_blue = '#0096dc'
+	bg_blue = '#006bc0'
+	bg_light_blue = '#0096dc'
 
-    write("css")
+	write("css")
 
 
 # @description
@@ -719,34 +739,39 @@ def draw_token_css():
 #
 # @returns
 def draw_token_js():
-    bg_yellow = '#e4ba42'
-    grey = '#3f4a43'
+	bg_yellow = '#e4ba42'
+	grey = '#3f4a43'
 
-    write("js")
+	write("js")
+
 
 # @description
 # TODO
 #
 # @returns
 def draw_token_docker():
-    bg_blue = '#006bc0'
+	reset_turtle()
 
-    write("docker")
+	bg_blue = '#006bc0'
+
+	write("docker")
+
 
 # @description
 # TODO
 #
 # @returns
 def draw_token_cpp():
-    bg_blue_1 = '#004284'
-    bg_blue_2 = '#00579e'
-    bg_blue_1 = '#6399d4'
+	bg_blue_1 = '#004284'
+	bg_blue_2 = '#00579e'
+	bg_blue_1 = '#6399d4'
 
-    write("c++")
+	write("c++")
 
-#--------------------------------------------------------------------#
 
-#-----Main Program---------------------------------------------------#
+# --------------------------------------------------------------------#
+
+# -----Main Program---------------------------------------------------#
 #
 # This main program sets up the background, ready for you to start
 # drawing your solution.  Do not change any of this code except
@@ -789,4 +814,4 @@ follow_path(random_path())  # <-- used for assessment
 release_drawing_canvas()
 
 #
-#--------------------------------------------------------------------#
+# --------------------------------------------------------------------#
