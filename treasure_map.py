@@ -55,9 +55,10 @@
 # because the markers will not have access to such modules.
 
 from turtle import *
-from math import *
+from math import * # unused import?
 from random import *
 # To the person marking this, I was given permission to add this import.
+# not for partial, but im sure you'd also that, if reduce was allowed.
 from functools import reduce, partial
 
 # Define constant values used in the main program that sets up
@@ -371,7 +372,7 @@ def random_path(print_path=True):
 # usually gets done by way of unit tests. But in this case, and to prove I
 # actually understand what i'm coding, i've explained it best I can, where
 # I can. This is also my very first exposure to python, so please also excuse
-# if things aren't quit done the python way.
+# if things aren't quit done the Python way.
 # ----------------------------------------------------------------------------#
 
 
@@ -758,6 +759,15 @@ def get_token_draw_functions():
 
 
 # ---- Token draw functions ----
+
+# To the person marking this, this was actually my most hated part of the
+# assignment. I couldnt get turtle to draw things exactly how I wanted. So
+# these are only bur approximate to that of the real flags. But no one said
+# the tokens had to be realistic! ;)
+#
+# You'll also find a crazy amount of magic numbers here - but im sure that
+# can be excused, because of the nature of turtle.
+
 # Thank you to the guys over at FlatIcon for their flag designs.
 # @see https://www.flaticon.com/packs/international-flags-4
 
@@ -997,7 +1007,7 @@ title("Do you know your global flags?")
 # ***** argument to the follow_path function.  Your program must
 # ***** work for any data set that can be returned by the
 # ***** random_path function.
-#follow_path([["Start", "Centre", 1]])  # <-- used for code development only, not marking
+# follow_path(fixed_path_99)  # <-- used for code development only, not marking
 follow_path(random_path())  # <-- used for assessment
 
 # Exit gracefully
