@@ -363,22 +363,23 @@ def random_path(print_path=True):
 #
 
 # ----------------------------------------------------------------------------#
-# To the person marking this, I can see pydoc is a thing, however its a syntax im
-# not used to at all - however I've tried to adapt, javadoc/jsdoc/tsdoc etc... 
+# To the person marking this, I can see pydoc is a thing, however its a syntax
+# im not used to at all - however I've tried to adapt, javadoc/jsdoc/tsdoc etc..
 # to Python. Please also excuse for not sticking to the 80point rule. I tried...
 # Also please excuse the excessive amount of commenting. Usually when I code,
 # I don't document nearly as much as I am in the body's of the functions. That
 # usually gets done by way of unit tests. But in this case, and to prove I
-# actually understand what i'm coding, i've explained it best I can, where I can.
-# This is also my very first exposure to python, so please also excuse if things
-# aren't quit done the python way.
+# actually understand what i'm coding, i've explained it best I can, where
+# I can. This is also my very first exposure to python, so please also excuse
+# if things aren't quit done the python way.
 # ----------------------------------------------------------------------------#
 
 
 # @description
-# Being given a data set, containing a collection of bearings, and a marker, this
-# function, follows that path, drawing them on the plane, as well as print a legend
-# for the users' viewing. Treat this function as the "entry" point to the app
+# Being given a data set, containing a collection of bearings, and a marker,
+# this function, follows that path, drawing them on the plane, as well as print
+# a legend for the users' viewing. Treat this function as the "entry" point to
+# the app.
 #
 # @param {path: [string, number, number][]} a collection of bearings
 #
@@ -400,13 +401,15 @@ def follow_path(path):
 	)
 
 	# our main token "draw_stack", we need to reduce here because unlike
-	# other popular languages, map doesn't give us access to accumulated iterable
+	# other popular languages, map doesn't give us access to accumulated
+	# iterable
 	draw_stack = reduce(
 		# passing in the function we wish to execute at every iteration
 		walk_path_reduce_fn,
 		# the list we wish to iterate
 		path,
-		# and the list we are reducing into, in our case, a list with the start_node
+		# and the list we are reducing into, in our case, a list with the
+		# start_node
 		[starting_node]
 	)
 
@@ -426,9 +429,9 @@ def follow_path(path):
 
 
 # @description
-# A function that takes the result (the current accumulated list), and item, the current
-# item being inspected. This function looks at the accumulated context to solve for,
-# the current items coordinates.
+# A function that takes the result (the current accumulated list), and item,
+# the current item being inspected. This function looks at the accumulated
+# context to solve for, the current items coordinates.
 #
 # @param {result: node[]} the current accumulated list
 # @param {item: [string, number, number]} the current item being inspected,
@@ -453,8 +456,9 @@ def walk_path_reduce_fn(result, item):
 				# adjust it by
 				sum(x) for x in zip(deltaResult, coord_delta)
 			],
-			range(steps_to_take),  # purely to iterate the number of steps to take
-			# and the list we are reducing into, the previous nodes x,y coordinates
+			range(steps_to_take), # to iterate the number of steps to take
+			# and the list we are reducing into, the previous nodes
+			# x,y coordinates
 			[previous_node.get('x'), previous_node.get('y')]
 		),
 		token_to_use
@@ -501,8 +505,9 @@ def get_compass_to_coordinates_delta(verb):
 
 
 # @description
-# A function that gets give a cordinate tuple, and produces an object, complete with
-# its x, and y cordinate. And a function to execute to draw it's attributed token.
+# A function that gets give a cordinate tuple, and produces an object, complete
+# with its x, and y cordinate. And a function to execute to draw it's
+# attributed token.
 #
 # @param {coord: [number, number]} a cordinate tuple
 # @param {token_type: number} a number that maps directly to our token types
@@ -527,7 +532,8 @@ legend_token_line_height = grid_size
 
 
 # @description
-# As the name suggests, this function draws the legend. Nothing more, nothing less.
+# As the name suggests, this function draws the legend. Nothing more, nothing
+# less.
 #
 # @returns [void]
 def draw_legend(draw_stack):
@@ -541,9 +547,12 @@ def draw_legend(draw_stack):
 
 	# height of all the blocks + padding per block - 1 + padding for legend
 	legend_height = (
-		sum(map(lambda item: item.get('height'), blocks)) # height of all the blocks
-	    + (legend_padding * (len(blocks) - 1)) # + padding per block (blocks.length -1)
-		+ legend_padding * 2 # we also want padding top and bottom of the legend
+		# height of all the blocks
+		sum(map(lambda item: item.get('height'), blocks))
+		# + padding per block (blocks.length -1)
+	    + (legend_padding * (len(blocks) - 1))
+		# we also want padding top and bottom of the legend
+		+ legend_padding * 2
 	)
 
 	# Draw's our legends background
@@ -551,13 +560,16 @@ def draw_legend(draw_stack):
 
 	# We need to iterate over our blocks, and draw them
 	for index, block in enumerate(blocks):
-		# We need to know how much to offset our y, so we find the previous
-		# nodes' height accumulated 
-		offset_height = (sum(map(lambda item: item.get('height'), blocks[:index]))
-		                 # we also want to add some padding between our items
-		                 + legend_padding * index)
+		offset_height = (
+			# We need to know how much to offset our y, so we find the previous
+			# nodes' height accumulated 
+			sum(map(lambda item: item.get('height'), blocks[:index]))
+			# we also want to add some padding between our items
+			+ legend_padding * index
+		)
 
-		# always reset, as the coords might be different from inner render functions
+		# always reset, as the coords might be different from inner render
+		# functions
 		draw_legend_reset_cords(legend_width, legend_height)
 
 		# finally tell the turtle to go to the top left corner of the block we
@@ -571,8 +583,8 @@ def draw_legend(draw_stack):
 
 
 # @description
-# With the philosophy, data as a function, and for data immutability, this function
-# returns a new collection of legend blocks to draw
+# With the philosophy, data as a function, and for data immutability, this
+# function returns a new collection of legend blocks to draw.
 # 
 # @param {draw_stack: DrawStack} @see #walk_path_reduce_fn
 #
@@ -583,7 +595,8 @@ def get_legend_blocks(draw_stack):
 
 	# A collection of areas we need to paint on the legend, from top to bottom.
 	# ie, title, then icon 1, then icon 2 etc...
-	# Each render function, when called will be called with the legend, width / height
+	# Each render function, when called will be called with the legend,
+	# width / height
 	return ([
 		          # the title
 		          {
@@ -660,7 +673,8 @@ def draw_legend_title(total_found, legend_width, legend_height):
 
 
 # @description
-# A function to draw each of our tokens, complete with a title and the token itself.
+# A function to draw each of our tokens, complete with a title and the token
+# itself.
 #
 # @returns [void]
 def draw_legend_token(token, number_of_type, legend_width, legend_height):
@@ -707,10 +721,10 @@ def draw_legend_reset_cords(legend_width, legend_height):
 
 # @description
 # A util function that wraps another function to capture the turtle's position, 
-# executes the function, and resets the turtles position back to what it was before
-# the execution. 
+# executes the function, and resets the turtles position back to what it was
+# before the execution. 
 #
-# @returns
+# @returns [void]
 def call_and_reset_after_exec(fn):
 	original_pos = pos()
 	fn()
@@ -731,8 +745,8 @@ def get_token_draw_function_from_type(token_type):
 # With the philosophy, data as a function, and for data immutability - we will
 # return a new collection of token draw functions.
 #
-# @returns [(function -> void)[]] a collection of tuples with token draw function,
-# 		to pretty name
+# @returns [(function -> void)[]] a collection of tuples with token draw 
+# 		function, to pretty name
 def get_token_draw_functions():
 	return [
 		[draw_token_canada, "Canada"],
