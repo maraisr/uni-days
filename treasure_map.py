@@ -719,32 +719,7 @@ def reset_turtle():
 # @returns
 def draw_token_npm():
 	reset_turtle()
-
-	bg_red = '#d52a29'
-	block_thickness = 10
-
-	fillcolor(bg_red)
-
-	seth(90)
-	
-	begin_fill()
-	forward(grid_size)
-	right(90)
-	forward(block_thickness)
-	right(90)
-	forward(grid_size)
-	right(90)
-	forward(block_thickness)
-	end_fill()
-	seth(0)
-	forward(grid_size - block_thickness)
-	begin_fill()
-	seth(90)
-	forward(grid_size)
-	right(90)
-	forward(block_thickness)
-	right(90)
-	end_fill()
+	write("npm")
 	
 
 
@@ -907,6 +882,7 @@ def draw_token_turkey():
 	draw_star(star_size, "white")
 
 
+# TODO : COMMENT ME
 def draw_star(size, colour):
 	fillcolor(colour)
 	seth(90)
