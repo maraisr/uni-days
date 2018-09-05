@@ -432,7 +432,7 @@ def follow_path(path):
 # @description
 # A function that takes the result (the current accumulated list), and item,
 # the current item being inspected. This function looks at the accumulated
-# context to solve for, the current items coordinates.
+# context to solve for the current items coordinates.
 #
 # @param {result: node[]} the current accumulated list
 # @param {item: [string, number, number]} the current item being inspected,
@@ -442,19 +442,33 @@ def follow_path(path):
 #
 # @see #create_node
 def walk_path_reduce_fn(result, item):
+	# this is quite intersting, so this function gets given a current
+	# collection of already computed paths, and the current uncomunted path we
+	# need to, get our previous node (where we've just come from in our journey)
+	# and, work out where to go next. We do this with a bit of magic. We know,
+	# what our next bearing is (the direction). We also know how many steps to
+	# take, and where we came from.
+
 	direction, steps_to_take, token_to_use = item;
 
 	previous_node = result[len(result) - 1]
 
-	# Converts the "North", "South" etc strings to cordinate deltas
+	# So we converts the "North", "South" etc... strings to cordinate deltas. By
+	# deltas I mean, to face north, we add 1 to our y axis, and 0 to our x axis.
+	# This purely does that conversion for us.
 	# @see #get_compass_to_coordinates_delta
 	coord_delta = get_compass_to_coordinates_delta(direction)
 
-	new_node = create_node(
+	# Now that we know, where we came from, we use this reduce function again
+	# to loop over a fictitious collection of numbers, that range from 1 -> our
+	# number of steps to take. We reduce into a coordinate tuple (where we
+	# came from), using the sum of our delta multiple times - or per step to
+	# take.
+	new_node = create_node(	
 		reduce(
 			lambda deltaResult, deltaItem: [
-				# overlays the current coordinates, with whatever we need to
-				# adjust it by
+				# overlays the current coordinate, with whatever we need to
+				# adjust it by. Returning a new, moved tuple.
 				sum(x) for x in zip(deltaResult, coord_delta)
 			],
 			range(steps_to_take), # to iterate the number of steps to take
@@ -465,6 +479,7 @@ def walk_path_reduce_fn(result, item):
 		token_to_use
 	)
 
+	# as this is a reducer, we need to return a new collection
 	return result + [new_node]
 
 
@@ -521,7 +536,7 @@ def create_node(coords, token_type):
 		'x': x,
 		'y': y,
 		'token_type': token_type,
-		# the use of a lambda, becuase I want the scope to remain in tact here
+		# the use of a lambda, because I want the scope to remain in tact here
 		'render_fn': lambda: get_token_draw_function_from_type(token_type)()
 	}
 
