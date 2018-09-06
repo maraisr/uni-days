@@ -883,7 +883,28 @@ def draw_token_nepal():
 #
 # @returns
 def draw_token_china():
-	write("china")
+	reset_turtle()
+	origin_x, origin_y = pos()
+
+	bg_red = '#de2910'
+	bg_yellow = '#ffde00'
+
+	# start with a white background
+	call_and_reset_after_exec(partial(draw_square, bg_red))
+
+	# draw a 5 point start
+	goto(origin_x + 15, origin_y + 70)
+	seth(0)
+	draw_star(10, bg_yellow)
+
+	# draws 4 of the stars around it
+	goto(origin_x + 45, origin_y + 90)
+	seth(0)
+	draw_star(5, bg_yellow)
+	goto(origin_x + 60, origin_y + 80)
+	seth(0)
+	draw_star(5, bg_yellow)
+
 
 
 # @description
