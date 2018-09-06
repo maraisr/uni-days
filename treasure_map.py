@@ -366,10 +366,9 @@ def random_path(print_path=True):
 # ----------------------------------------------------------------------------#
 # To the person marking this, I can see pydoc is a thing, however its a syntax
 # im not used to at all - however I've tried to adapt, javadoc/jsdoc/tsdoc etc..
-# to Python. Please also excuse for not sticking to the 80point rule. I tried...
-# Also please excuse the excessive amount of commenting. Usually when I code,
-# I don't document nearly as much as I am in the body's of the functions. That
-# usually gets done by way of unit tests. But in this case, and to prove I
+# to Python. Please excuse the excessive amount of commenting. Usually when 
+# I code, I don't document nearly as much as I am in the body's of the functions.
+#  That usually gets done by way of unit tests. But in this case, and to prove I
 # actually understand what i'm coding, i've explained it best I can, where
 # I can. This is also my very first exposure to python, so please also excuse
 # if things aren't quit done the Python way.
@@ -812,7 +811,71 @@ def draw_token_canada():
 #
 # @returns
 def draw_token_nepal():
-	write("nepal")
+	reset_turtle()
+	origin_x, origin_y = pos()
+
+	bg_blue = '#003893'
+	bg_red = '#dc143c'
+
+	# start with a white background
+	call_and_reset_after_exec(partial(draw_square, "white"))
+
+	# draw the blue thingo
+	seth(0)
+	fillcolor(bg_blue)
+	begin_fill()
+	fd(75)
+	right(-133)
+	fd(68)
+	right(133)
+	fd(45)
+	right(-145)
+	fd(90)
+	end_fill()
+
+	goto(origin_x, origin_y)
+
+	# draw the red thingo
+	seth(90)
+	fd(4)
+	seth(0)
+	fd(4)
+	fillcolor(bg_red)
+	begin_fill()
+	fd(61)
+	right(-133)
+	fd(70)
+	right(133)
+	fd(40)
+	right(-145)
+	fd(66)
+	end_fill()
+
+	# draws the bottom star
+	goto(origin_x + 15, origin_y + 32)
+	seth(0)
+	draw_star(4, "white", 13)
+
+	# draws a circle to start in white
+	fillcolor("white")
+	seth(90)
+	goto(origin_x + 31, origin_y + 70)
+	begin_fill()
+	circle(12, -180)
+	end_fill()
+
+	# draws a circle to make it a half moon
+	fillcolor(bg_red)
+	seth(90)
+	goto(origin_x + 31, origin_y + 74)
+	begin_fill()
+	circle(12, -180)
+	end_fill()
+
+	# draws the bottom star
+	goto(origin_x + 15, origin_y + 73)
+	draw_star(3, "white", 13)
+	
 
 
 # @description
@@ -961,15 +1024,15 @@ def draw_token_turkey():
 
 
 # TODO : COMMENT ME
-def draw_star(size, colour):
+def draw_star(size, colour, sides=5):
 	fillcolor(colour)
 	seth(90)
 	begin_fill()
-	for side in range(5):
+	for side in range(sides):
 		fd(size)
 		right(120)
 		fd(size)
-		right(72 - 120)
+		right((360 / sides) - 120)
 	end_fill()
 	
 # TODO : COMMENT ME
