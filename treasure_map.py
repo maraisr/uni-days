@@ -366,24 +366,24 @@ def random_path(print_path=True):
 # ----------------------------------------------------------------------------#
 # To the person marking this, I can see pydoc is a thing, however its a syntax
 # im not used to at all - however I've tried to adapt, javadoc/jsdoc/tsdoc etc..
-# to Python. Please excuse the excessive amount of commenting. Usually when 
-# I code, I don't document nearly as much as I am in the body's of the functions.
-#  That usually gets done by way of unit tests. But in this case, and to prove I
-# actually understand what i'm coding, i've explained it best I can, where
-# I can. This is also my very first exposure to python, so please also excuse
-# if things aren't quit done the Python way.
+# to Python, for our documentation. Usually when I code, I don't document nearly
+# as much as I am in the body's of the functions. That usually gets done by way
+# of unit tests. But in this case, and to prove I actually understand what i'm
+# coding, i've explained it best I can, where I can. This is also my very first
+# exposure to python, so please also excuse if things aren't quit done the
+# Python way.
 # ----------------------------------------------------------------------------#
 
 
 # @description
-# Being given a data set, containing a collection of bearings, and a marker,
-# this function, follows that path, drawing them on the plane, as well as print
+# Being given a data set, containing a collection of bearings, and a marker.
+# This function, follows that path, drawing them on the plane, as well as print
 # a legend for the users' viewing. Treat this function as the "entry" point to
 # the app.
 #
 # @param {path: [string, number, number][]} a collection of bearings
 #
-# @returns void
+# @returns [void]
 def follow_path(path):
 	start_location = path.pop(0)
 
@@ -400,8 +400,8 @@ def follow_path(path):
 		start_location[2]
 	)
 
-	# our main token "draw_stack", we need to reduce here because unlike
-	# other popular languages, map doesn't give us access to accumulated
+	# our main tokens, the "drawing stack" we find by reducing here because
+	# unlike other popular languages, map doesn't give us access to accumulated
 	# iterable
 	draw_stack = reduce(
 		# passing in the function we wish to execute at every iteration
@@ -409,7 +409,7 @@ def follow_path(path):
 		# the list we wish to iterate
 		path,
 		# and the list we are reducing into, in our case, a list with the
-		# start_node
+		# start_node already inserted
 		[starting_node]
 	)
 
@@ -429,8 +429,8 @@ def follow_path(path):
 
 
 # @description
-# A function that takes the result (the current accumulated list), and item,
-# the current item being inspected. This function looks at the accumulated
+# A function that takes the result (the current accumulated list), and item
+# (the current item being inspected). This function looks at the accumulated
 # context to solve for the current items coordinates.
 #
 # @param {result: node[]} the current accumulated list
@@ -442,8 +442,8 @@ def follow_path(path):
 # @see #create_node
 def walk_path_reduce_fn(result, item):
 	# this is quite intersting, so this function gets given a current
-	# collection of already computed paths, and the current uncomunted path we
-	# need to, get our previous node (where we've just come from in our journey)
+	# collection of already computed paths, and the current uncomunted path. We
+	# need to get our previous node (where we've just come from in our journey)
 	# and, work out where to go next. We do this with a bit of magic. We know,
 	# what our next bearing is (the direction). We also know how many steps to
 	# take, and where we came from.
@@ -452,17 +452,17 @@ def walk_path_reduce_fn(result, item):
 
 	previous_node = result[len(result) - 1]
 
-	# So we converts the "North", "South" etc... strings to cordinate deltas. By
-	# deltas I mean, to face north, we add 1 to our y axis, and 0 to our x axis.
-	# This purely does that conversion for us.
+	# We converts the "North", "South" etc... strings to cordinate deltas. By
+	# deltas I mean, to face north, we add one to our y axis, and zero to our x
+	# axis, and to face west take one from our x axis, and add zero to our y.
 	# @see #get_compass_to_coordinates_delta
 	coord_delta = get_compass_to_coordinates_delta(direction)
 
-	# Now that we know, where we came from, we use this reduce function again
-	# to loop over a fictitious collection of numbers, that range from 1 -> our
-	# number of steps to take. We reduce into a coordinate tuple (where we
-	# came from), using the sum of our delta multiple times - or per step to
-	# take.
+	# We know where we came from and what direction we need to head. We use this
+	# reduce function to loop over a fictitious collection of numbers,
+	# that range from 1 -> our number of steps to take. We reduce into a
+	# coordinate tuple (where we came from), using the sum of our delta,
+	# multiple times - or per step to take.
 	new_node = create_node(	
 		reduce(
 			lambda deltaResult, deltaItem: [
@@ -488,7 +488,7 @@ def walk_path_reduce_fn(result, item):
 # @param {verb: string} a string with values "Top left", "Top right", "Centre",
 # 		"Bottom left", "Bottom right"
 #
-# @returns [number[]] a coordinate tuple
+# @returns [number[]] a coordinate tuple [x, y]
 def get_starting_coord(verb):
 	# To the person marking this, this is the best I could come up
 	# in terms of a switch case. Forgiveness is a virtue!
@@ -531,6 +531,7 @@ def get_compass_to_coordinates_delta(verb):
 # 		object to represent the node
 def create_node(coords, token_type):
 	x, y = coords;
+	
 	return {
 		'x': x,
 		'y': y,
@@ -541,7 +542,7 @@ def create_node(coords, token_type):
 
 
 # ---- Legend things ----
-legend_title_font_size = 14
+legend_title_font_size = 18
 legend_padding = 20
 legend_token_line_height = grid_size
 
@@ -550,8 +551,11 @@ legend_token_line_height = grid_size
 # As the name suggests, this function draws the legend. Nothing more, nothing
 # less.
 #
+# @param {draw_stack: DrawStack} @see #walk_path_reduce_fn
+#
 # @returns [void]
 def draw_legend(draw_stack):
+	# generates the list of blocks we want to paint on the legend
 	blocks = get_legend_blocks(draw_stack)
 
 	# left offset = (square count * grid size) + margin
@@ -560,17 +564,20 @@ def draw_legend(draw_stack):
 		window_width - ((num_squares * grid_size) + margin) - margin * 2
 	)
 
-	# height of all the blocks + padding per block - 1 + padding for legend
+	# height of all the blocks + (padding per block - 1) + padding for legend
 	legend_height = (
 		# height of all the blocks
 		sum(map(lambda item: item.get('height'), blocks))
-		# + padding per block (blocks.length -1)
+		# + padding per block (blocks length - 1)
 	    + (legend_padding * (len(blocks) - 1))
 		# we also want padding top and bottom of the legend
 		+ legend_padding * 2
 	)
 
 	# Draw's our legends background
+	# firstly we draw the shaddow
+	draw_legend_background(legend_width, legend_height, "#909090", 5)
+	# then we draw the legend background itself
 	draw_legend_background(legend_width, legend_height)
 
 	# We need to iterate over our blocks, and draw them
@@ -615,8 +622,8 @@ def get_legend_blocks(draw_stack):
 	return ([
 		          # the title
 		          {
-			          'height': legend_title_font_size + legend_padding,
-			          'render_fn': partial(draw_legend_title, len(draw_stack))
+						'height': legend_title_font_size + legend_padding,
+						'render_fn': partial(draw_legend_title, len(draw_stack))
 		          }
 	          ]
 	          # we then append the tokens, because we compute them
@@ -641,19 +648,35 @@ def get_legend_blocks(draw_stack):
 # @description
 # A function to draw the legends background.
 #
+# @param {legend_width: number} the width of the legend we are painting in
+# @param {legend_height: number} the height of the legend we are painting in
+# @param {colour?: string} the colour to paint the legend
+# @param {offset?: number} offset the background from the legend's coordinates
+#
 # @returns [void]
-def draw_legend_background(legend_width, legend_height):
+def draw_legend_background(
+		legend_width,
+		legend_height,
+		colour="#f3f3f3",
+		offset=0
+	):
+
 	# we need to ensure we are at the top left corner
 	draw_legend_reset_cords(legend_width, legend_height)
 
-	# TODO: Maybe add some rounded corners
-	# TODO : Style this
-	pencolor("blue")
-	fillcolor("white")
+	# shifts our background down and right, maybe.
+	goto(pos()[0]+offset, pos()[1]-offset)
+
+	# we force the pencolour to be different when the offset is not 0. Probably
+	# not the best, but didn't really warrent a new argument.
+	pencolor("#282828" if offset == 0 else colour)
+
+	pensize(10)
+	fillcolor(colour)
 	setheading(90)
 	begin_fill()
-	pendown()
-	right(90)
+	pd()
+	seth(0)
 	forward(legend_width)
 	right(90)
 	forward(legend_height)
@@ -661,22 +684,30 @@ def draw_legend_background(legend_width, legend_height):
 	forward(legend_width)
 	right(90)
 	forward(legend_height)
-	penup()
+	pu()
 	end_fill()
 
 
 # @description
 # Our legend needs a title, this function draws that.
 #
+# @param {total_found: number} the number of tokens in our draw_stack
+# @param {legend_width: number} the width of the legend we are painting in
+# @param {legend_height: number} the height of the legend we are painting in
+#
 # @returns [void]
 def draw_legend_title(total_found, legend_width, legend_height):
+	origin_x, origin_y = pos()
+
 	# Move the turtle to the middle of the legend
 	goto(
-		pos()[0] + legend_width // 2,
-		pos()[1] - (legend_title_font_size + (legend_title_font_size // 2))
+		origin_x + legend_width // 2,
+		# Turtle paints a "center/center" text, at the middle of the text, so
+		# we need to also move turtle half way up the height of the text.
+		origin_y - (legend_title_font_size + (legend_title_font_size // 2))
 	)
 
-	# TODO: clean up visual, set colours fontsizes, etc...
+	color("#282828")
 
 	write(
 		'%d %s Found!' % (total_found, "Flag" +
@@ -691,42 +722,55 @@ def draw_legend_title(total_found, legend_width, legend_height):
 # A function to draw each of our tokens, complete with a title and the token
 # itself.
 #
+# @param {token: object} the token draw tuple @see #get_token_draw_functions
+# @param {number_of_type: number} the number of tokens found in our draw_stack 
+# 			for this token type.
+# @param {legend_width: number} the width of the legend we are painting in
+# @param {legend_height: number} the height of the legend we are painting in
+#
 # @returns [void]
 def draw_legend_token(token, number_of_type, legend_width, legend_height):
 	token_render_fn, token_name = token;
 
-	reset_turtle()
-
-	goto(
-		pos()[0] + legend_padding,
-		pos()[1] - grid_size
-	)
-
-	root_pos = pos()  # save pos to come back to later
-
 	title_font_size = 12
 
-	# Draw title
+	reset_turtle() # So we know we have a clean slate (visually)
+
+	origin_x, origin_y = pos()
+
+	# takes the turtle to where we want to start at
 	goto(
-		root_pos[0] + grid_size + legend_padding,
-		root_pos[1] + (grid_size // 2) - (title_font_size // 2)
+		origin_x + legend_padding,
+		origin_y - grid_size
 	)
 
-	# TODO: clean up visual, set colours fontsizes, etc...
-	
-	write('%s (%d)' % (token_name, number_of_type), False, align="left", font=(
-		'Arial', title_font_size, 'normal'))
+	# the position of the top corner of the token legend row
+	root_pos_x, root_pos_y = pos()
 
-	goto(*root_pos)
+	# Takes the turtle to where we want to draw the title
+	goto(
+		root_pos_x + grid_size + legend_padding,
+		root_pos_y + (grid_size // 2) - (title_font_size // 2)
+	)
 
+	# finally draws the title
+	write(
+		'%s (%d)' % (token_name, number_of_type),
+		False,
+		align="left",
+		font=('Arial', title_font_size, 'normal')
+	)
+
+	# Draws the token itself
+	goto(root_pos_x, root_pos_y)
 	call_and_reset_after_exec(token_render_fn)
 
 
 # @description
 # Resets the turtle's coordinates to the top, left of the legend.
 #
-# @param {legend_width} the width of the legend
-# @param {legend_height} the height of the legend
+# @param {legend_width: number} the width of the legend we are painting in
+# @param {legend_height: number} the height of the legend we are painting in
 #
 # @returns void
 def draw_legend_reset_cords(legend_width, legend_height):
@@ -740,6 +784,8 @@ def draw_legend_reset_cords(legend_width, legend_height):
 # A util function that wraps another function to capture the turtle's position, 
 # executes the function, and resets the turtles position back to what it was
 # before the execution. 
+# 
+# @param {fn: function} a function to execute
 #
 # @returns [void]
 def call_and_reset_after_exec(fn):
@@ -747,16 +793,23 @@ def call_and_reset_after_exec(fn):
 	fn()
 	goto(*original_pos)
 
-
 # @description
 # A function that returns a token draw function for a given token_type
 #
 # @param {token_type: number} a number that maps to a draw function
 #
-# @returns [(function -> void)[]] a token drawn function
+# @returns [function -> void] a token drawn function
 def get_token_draw_function_from_type(token_type):
 	return get_token_draw_functions()[token_type][0]
 
+# @description
+# A function that returns a tokens name for a given token_type
+#
+# @param {token_type: number} a number that maps to a draw function
+#
+# @returns [string] a tokens name
+def get_token_name_from_type(token_type):
+	return get_token_draw_functions()[token_type][1]
 
 # @description
 # With the philosophy, data as a function, and for data immutability - we will
@@ -798,6 +851,40 @@ def reset_turtle():
 	fillcolor("white")
 	seth(90)
 
+# @description
+# Draws a star at the current location.
+# 
+# @param {size: number} the length of a star point
+# @param {colour: string} the colour to paint the star
+# @param {points?: number} the number of points of the star
+#
+# @returns [void]
+def draw_star(size, colour, points=5):
+	fillcolor(colour)
+	seth(90)
+	begin_fill()
+	for side in range(points):
+		fd(size)
+		right(120)
+		fd(size)
+		right((360 / points) - 120)
+	end_fill()
+	seth(0)
+	
+# @description
+# Draws a square that spans an entire grid_size
+# 
+# @param {colour: string} the colour of the square
+#
+# @returns [void]
+def draw_square(colour):
+	fillcolor(colour)
+	seth(90)
+	begin_fill()
+	for _ in range(3):
+		forward(grid_size)
+		right(90)
+	end_fill()
 
 # @description
 # Draws the Icelands flag
@@ -1119,41 +1206,6 @@ def draw_token_turkey():
 	goto(pos()[0] + 10, pos()[1] - (circle_size - star_size))
 
 	draw_star(star_size, "white")
-
-
-# @description
-# Draws a star at the current location.
-# 
-# @param {size: number} the length of a star point
-# @param {colour: string} the colour to pain the star
-# @param {points: number} the number of points of the star
-#
-# @returns [void]
-def draw_star(size, colour, points=5):
-	fillcolor(colour)
-	seth(90)
-	begin_fill()
-	for side in range(points):
-		fd(size)
-		right(120)
-		fd(size)
-		right((360 / points) - 120)
-	end_fill()
-	seth(0)
-	
-# TODO : COMMENT ME
-def draw_square(color):
-	fillcolor(color)
-	seth(90)
-	begin_fill()
-	forward(grid_size)
-	right(90)
-	forward(grid_size)
-	right(90)
-	forward(grid_size)
-	right(90)
-	forward(grid_size)
-	end_fill()
 
 
 # --------------------------------------------------------------------#
