@@ -695,6 +695,8 @@ def draw_legend_title(total_found, legend_width, legend_height):
 def draw_legend_token(token, number_of_type, legend_width, legend_height):
 	token_render_fn, token_name = token;
 
+	reset_turtle()
+
 	goto(
 		pos()[0] + legend_padding,
 		pos()[1] - grid_size
