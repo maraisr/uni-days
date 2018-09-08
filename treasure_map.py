@@ -1121,16 +1121,23 @@ def draw_token_turkey():
 	draw_star(star_size, "white")
 
 
-# TODO : COMMENT ME
-def draw_star(size, colour, sides=5):
+# @description
+# Draws a star at the current location.
+# 
+# @param {size: number} the length of a star point
+# @param {colour: string} the colour to pain the star
+# @param {points: number} the number of points of the star
+#
+# @returns [void]
+def draw_star(size, colour, points=5):
 	fillcolor(colour)
 	seth(90)
 	begin_fill()
-	for side in range(sides):
+	for side in range(points):
 		fd(size)
 		right(120)
 		fd(size)
-		right((360 / sides) - 120)
+		right((360 / points) - 120)
 	end_fill()
 	seth(0)
 	
