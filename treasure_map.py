@@ -898,12 +898,9 @@ def draw_token_china():
 	draw_star(10, bg_yellow)
 
 	# draws 4 of the stars around it
-	goto(origin_x + 45, origin_y + 90)
-	seth(0)
-	draw_star(5, bg_yellow)
-	goto(origin_x + 60, origin_y + 80)
-	seth(0)
-	draw_star(5, bg_yellow)
+	for xy in [[45,90], [58,76], [58,58], [45,43]]:
+		goto(origin_x + xy[0], origin_y + xy[1])
+		draw_star(5, bg_yellow)
 
 
 
@@ -1055,6 +1052,7 @@ def draw_star(size, colour, sides=5):
 		fd(size)
 		right((360 / sides) - 120)
 	end_fill()
+	seth(0)
 	
 # TODO : COMMENT ME
 def draw_square(color):
