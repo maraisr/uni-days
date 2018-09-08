@@ -882,7 +882,7 @@ def draw_square(colour):
 	seth(90)
 	begin_fill()
 	for _ in range(3):
-		forward(grid_size)
+		forward(grid_size - 4)
 		right(90)
 	end_fill()
 
@@ -1170,6 +1170,7 @@ def draw_token_south_africa():
 # @returns [void]
 def draw_token_turkey():
 	reset_turtle()
+	draw_token_shift_by_offset()
 	origin_x, origin_y = pos()
 
 	bg_colour = '#e30a17'
@@ -1182,7 +1183,10 @@ def draw_token_turkey():
 	# draw white circle
 	circle_size = 24;
 
-	goto(origin_x + circle_size + 10, origin_y + grid_size / 2 + circle_size)
+	goto(
+		origin_x + circle_size + 10,
+		origin_y + (grid_size - 2) / 2 + circle_size
+	)
 
 	fillcolor("white")
 	begin_fill()
@@ -1207,6 +1211,13 @@ def draw_token_turkey():
 
 	draw_star(star_size, "white")
 
+# TODO: ME
+def draw_token_shift_by_offset(offset=2):
+	origin_x, origin_y = pos()
+	goto(
+		origin_x + offset,
+		origin_y + offset
+	)
 
 # --------------------------------------------------------------------#
 
