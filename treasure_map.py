@@ -713,7 +713,7 @@ def draw_legend_token(token, number_of_type, legend_width, legend_height):
 	)
 
 	# TODO: clean up visual, set colours fontsizes, etc...
-
+	
 	write('%s (%d)' % (token_name, number_of_type), False, align="left", font=(
 		'Arial', title_font_size, 'normal'))
 
@@ -766,11 +766,11 @@ def get_token_draw_function_from_type(token_type):
 # 		function, to pretty name
 def get_token_draw_functions():
 	return [
-		[draw_token_canada, "Canada"],
 		[draw_token_china, "China"],
+		[draw_token_nepal, "Nepal"],
 		[draw_token_south_africa, "South Africa"],
 		[draw_token_turkey, "Turkey"],
-		[draw_token_nepal, "Nepal"]
+		[draw_token_iceland, "Iceland"]
 	]
 
 
@@ -803,9 +803,89 @@ def reset_turtle():
 # TODO
 #
 # @returns
-def draw_token_canada():
-	write("canada")
-	
+def draw_token_iceland():
+	reset_turtle()
+	origin_x, origin_y = pos()
+
+	bg_blue = '#02529C'
+	bg_red = '#DC1E35'
+
+	# start with a white background
+	call_and_reset_after_exec(partial(draw_square, "white"))
+
+	# draw the red cross
+	fillcolor(bg_red)
+
+	seth(0)
+	fd(22)
+	seth(90)
+	begin_fill()
+	fd(grid_size)
+	right(90)
+	fd(20)
+	right(90)
+	fd(grid_size)
+	right(90)
+	fd(20)
+	end_fill()
+
+	goto(origin_x, origin_y)
+	seth(90)
+	fd(40)
+	right(90)
+	begin_fill()
+	fd(grid_size)
+	right(-90)
+	fd(20)
+	right(-90)
+	fd(grid_size)
+	right(-90)
+	fd(22)
+	end_fill()
+
+	# draw the blue things
+	fillcolor(bg_blue)
+
+	goto(origin_x, origin_y)
+	seth(90)
+	begin_fill()
+	fd(35)
+	right(90)
+	fd(17)
+	right(90)
+	fd(35)
+	end_fill()
+
+	goto(origin_x, origin_y + 65)
+	seth(90)
+	begin_fill()
+	fd(35)
+	right(90)
+	fd(17)
+	right(90)
+	fd(35)
+	end_fill()
+
+	goto(origin_x + 47, origin_y)
+	seth(90)
+	begin_fill()
+	fd(35)
+	right(90)
+	fd(53)
+	right(90)
+	fd(35)
+	end_fill()
+
+	goto(origin_x + 47, origin_y + 65)
+	seth(90)
+	begin_fill()
+	fd(35)
+	right(90)
+	fd(53)
+	right(90)
+	fd(35)
+	end_fill()
+
 
 
 # @description
