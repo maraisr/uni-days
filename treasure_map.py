@@ -495,7 +495,7 @@ def get_starting_coord(verb):
 	return {
 		'Top left': [0, num_squares - 1],
 		'Top right': [num_squares - 1, num_squares - 1],
-		'Centre': [(num_squares - 1) / 2, (num_squares - 1) / 2],
+		'Centre': [(num_squares - 1) // 2, (num_squares - 1) // 2],
 		'Bottom left': [0, 0],
 		'Bottom right': [(num_squares - 1), 0]
 	}.get(verb)
@@ -904,7 +904,7 @@ def draw_token_iceland():
 	red_height = 17
 	red_width = 20
 	red_gaps = 4
-	blue_height = ((grid_size - 4) - (red_height + red_gaps * 2)) / 2
+	blue_height = ((grid_size - 4) - (red_height + red_gaps * 2)) // 2
 	blue_width = ((grid_size - 4) - (red_width + red_gaps * 2)) - 13
 
 	# draw the red cross
@@ -1195,7 +1195,7 @@ def draw_token_turkey():
 
 	goto(
 		origin_x + circle_size + 10,
-		origin_y + (grid_size - 2) / 2 + circle_size
+		origin_y + (grid_size - 2) // 2 + circle_size
 	)
 
 	fillcolor("white")
