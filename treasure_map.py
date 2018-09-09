@@ -368,9 +368,9 @@ def random_path(print_path=True):
 # im not used to at all - however I've tried to adapt, javadoc/jsdoc/tsdoc etc..
 # to Python, for our documentation. Usually when I code, I don't document nearly
 # as much as I am in the body's of the functions. That usually gets done by way
-# of unit tests. But in this case, and to prove I actually understand what i'm
-# coding, i've explained it best I can, where I can. This is also my very first
-# exposure to python, so please also excuse if things aren't quit done the
+# of unit tests. But in this case, and to prove I actually understand what I'm
+# coding, I've explained it best I can, where I can. This is also my very first
+# exposure to Python, so please also excuse if things aren't quit done the
 # Python way.
 # ----------------------------------------------------------------------------#
 
