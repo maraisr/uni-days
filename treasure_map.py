@@ -1055,6 +1055,7 @@ def draw_token_nepal():
 # @returns [void]
 def draw_token_china():
 	reset_turtle()
+	draw_token_shift_by_offset()
 	origin_x, origin_y = pos()
 
 	bg_red = '#de2910'
@@ -1064,12 +1065,12 @@ def draw_token_china():
 	call_and_reset_after_exec(partial(draw_square, bg_red))
 
 	# draw a 5 point start
-	goto(origin_x + 15, origin_y + 70)
+	goto(origin_x + 15, origin_y + 65)
 	seth(0)
 	draw_star(10, bg_yellow)
 
 	# draws 4 of the stars around it
-	for xy in [[45,90], [58,76], [58,58], [45,43]]:
+	for xy in [[45,85], [58,72], [58,54], [45,41]]:
 		goto(origin_x + xy[0], origin_y + xy[1])
 		draw_star(5, bg_yellow)
 
@@ -1259,7 +1260,7 @@ title("Do you know your global flags?")
 # ***** work for any data set that can be returned by the
 # ***** random_path function.
 #follow_path(fixed_path_99)  # <-- used for code development only, not marking
-follow_path([["Start", "Centre", 1]])  # <-- used for code development only, not marking
+follow_path([["Start", "Centre", 0]])  # <-- used for code development only, not marking
 #follow_path(random_path())  # <-- used for assessment
 
 # Exit gracefully
