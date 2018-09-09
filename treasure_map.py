@@ -982,6 +982,7 @@ def draw_token_iceland():
 # @returns [void]
 def draw_token_nepal():
 	reset_turtle()
+	draw_token_shift_by_offset()
 	origin_x, origin_y = pos()
 
 	bg_blue = '#003893'
@@ -996,11 +997,11 @@ def draw_token_nepal():
 	begin_fill()
 	fd(75)
 	right(-133)
-	fd(68)
+	fd(66)
 	right(133)
-	fd(45)
+	fd(40)
 	right(-145)
-	fd(90)
+	fd(85)
 	end_fill()
 
 	goto(origin_x, origin_y)
@@ -1014,36 +1015,36 @@ def draw_token_nepal():
 	begin_fill()
 	fd(61)
 	right(-133)
-	fd(70)
+	fd(67)
 	right(133)
-	fd(40)
+	fd(37)
 	right(-145)
-	fd(66)
+	fd(64)
 	end_fill()
 
 	# draws the bottom star
-	goto(origin_x + 15, origin_y + 32)
+	goto(origin_x + 13, origin_y + 32)
 	seth(0)
 	draw_star(4, "white", 13)
 
 	# draws a circle to start in white
 	fillcolor("white")
 	seth(90)
-	goto(origin_x + 31, origin_y + 70)
+	goto(origin_x + 28, origin_y + 68)
 	begin_fill()
-	circle(12, -180)
+	circle(11, -180)
 	end_fill()
 
 	# draws a circle to make it a half moon
 	fillcolor(bg_red)
 	seth(90)
-	goto(origin_x + 31, origin_y + 74)
+	goto(origin_x + 28, origin_y + 72)
 	begin_fill()
-	circle(12, -180)
+	circle(11, -180)
 	end_fill()
 
-	# draws the bottom star
-	goto(origin_x + 15, origin_y + 73)
+	# draws the top star
+	goto(origin_x + 13, origin_y + 72)
 	draw_star(3, "white", 13)
 	
 
@@ -1258,7 +1259,7 @@ title("Do you know your global flags?")
 # ***** work for any data set that can be returned by the
 # ***** random_path function.
 #follow_path(fixed_path_99)  # <-- used for code development only, not marking
-follow_path([["Start", "Centre", 2]])  # <-- used for code development only, not marking
+follow_path([["Start", "Centre", 1]])  # <-- used for code development only, not marking
 #follow_path(random_path())  # <-- used for assessment
 
 # Exit gracefully
