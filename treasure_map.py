@@ -1221,7 +1221,12 @@ def draw_token_turkey():
 
 	draw_star(star_size, "white")
 
-# TODO: ME
+# @description
+# Offsets the current square when drawn by an offset.
+#
+# @param {offset?: number} some number to offset the x, and y axis.
+#
+# @returns [void]
 def draw_token_shift_by_offset(offset=2):
 	origin_x, origin_y = pos()
 	goto(
@@ -1255,7 +1260,7 @@ tracer(False)
 # Give the drawing canvas a title
 # ***** Replace this title with a description of your solution's theme
 # ***** and its tokens
-title("Do you know your global flags?")
+title("World Flags (China, Nepal, South Africa Turkey and Iceland)")
 
 # Call the student's function to follow the path
 # ***** While developing your program you can call the follow_path
