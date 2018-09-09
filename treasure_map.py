@@ -578,7 +578,7 @@ def draw_legend(draw_stack):
 	# firstly we draw the shaddow
 	draw_legend_background(legend_width, legend_height, "#909090", 5)
 	# then we draw the legend background itself
-	draw_legend_background(legend_width, legend_height, "pink")
+	draw_legend_background(legend_width, legend_height)
 
 	# We need to iterate over our blocks, and draw them
 	for index, block in enumerate(blocks):
@@ -892,6 +892,7 @@ def draw_square(colour):
 # @returns [void]
 def draw_token_iceland():
 	reset_turtle()
+	draw_token_shift_by_offset()
 	origin_x, origin_y = pos()
 
 	bg_blue = '#02529C'
@@ -900,79 +901,83 @@ def draw_token_iceland():
 	# start with a white background
 	call_and_reset_after_exec(partial(draw_square, "white"))
 
+	red_height = 17
+	red_width = 20
+	red_gaps = 4
+	blue_height = ((grid_size - 4) - (red_height + red_gaps * 2)) / 2
+	blue_width = ((grid_size - 4) - (red_width + red_gaps * 2)) - 13
+
 	# draw the red cross
 	fillcolor(bg_red)
 
 	seth(0)
-	fd(22)
+	fd(red_width)
 	seth(90)
-	fd(2)
 	begin_fill()
 	fd(grid_size - 4)
 	right(90)
-	fd(20)
+	fd(17)
 	right(90)
 	fd(grid_size - 4)
 	right(90)
-	fd(20)
+	fd(red_width)
 	end_fill()
 
 	goto(origin_x, origin_y)
 	seth(90)
-	fd(40)
+	fd(blue_height + red_gaps)
 	right(90)
-	fd(2)
 	begin_fill()
 	fd(grid_size - 4)
 	right(-90)
-	fd(20)
+	fd(17)
 	right(-90)
 	fd(grid_size - 4)
 	right(-90)
-	fd(22)
+	fd(red_width)
 	end_fill()
 
 	# draw the blue things
 	fillcolor(bg_blue)
 
-	goto(origin_x + 2, origin_y + 2)
+	goto(origin_x, origin_y)
 	seth(90)
 	begin_fill()
-	fd(35)
+	fd(blue_height)
 	right(90)
 	fd(17)
 	right(90)
-	fd(35)
+	fd(blue_height)
 	end_fill()
 
-	goto(origin_x + 2, origin_y + 65)
+	goto(origin_x, origin_y + blue_height + (red_gaps * 2) + 17)
 	seth(90)
 	begin_fill()
-	fd(32)
+	fd(blue_height)
 	right(90)
 	fd(17)
 	right(90)
-	fd(32)
+	fd(blue_height)
 	end_fill()
 
-	goto(origin_x + 47, origin_y)
+	goto(origin_x + red_width + (red_gaps * 2) + 13, origin_y)
 	seth(90)
 	begin_fill()
-	fd(35)
+	fd(blue_height)
 	right(90)
-	fd(53)
+	fd(blue_width)
 	right(90)
-	fd(35)
+	fd(blue_height)
 	end_fill()
 
-	goto(origin_x + 47, origin_y + 65)
+	goto(origin_x + red_width + (red_gaps * 2) + 13, origin_y + 60)
 	seth(90)
 	begin_fill()
-	fd(35)
+	fd(blue_height)
 	right(90)
-	fd(53)
+	fd(blue_width)
 	right(90)
-	fd(35)
+	fd(blue_height)
 	end_fill()
 
 
@@ -1258,9 +1263,8 @@ title("Do you know your global flags?")
 # ***** final solution must work with "random_path()" as the
 # ***** argument to the follow_path function.  Your program must
 # ***** work for any data set that can be returned by the
-# ***** random_path function.
-#follow_path(fixed_path_99)  # <-- used for code development only, not marking
-follow_path([["Start", "Centre", 0]])  # <-- used for code development only, not marking
+# ***** random_path function. 
+follow_path(fixed_path_99)  # <-- used for code development only, not marking
 #follow_path(random_path())  # <-- used for assessment
 
 # Exit gracefully
