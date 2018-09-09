@@ -578,7 +578,7 @@ def draw_legend(draw_stack):
 	# firstly we draw the shaddow
 	draw_legend_background(legend_width, legend_height, "#909090", 5)
 	# then we draw the legend background itself
-	draw_legend_background(legend_width, legend_height)
+	draw_legend_background(legend_width, legend_height, "pink")
 
 	# We need to iterate over our blocks, and draw them
 	for index, block in enumerate(blocks):
@@ -906,12 +906,13 @@ def draw_token_iceland():
 	seth(0)
 	fd(22)
 	seth(90)
+	fd(2)
 	begin_fill()
-	fd(grid_size)
+	fd(grid_size - 4)
 	right(90)
 	fd(20)
 	right(90)
-	fd(grid_size)
+	fd(grid_size - 4)
 	right(90)
 	fd(20)
 	end_fill()
@@ -920,12 +921,13 @@ def draw_token_iceland():
 	seth(90)
 	fd(40)
 	right(90)
+	fd(2)
 	begin_fill()
-	fd(grid_size)
+	fd(grid_size - 4)
 	right(-90)
 	fd(20)
 	right(-90)
-	fd(grid_size)
+	fd(grid_size - 4)
 	right(-90)
 	fd(22)
 	end_fill()
@@ -933,7 +935,7 @@ def draw_token_iceland():
 	# draw the blue things
 	fillcolor(bg_blue)
 
-	goto(origin_x, origin_y)
+	goto(origin_x + 2, origin_y + 2)
 	seth(90)
 	begin_fill()
 	fd(35)
@@ -943,14 +945,14 @@ def draw_token_iceland():
 	fd(35)
 	end_fill()
 
-	goto(origin_x, origin_y + 65)
+	goto(origin_x + 2, origin_y + 65)
 	seth(90)
 	begin_fill()
-	fd(35)
+	fd(32)
 	right(90)
 	fd(17)
 	right(90)
-	fd(35)
+	fd(32)
 	end_fill()
 
 	goto(origin_x + 47, origin_y)
@@ -1077,6 +1079,7 @@ def draw_token_china():
 # @returns [void]
 def draw_token_south_africa():
 	reset_turtle()
+	draw_token_shift_by_offset()
 	origin_x, origin_y = pos()
 
 	bg_red = '#e03c31'
@@ -1091,16 +1094,16 @@ def draw_token_south_africa():
 	# draw the red thing
 	fillcolor(bg_red)
 	seth(90)
-	fd(grid_size)
+	fd(grid_size - 4)
 	right(90)
 	fd(10)
 	begin_fill()
 	right(45)
-	fd(50)
+	fd(48)
 	seth(0)
-	fd(55)
+	fd(52)
 	seth(90)
-	fd(36)
+	fd(34)
 	end_fill()
 
 	# draw the blue thing
@@ -1110,33 +1113,33 @@ def draw_token_south_africa():
 	fd(10)
 	begin_fill()
 	right(-45)
-	fd(50)
+	fd(48)
 	seth(0)
-	fd(55)
+	fd(52)
 	seth(90)
-	fd(-36)
+	fd(-34)
 	end_fill()
 
 	# draw the green thing
 	goto(origin_x, origin_y)
 	fillcolor(bg_green)
 	seth(0)
-	fd(5)
 	begin_fill()
+	fd(6)
 	right(-45)
-	fd(55)
+	fd(52)
 	seth(0)
-	fd(56)
+	fd(53)
 	seth(90)
-	fd(22)
+	fd(23)
 	seth(180)
-	fd(56)
+	fd(52)
 	right(45)
-	fd(56)
+	fd(52)
 	seth(180)
-	fd(4)
+	fd(6)
 	seth(270)
-	fd(grid_size)
+	fd(grid_size - 4)
 	end_fill()
 
 	# draw yellow triangle
@@ -1254,7 +1257,8 @@ title("Do you know your global flags?")
 # ***** argument to the follow_path function.  Your program must
 # ***** work for any data set that can be returned by the
 # ***** random_path function.
-follow_path(fixed_path_99)  # <-- used for code development only, not marking
+#follow_path(fixed_path_99)  # <-- used for code development only, not marking
+follow_path([["Start", "Centre", 2]])  # <-- used for code development only, not marking
 #follow_path(random_path())  # <-- used for assessment
 
 # Exit gracefully
