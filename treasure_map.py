@@ -761,10 +761,12 @@ def draw_legend_token(token, number_of_type, legend_width, legend_height):
 		))
 	)
 
+	# for numbers less than 10, we need to add an extra space
 	number_of_spaces_to_add = (
 		max_chars - len(token_name) + (1 if number_of_type > 9 else 2)
 	)
 
+	# finally compile the tokens' name string
 	token_display_name = token_name + (''.rjust(number_of_spaces_to_add))
 	
 	# finally draws the title
@@ -1283,8 +1285,8 @@ title("World Flags (China, Nepal, South Africa Turkey and Iceland)")
 # ***** argument to the follow_path function.  Your program must
 # ***** work for any data set that can be returned by the
 # ***** random_path function. 
-follow_path(fixed_path_99)  # <-- used for code development only, not marking
-#follow_path(random_path())  # <-- used for assessment
+# follow_path(fixed_path_99)  # <-- used for code development only, not marking
+follow_path(random_path())  # <-- used for assessment
 
 # Exit gracefully
 # ***** Change the default argument to False if you want the
