@@ -714,7 +714,7 @@ def draw_legend_title(total_found, legend_width, legend_height):
 		                  ('s' if total_found > 1 else '')),
 		False,
 		align="center",
-		font=('Arial', legend_title_font_size, 'bold')
+		font=('Courier', legend_title_font_size, 'bold')
 	)
 
 
@@ -732,7 +732,7 @@ def draw_legend_title(total_found, legend_width, legend_height):
 def draw_legend_token(token, number_of_type, legend_width, legend_height):
 	token_render_fn, token_name = token;
 
-	title_font_size = 12
+	title_font_size = 10
 
 	reset_turtle() # So we know we have a clean slate (visually)
 
@@ -749,16 +749,30 @@ def draw_legend_token(token, number_of_type, legend_width, legend_height):
 
 	# Takes the turtle to where we want to draw the title
 	goto(
-		root_pos_x + grid_size + legend_padding,
+		root_pos_x + grid_size + legend_padding - 5,
 		root_pos_y + (grid_size // 2) - (title_font_size // 2)
 	)
 
+	# to pad out the whitespace to that of the count, we find the max length
+	# of all titles.
+	max_chars = (
+		max(list(
+			map(lambda item: len(item[1]), get_token_draw_functions())
+		))
+	)
+
+	number_of_spaces_to_add = (
+		max_chars - len(token_name) + (1 if number_of_type > 9 else 2)
+	)
+
+	token_display_name = token_name + (''.rjust(number_of_spaces_to_add))
+	
 	# finally draws the title
 	write(
-		'%s (%d)' % (token_name, number_of_type),
+		'%s [%d]' % (token_display_name, number_of_type),
 		False,
 		align="left",
-		font=('Arial', title_font_size, 'normal')
+		font=('Courier', title_font_size, 'normal')
 	)
 
 	# Draws the token itself
@@ -1269,8 +1283,8 @@ title("World Flags (China, Nepal, South Africa Turkey and Iceland)")
 # ***** argument to the follow_path function.  Your program must
 # ***** work for any data set that can be returned by the
 # ***** random_path function. 
-# follow_path(fixed_path_99)  # <-- used for code development only, not marking
-follow_path(random_path())  # <-- used for assessment
+follow_path(fixed_path_99)  # <-- used for code development only, not marking
+#follow_path(random_path())  # <-- used for assessment
 
 # Exit gracefully
 # ***** Change the default argument to False if you want the
