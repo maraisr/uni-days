@@ -1264,8 +1264,8 @@ title("Do you know your global flags?")
 # ***** argument to the follow_path function.  Your program must
 # ***** work for any data set that can be returned by the
 # ***** random_path function. 
-follow_path(fixed_path_99)  # <-- used for code development only, not marking
-#follow_path(random_path())  # <-- used for assessment
+# follow_path(fixed_path_99)  # <-- used for code development only, not marking
+follow_path(random_path())  # <-- used for assessment
 
 # Exit gracefully
 # ***** Change the default argument to False if you want the
