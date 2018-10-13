@@ -13,7 +13,7 @@ class ListItem:
 		self.link = data.get("link")
 		self.name = data.get("name")
 
-		self.age = self.discoverPrevious()
+		[self.age, self.filename] = self.discoverPrevious()
 
 	def getLink(self):
 		return self.link
@@ -49,4 +49,7 @@ class ListItem:
 
 		nakedDate = search(compile("_(%s)" % (DATE_REGEX)), workingFile).group(1)
 
-		return datetime.strptime(nakedDate, "%Y-%m-%d")
+		return [
+			datetime.strptime(nakedDate, "%Y-%m-%d"),
+			workingFile
+		]

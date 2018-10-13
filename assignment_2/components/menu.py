@@ -15,6 +15,10 @@ class Menu(tk.Frame):
 			ListItem({
 				"link": "https://www.imdb.com/search/title?title_type=feature&genres=action&sort=moviemeter,asc",
 				"name": "Popular Movies"
+			}),
+			ListItem({
+				"link": "https://www.ariacharts.com.au/charts/singles-chart",
+				"name": "Popular Music"
 			})
 		]
 
