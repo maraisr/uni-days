@@ -24,6 +24,9 @@ class ListItem:
 	def getAge(self):
 		return self.age
 
+	def getFilename(self):
+		return self.filename
+
 	# TODO: Comment me
 	def discoverPrevious(self):
 		friendlyName = sub(

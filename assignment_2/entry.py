@@ -40,13 +40,12 @@ from components.menu import Menu
 class App(tk.Frame):
 	def __init__(self, parent, *args, **kwargs):
 		tk.Frame.__init__(self, parent, *args, **kwargs)
-		self.parent = parent
 
-		self.header = Header(self)
+		self.header = Header()
 		self.body = Menu(self)
 
 
 if __name__ == '__main__':
 	root = tk.Tk()
-	App(root).pack(side="top", fill=tk.BOTH, expand=1)
+	App(root).grid(sticky=tk.N + tk.S + tk.E + tk.W, padx=10, pady=(0, 20))
 	root.mainloop()
