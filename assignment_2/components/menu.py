@@ -1,7 +1,8 @@
 import tkinter as tk
 
-from entities.list_item import ListItem
 from components.menu_item import NavItem
+from entities.list_item import ListItem
+
 
 class Menu(tk.Frame):
 	def __init__(self, parent, *args, **kwargs):
@@ -28,12 +29,12 @@ class Menu(tk.Frame):
 			})
 		]
 
-		self.nav = map(lambda item: NavItem().setup(item), self._data)
+		self.render(
+			map(lambda item: NavItem().setup(item), self._data)
+		)
 
-		self.render()
-
-	def render(self):
-		for (key, item) in enumerate(self.nav):
-			item.render() \
-				.grid(in_=self, row=0, column=key, padx=10)
-
+	def render(self, navItems):
+		[
+			item.render().grid(in_=self, row=0, column=idx, padx=10) \
+			for (idx, item) in enumerate(navItems)
+		]
