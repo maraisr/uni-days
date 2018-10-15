@@ -47,5 +47,6 @@ class App(tk.Frame):
 
 if __name__ == '__main__':
 	root = tk.Tk()
+	root.title("Best of the Best")
 	App(root).grid(sticky=tk.N + tk.S + tk.E + tk.W, padx=10, pady=(0, 20))
 	root.mainloop()

@@ -23,7 +23,7 @@ class Menu(tk.Frame):
 				"parser": lambda: print("popular music")
 			}),
 			ListItem({
-				"link": "https://store.steampowered.com/search/?filter=topsellers",
+				"link": "https://store.steampowered.com/search/?sort_by=Released_DESC&filter=topsellers",
 				"name": "Popular Games",
 				"parser": lambda: print("popular games")
 			})
@@ -33,8 +33,8 @@ class Menu(tk.Frame):
 			map(lambda item: NavItem().setup(item), self._data)
 		)
 
-	def render(self, navItems):
+	def render(self, nav_items: [ListItem]):
 		[
 			item.render().grid(in_=self, row=0, column=idx, padx=10) \
-			for (idx, item) in enumerate(navItems)
+			for (idx, item) in enumerate(nav_items)
 		]
