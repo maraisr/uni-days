@@ -7,13 +7,17 @@ from helpers.download import download
 DATE_REGEX = r"([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))"
 
 
-# TODO: Comment me
+# TODO: Comment me - refoactor this more to be more fp
 class ListItem:
 	def __init__(self, data):
 		self.link = data.get("link")
 		self.name = data.get("name")
+		self.parser = data.get("parser")
 
+		# TODO: make this method take in what it needs, and make it come from helpers
 		[self.age, self.filename] = self.discoverPrevious()
+
+		self.items = False
 
 	def getLink(self):
 		return self.link
@@ -26,6 +30,22 @@ class ListItem:
 
 	def getFilename(self):
 		return self.filename
+
+	def getContent(self):
+		return self.content
+
+	def getItems(self):
+		if self.items == False:
+			self.items = self.collect_items(self.filename)
+
+		return self.items
+
+	def collect_items(self, filename):
+		file_stream = open("downloads/%s" % filename, encoding="utf8", mode="r")
+		content = file_stream.read()
+		file_stream.close()
+
+		return self.parser(content)
 
 	# TODO: Comment me
 	def discoverPrevious(self):

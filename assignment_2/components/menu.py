@@ -2,6 +2,7 @@ import tkinter as tk
 
 from components.menu_item import NavItem
 from entities.list_item import ListItem
+from helpers.parsers.popular_games import parse as parse_popular_games
 
 
 class Menu(tk.Frame):
@@ -15,19 +16,22 @@ class Menu(tk.Frame):
 			ListItem({
 				"link": "https://www.imdb.com/search/title?title_type=feature&genres=action&sort=moviemeter,asc",
 				"name": "Popular Movies",
-				"parser": lambda: print("popular movies")
+				"parser": lambda content: print("popular movies")
 			}),
 			ListItem({
 				"link": "https://www.ariacharts.com.au/charts/singles-chart",
 				"name": "Popular Music",
-				"parser": lambda: print("popular music")
+				"parser": lambda content: print("popular music")
 			}),
 			ListItem({
 				"link": "https://store.steampowered.com/search/?sort_by=Released_DESC&filter=topsellers",
 				"name": "Popular Games",
-				"parser": lambda: print("popular games")
+				"parser": parse_popular_games
 			})
 		]
+
+		# TODO: Remove after testing
+		self._data[2].getItems()
 
 		self.render(
 			map(lambda item: NavItem().setup(item), self._data)

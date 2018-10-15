@@ -1,5 +1,6 @@
 import tkinter as tk
 
+
 class NewWindow(tk.Toplevel):
 
 	def __init__(self, title, *args, **kwargs):
