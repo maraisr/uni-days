@@ -12,12 +12,16 @@ class ListItem:
 	def __init__(self, data):
 		self.link = data.get("link")
 		self.name = data.get("name")
+		self.imageSrc = data.get("image")
 		self.parser = data.get("parser")
 
 		# TODO: make this method take in what it needs, and make it come from helpers
 		[self.age, self.filename] = self.discoverPrevious()
 
 		self.items = False
+
+	def getImage(self):
+		return self.imageSrc
 
 	def getLink(self):
 		return self.link
@@ -34,18 +38,20 @@ class ListItem:
 	def getContent(self):
 		return self.content
 
-	def getItems(self):
-		if self.items == False:
-			self.items = self.collect_items(self.filename)
+	def getItems(self, from_file=True):
+		if from_file:
+			# Really just a local cache
+			if not self.items:
+				file_stream = open("downloads/%s" % self.filename, encoding="utf8", mode="r")
+				content = file_stream.read()
+				file_stream.close()
 
-		return self.items
+				return self.parser(content)
 
-	def collect_items(self, filename):
-		file_stream = open("downloads/%s" % filename, encoding="utf8", mode="r")
-		content = file_stream.read()
-		file_stream.close()
-
-		return self.parser(content)
+			return self.items
+		else:
+			# TODO: download fresh copy, and return its items
+			return self.parser()
 
 	# TODO: Comment me
 	def discoverPrevious(self):
@@ -61,7 +67,7 @@ class ListItem:
 
 		maybeFile = list(filter(lambda file: match(currentFileLookupRegex, file), currentFiles))
 
-		if (len(maybeFile) < 1):
+		if len(maybeFile) < 1:
 			newFileName = "%s_%s" % (friendlyName, datetime.now().strftime("%Y-%m-%d"))
 			download(self.getLink(), "downloads/%s" % newFileName, "html")
 
@@ -70,7 +76,7 @@ class ListItem:
 		# We only care about the first item we find
 		[workingFile] = maybeFile
 
-		nakedDate = search(compile("_(%s)" % (DATE_REGEX)), workingFile).group(1)
+		nakedDate = search(compile("_(%s)" % DATE_REGEX), workingFile).group(1)
 
 		return [
 			datetime.strptime(nakedDate, "%Y-%m-%d"),

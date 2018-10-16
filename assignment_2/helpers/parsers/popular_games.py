@@ -1,9 +1,12 @@
+from functools import partial
+from re import IGNORECASE, findall, compile
+
+
 def parse(content: str):
-	for item in _get_game_row(content):
-		print("item: %s" % item)
+	title_regex = compile(r"<span class=.title.>([a-z,0-9®™:\s-]+)", IGNORECASE)
 
-	return "test"
+	image_regex = compile(r"col\ssearch_capsule.*img\ssrc=['\"](.*)['\"]", IGNORECASE)
 
+	results = map(partial(findall, string=content), [title_regex, image_regex])
 
-def _get_game_row(content: str):
-	return ["test"]
+	return list(zip(*results))[:10]

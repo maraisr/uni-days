@@ -14,7 +14,7 @@ class NavItem(tk.Frame):
 	def setup(self, list_item: ListItem):
 		self._item = list_item
 
-		self.image = "TODO: Image for item"
+		self.image = self._item.getImage()
 		self.name = self._item.getName()
 
 		return self

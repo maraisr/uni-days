@@ -16,22 +16,22 @@ class Menu(tk.Frame):
 			ListItem({
 				"link": "https://www.imdb.com/search/title?title_type=feature&genres=action&sort=moviemeter,asc",
 				"name": "Popular Movies",
+				"image": "TODO: IMAGE HERE",
 				"parser": lambda content: print("popular movies")
 			}),
 			ListItem({
 				"link": "https://www.ariacharts.com.au/charts/singles-chart",
 				"name": "Popular Music",
+				"image": "TODO: IMAGE HERE",
 				"parser": lambda content: print("popular music")
 			}),
 			ListItem({
 				"link": "https://store.steampowered.com/search/?sort_by=Released_DESC&filter=topsellers",
 				"name": "Popular Games",
+				"image": "TODO: IMAGE HERE",
 				"parser": parse_popular_games
 			})
 		]
-
-		# TODO: Remove after testing
-		self._data[2].getItems()
 
 		self.render(
 			map(lambda item: NavItem().setup(item), self._data)

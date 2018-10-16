@@ -9,4 +9,15 @@ class Preview(tk.Frame):
 
 		self.pack(expand=1, fill=tk.BOTH)
 
-		list_item.getItems()
+		tk.Label(self, text=list_item.getImage()) \
+			.grid(row=0, column=0, rowspan=2)
+
+		# TODO: Style me
+		tk.Label(self, text=list_item.getName()) \
+			.grid(row=0, column=1)
+
+		preview_list = tk.Frame(self)
+		preview_list.grid(row=1, column=1)
+
+		for (idx, (name, image)) in enumerate(list_item.getItems()):
+			tk.Label(preview_list, text=name).grid(row=idx, column=0)
