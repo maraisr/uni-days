@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from components.menu_item import NavItem
+from components.nav_item import NavItem
 from entities.list_item import ListItem
 from helpers.parsers.popular_games import parse as parse_popular_games
 

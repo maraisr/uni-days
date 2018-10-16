@@ -20,4 +20,4 @@ class Preview(tk.Frame):
 		preview_list.grid(row=1, column=1)
 
 		for (idx, (name, image)) in enumerate(list_item.getItems()):
-			tk.Label(preview_list, text=name).grid(row=idx, column=0)
+			tk.Label(preview_list, text="[%s] %s" % (idx + 1, name)).grid(row=idx, column=0, sticky=tk.W)
