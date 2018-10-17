@@ -43,6 +43,7 @@ from components.menu import Menu
 # [ ] you get to export either a live, or previous copy (html export)
 # [ ] you could save the live copy to a sqlite db
 # [ ] code cleanup
+# [ ] rename entry to "the_best.py"
 
 class App(tk.Frame):
 	def __init__(self, parent, *args, **kwargs):
