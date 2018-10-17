@@ -38,10 +38,11 @@ from components.menu import Menu
 
 
 # TODO:
-# [x] 1 - you select a "old" saved copy and preview it
-# [x] 2 - you select a "live" copy and preview it
-# [ ] 3 - you get to export either a live, or previous copy
-# [ ] 4 - you could save the live copy to a sqlite db
+# [x] you select a "old" saved copy and preview it (heading, as a tk.Label, and a numbered list)
+# [x] you select a "live" copy and preview it (heading, as a tk.Label, and a numbered list)
+# [ ] you get to export either a live, or previous copy (html export)
+# [ ] you could save the live copy to a sqlite db
+# [ ] code cleanup
 
 class App(tk.Frame):
 	def __init__(self, parent, *args, **kwargs):
