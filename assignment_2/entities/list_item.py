@@ -1,60 +1,60 @@
 from datetime import datetime
 from os import listdir
 from re import sub, match, search, compile
+from uuid import uuid4
 
 from helpers.download import download
 
 DATE_REGEX = r"([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))"
 
+PREVIOUS = "previous"
+CURRENT = "current"
 
-# TODO: Comment me - refoactor this more to be more fp
-class ListItem:
+
+class BaseItem:
 	def __init__(self, data):
-		self.link = data.get("link")
-		self.name = data.get("name")
-		self.imageSrc = data.get("image")
-		self.parser = data.get("parser")
-
-		# TODO: make this method take in what it needs, and make it come from helpers
-		[self.age, self.filename] = self.discoverPrevious()
-
-		self.items = False
+		self._data = data
 
 	def getImage(self):
-		return self.imageSrc
+		# TODO: this should return a PhotoImage
+		return self._data.get("image")
 
 	def getLink(self):
-		return self.link
+		return self._data.get("link")
 
 	def getName(self):
-		return self.name
+		return self._data.get("name")
+
+
+class Item(BaseItem):
+	def __init__(self, data, mode):
+		BaseItem.__init__(self, data)
+
+		self._data = data
+		self._mode = mode
+
+		self._tempName = "temp/%s.html" % uuid4()
 
 	def getAge(self):
-		return self.age
+		return datetime.now() if self._mode == CURRENT else self._discoverPrevious()[0]
 
 	def getFilename(self):
-		return self.filename
+		return self._tempName if self._mode == CURRENT else self._discoverPrevious()[1]
 
 	def getContent(self):
-		return self.content
+		if self._mode == CURRENT:
+			download(self.getLink(), "downloads/%s" % self._tempName, '')
 
-	def getItems(self, from_file=True):
-		if from_file:
-			# Really just a local cache
-			if not self.items:
-				file_stream = open("downloads/%s" % self.filename, encoding="utf8", mode="r")
-				content = file_stream.read()
-				file_stream.close()
+		file_stream = open("downloads/%s" % self.getFilename(), encoding="utf8", mode="r")
+		content = file_stream.read()
+		file_stream.close()
 
-				return self.parser(content)
+		return content
 
-			return self.items
-		else:
-			# TODO: download fresh copy, and return its items
-			return self.parser()
+	def getItems(self, count=10):
+		return self._data.get("parser")(self.getContent())[:count]
 
-	# TODO: Comment me
-	def discoverPrevious(self):
+	def _discoverPrevious(self):
 		friendlyName = sub(
 			r"\s",
 			"_",
@@ -82,3 +82,13 @@ class ListItem:
 			datetime.strptime(nakedDate, "%Y-%m-%d"),
 			workingFile
 		]
+
+
+# TODO: Comment me - refoactor this more to be more fp
+class ListItem(BaseItem):
+
+	def getPrevious(self):
+		return Item(self._data, PREVIOUS)
+
+	def getCurrent(self):
+		return Item(self._data, CURRENT)

@@ -9,4 +9,4 @@ def parse(content: str):
 
 	results = map(partial(findall, string=content), [title_regex, image_regex])
 
-	return list(zip(*results))[:10]
+	return list(zip(*results))
