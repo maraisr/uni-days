@@ -41,7 +41,8 @@ from components.menu import Menu
 # [x] you select a "old" saved copy and preview it (heading, as a tk.Label, and a numbered list)
 # [x] you select a "live" copy and preview it (heading, as a tk.Label, and a numbered list)
 # [ ] you get to export either a live, or previous copy (html export)
-# [ ] you could save the live copy to a sqlite db
+# [ ] you could current the live copy to a sqlite db
+# [ ] you could previous the live copy to a sqlite db
 # [ ] code cleanup
 # [ ] rename entry to "the_best.py"
 
