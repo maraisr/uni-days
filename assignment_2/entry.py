@@ -37,6 +37,12 @@ from components.header import Header
 from components.menu import Menu
 
 
+# TODO:
+# [x] 1 - you select a "old" saved copy and preview it
+# [x] 2 - you select a "live" copy and preview it
+# [ ] 3 - you get to export either a live, or previous copy
+# [ ] 4 - you could save the live copy to a sqlite db
+
 class App(tk.Frame):
 	def __init__(self, parent, *args, **kwargs):
 		tk.Frame.__init__(self, parent, *args, **kwargs)
@@ -48,5 +54,5 @@ class App(tk.Frame):
 if __name__ == '__main__':
 	root = tk.Tk()
 	root.title("Best of the Best")
-	App(root).grid(sticky=tk.N + tk.S + tk.E + tk.W, padx=10, pady=(0, 20))
+	App(root).grid(sticky=tk.NSEW, padx=10, pady=(0, 20))
 	root.mainloop()

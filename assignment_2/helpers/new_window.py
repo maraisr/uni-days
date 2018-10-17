@@ -9,7 +9,7 @@ class NewWindow(tk.Toplevel):
 		self.title(title)
 
 		self.frame = tk.Frame(self)
-		self.frame.grid(sticky=tk.N + tk.S + tk.E + tk.W)
+		self.frame.grid(sticky=tk.NSEW)
 
 	def render(self, render_fnc):
 		render_fnc(self.frame)
