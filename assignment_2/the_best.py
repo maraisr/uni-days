@@ -41,13 +41,15 @@ from components.menu import Menu
 # [x] you select a "old" saved copy and preview it (heading, as a tk.Label, and a numbered list)
 # [x] you select a "live" copy and preview it (heading, as a tk.Label, and a numbered list)
 # [x] you get to export either a live, or previous copy (html export)
-# [ ] you could current the live copy to a sqlite db
-# [ ] you could previous the live copy to a sqlite db
 # [ ] popular music parser written
 # [ ] popular movies parser written
+# [ ] you could current the live copy to a sqlite db
+# [ ] you could previous the live copy to a sqlite db
 # [ ] code cleanup
+# [ ] comment everything
 # [x] rename entry to "the_best.py"
 # [ ] uniform the app names
+# [ ] check that all things are done for the assignment
 
 class App(tk.Frame):
 	def __init__(self, parent, *args, **kwargs):

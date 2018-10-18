@@ -10,8 +10,7 @@ class Menu(tk.Frame):
 		tk.Frame.__init__(self, parent, *args, **kwargs)
 
 		self.grid(row=1, column=2)
-
-		# TODO: Build this list from a db or something
+		
 		self._data = [
 			ListItem({
 				"link": "https://www.imdb.com/search/title?title_type=feature&genres=action&sort=moviemeter,asc",
