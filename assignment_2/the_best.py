@@ -44,7 +44,8 @@ from components.menu import Menu
 # [ ] you could current the live copy to a sqlite db
 # [ ] you could previous the live copy to a sqlite db
 # [ ] code cleanup
-# [ ] rename entry to "the_best.py"
+# [x] rename entry to "the_best.py"
+# [ ] uniform the app names
 
 class App(tk.Frame):
 	def __init__(self, parent, *args, **kwargs):

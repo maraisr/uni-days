@@ -1,8 +1,13 @@
+import os
 import tkinter as tk
+import webbrowser
 from functools import partial
+from urllib.request import pathname2url
+from uuid import uuid4
 
 from components.preview import Preview
 from entities.list_item import ListItem, PREVIOUS, CURRENT
+from helpers.construct_html import construct_html
 from helpers.new_window import NewWindow
 
 
@@ -30,7 +35,14 @@ class NavItem(tk.Frame):
 			partial(Preview, list_item=self._item.getCurrent() if which == CURRENT else self._item.getPrevious()))
 
 	def _export(self, which: str):
-		pass
+		html = construct_html(self._item.getCurrent() if which == CURRENT else self._item.getPrevious())
+
+		filename = "downloads/temp/%s.html" % uuid4()
+		tempfile = open(filename, "x")
+		tempfile.write(html)
+		tempfile.close()
+
+		webbrowser.open('file:%s' % pathname2url(os.path.abspath(filename)))
 
 	def _save(self, which: str):
 		pass

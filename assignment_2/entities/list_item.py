@@ -15,7 +15,7 @@ class BaseItem:
 	def __init__(self, data):
 		self._data = data
 
-	def getImage(self):
+	def getImage(self, source=False):
 		# TODO: this should return a PhotoImage
 		return self._data.get("image")
 
