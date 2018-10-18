@@ -41,6 +41,8 @@ from components.menu import Menu
 # [x] you select a "old" saved copy and preview it (heading, as a tk.Label, and a numbered list)
 # [x] you select a "live" copy and preview it (heading, as a tk.Label, and a numbered list)
 # [x] you get to export either a live, or previous copy (html export)
+# [ ] get a logo in there
+# [ ] get all the images working
 # [ ] popular music parser written
 # [ ] popular movies parser written
 # [ ] you could current the live copy to a sqlite db
