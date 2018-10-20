@@ -8,6 +8,7 @@ from uuid import uuid4
 from components.preview import Preview
 from entities.list_item import ListItem, PREVIOUS, CURRENT
 from helpers.construct_html import construct_html
+from helpers.db import save_to_db
 from helpers.new_window import NewWindow
 
 
@@ -45,7 +46,7 @@ class NavItem(tk.Frame):
 		webbrowser.open('file:%s' % pathname2url(os.path.abspath(filename)))
 
 	def _save(self, which: str):
-		pass
+		save_to_db(self._item.getCurrent() if which == CURRENT else self._item.getPrevious())
 
 	def render(self):
 		tk.Label(self, image=self.image) \
@@ -65,7 +66,7 @@ class NavItem(tk.Frame):
 		tk.Button(self, text="Export", command=lambda: self._export(self.previous_current.get())) \
 			.grid(row=4, column=1)
 
-		tk.Button(self, text="Save", command=lambda: self._save(CURRENT)) \
+		tk.Button(self, text="Save", command=lambda: self._save(self.previous_current.get())) \
 			.grid(row=5, column=0, columnspan=2)
 
 		return self
