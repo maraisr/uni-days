@@ -1,10 +1,8 @@
 import tkinter as tk
 
 from components.nav_item import NavItem
+from data import get_data
 from entities.list_item import ListItem
-from helpers.parsers.popular_games import parse as parse_popular_games
-from helpers.parsers.popular_movies import parse as parse_popular_movies
-from helpers.parsers.popular_music import parse as parse_popular_music
 
 
 class Menu(tk.Frame):
@@ -13,23 +11,7 @@ class Menu(tk.Frame):
 
 		self.grid(row=1, column=2)
 
-		self._data = [
-			ListItem({
-				"link": "https://www.themoviedb.org/movie?language=en-US",
-				"name": "Popular Movies",
-				"parser": parse_popular_movies
-			}),
-			ListItem({
-				"link": "https://www.ariacharts.com.au/charts/singles-chart",
-				"name": "Popular Music",
-				"parser": parse_popular_music
-			}),
-			ListItem({
-				"link": "https://store.steampowered.com/search/?sort_by=Released_DESC&filter=topsellers",
-				"name": "Popular Games",
-				"parser": parse_popular_games
-			})
-		]
+		self._data = get_data()
 
 		self.render(
 			map(lambda item: NavItem().setup(item), self._data)
