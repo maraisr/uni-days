@@ -43,16 +43,16 @@ from components.menu import Menu
 # [x] you get to export either a live, or previous copy (html export)
 # [x] get a logo in there
 # [x] get all the images working
-# [ ] popular music parser written
-# [ ] popular movies parser written
-# [ ] An image characterising the list, downloaded from online when the generated HTML document is viewed (i.e., not from a local file on the host computer).
+# [x] popular music parser written
+# [x] popular movies parser written
 # [ ] you could current the live copy to a sqlite db
 # [ ] you could previous the live copy to a sqlite db
+# [ ] An image characterising the list, downloaded from online when the generated HTML document is viewed (i.e., not from a local file on the host computer).
 # [ ] code cleanup
 # [ ] comment everything
 # [x] rename entry to "the_best.py"
 # [ ] check that all things are done for the assignment
-# [ ] The publication date for the list, extracted from the source document (not just the date when the file was downloaded because they may not be the same).
+# [ ] (maybe) The publication date for the list, extracted from the source document (not just the date when the file was downloaded because they may not be the same).
 
 class App(tk.Frame):
 	def __init__(self, parent, *args, **kwargs):
