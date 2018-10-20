@@ -52,6 +52,7 @@ from components.menu import Menu
 # [ ] comment everything
 # [x] rename entry to "the_best.py"
 # [ ] check that all things are done for the assignment
+# [ ] The publication date for the list, extracted from the source document (not just the date when the file was downloaded because they may not be the same).
 
 class App(tk.Frame):
 	def __init__(self, parent, *args, **kwargs):
