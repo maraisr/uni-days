@@ -14,7 +14,7 @@ class Preview(tk.Frame):
 		tk.Label(self, image=self.image) \
 			.grid(row=0, column=0, rowspan=2)
 
-		tk.Label(self, text=list_item.getName()) \
+		tk.Label(self, text=list_item.getName(), font=("Arial", 12, "bold")) \
 			.grid(row=0, column=1)
 
 		preview_list = tk.Frame(self)

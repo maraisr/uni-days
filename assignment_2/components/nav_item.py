@@ -51,7 +51,7 @@ class NavItem(tk.Frame):
 		tk.Label(self, image=self.image) \
 			.grid(row=0, column=0, columnspan=2)
 
-		tk.Label(self, text=self.name, justify=tk.CENTER, anchor=tk.W) \
+		tk.Label(self, text=self.name, font=("Arial", 10, "bold"), justify=tk.CENTER, anchor=tk.W) \
 			.grid(row=1, column=0, columnspan=2)
 
 		tk.Radiobutton(self, text="Previous", variable=self.previous_current, value=PREVIOUS) \
