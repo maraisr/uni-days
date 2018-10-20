@@ -45,8 +45,8 @@ from components.menu import Menu
 # [x] get all the images working
 # [x] popular music parser written
 # [x] popular movies parser written
-# [ ] you could current the live copy to a sqlite db
-# [ ] you could previous the live copy to a sqlite db
+# [x] you could current the live copy to a sqlite db
+# [x] you could previous the live copy to a sqlite db
 # [ ] An image characterising the list, downloaded from online when the generated HTML document is viewed (i.e., not from a local file on the host computer).
 # [ ] code cleanup
 # [ ] comment everything
