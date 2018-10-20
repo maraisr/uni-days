@@ -47,7 +47,7 @@ from components.menu import Menu
 # [x] popular movies parser written
 # [x] you could current the live copy to a sqlite db
 # [x] you could previous the live copy to a sqlite db
-# [ ] An image characterising the list, downloaded from online when the generated HTML document is viewed (i.e., not from a local file on the host computer).
+# [x] An image characterising the list, downloaded from online when the generated HTML document is viewed (i.e., not from a local file on the host computer).
 # [ ] code cleanup
 # [ ] comment everything
 # [x] rename entry to "the_best.py"

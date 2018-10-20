@@ -16,7 +16,12 @@ class BaseItem:
 	def __init__(self, data):
 		self._data = data
 
+		self.staticImage = self._data.get("image")
+
 		self.image = tk.PhotoImage(file="assets/%s.gif" % self.getFriendlyName())
+
+	def getStaticImage(self):
+		return self.staticImage
 
 	def getImage(self):
 		return self.image
@@ -89,7 +94,7 @@ class Item(BaseItem):
 		]
 
 
-# TODO: Comment me - refoactor this more to be more fp
+# TODO: Comment me - refactor this more to be more oop, but hey it works.
 class ListItem(BaseItem):
 
 	def getPrevious(self):

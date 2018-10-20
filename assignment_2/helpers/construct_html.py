@@ -24,20 +24,17 @@ TEMPLATE = """
 
 
 def construct_html(list_item: Item):
-	_heading = """
-		<h1 class="display-4">%s</h1>
-		""" % list_item.getName()
+	_heading = "<h1 class=\"display-4\">{:s}</h1>".format(list_item.getName())
 
-	filepath = "downloads/%s" % list_item.getFilename()
+	filepath = "downloads/{:s}".format(list_item.getFilename())
 	_filename = "<p>Filename: <i><a href='%s' target='_blank'>%s</a></i></p>" % (
-		('file:%s' % pathname2url(os.path.abspath(filepath))),
-		("downloads/%s" % list_item.getFilename())
+		('file:{:s}'.format(pathname2url(os.path.abspath(filepath)))),
+		("downloads/{:s}".format(list_item.getFilename()))
 	)
 
-	_date = "<p>Date published: <i>%s</i></p>" % list_item.getAge().strftime("%d/%m/%Y")
+	_date = "<p>Date published: <i>{:s}</i></p>".format(list_item.getAge().strftime("%d/%m/%Y"))
 
-	# TODO: Source image here
-	_image = "<p><img src='%s' /></p>" % "http://placekitten.com/g/300/300"
+	_image = "<p><img src='{:s}' style='width: 100%' /></p>".format(list_item.getStaticImage())
 
 	_top_ten_row_template = "<tr><td>%s</td><td>%s</td><td><img src='%s' /></td></tr>"
 	_top_ten = """
@@ -50,12 +47,12 @@ def construct_html(list_item: Item):
 				</tr>
 			</thead>
 			<tbody>
-				%s
+				{:s}
 			</tbody>
 		</table>
-	""" % ''.join([
+	""".format(''.join([
 		_top_ten_row_template % (idx + 1, name, image) for (idx, (name, image)) in enumerate(list_item.getItems())
-	])
+	]))
 
 	return TEMPLATE % (
 		list_item.getName(),
