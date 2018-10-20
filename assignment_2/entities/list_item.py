@@ -4,7 +4,7 @@ from os import listdir
 from re import sub, match, search, compile
 from uuid import uuid4
 
-from helpers.download import download
+from web_doc_downloader import download
 
 DATE_REGEX = r"([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))"
 
