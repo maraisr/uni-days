@@ -3,6 +3,7 @@ import tkinter as tk
 from components.nav_item import NavItem
 from entities.list_item import ListItem
 from helpers.parsers.popular_games import parse as parse_popular_games
+from helpers.parsers.popular_movies import parse as parse_popular_movies
 from helpers.parsers.popular_music import parse as parse_popular_music
 
 
@@ -14,9 +15,9 @@ class Menu(tk.Frame):
 
 		self._data = [
 			ListItem({
-				"link": "https://www.imdb.com/search/title?title_type=feature&genres=action&sort=moviemeter,asc",
+				"link": "https://www.themoviedb.org/movie?language=en-US",
 				"name": "Popular Movies",
-				"parser": lambda content: print("popular movies")
+				"parser": parse_popular_movies
 			}),
 			ListItem({
 				"link": "https://www.ariacharts.com.au/charts/singles-chart",

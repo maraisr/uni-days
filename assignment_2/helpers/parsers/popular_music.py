@@ -1,12 +1,10 @@
 from functools import partial
 from re import IGNORECASE, findall, compile
 
-from helpers.parsers._helpers import ALPHA
-
 
 def parse(content: str):
-	song_name = compile(r"<div\sclass=.item-title[^>]+>%s" % ALPHA, IGNORECASE)
-	artist_name = compile(r"<div\sclass=.artist-name[^>]+>%s" % ALPHA, IGNORECASE)
+	song_name = compile(r"<div\sclass=.item-title[^>]+>([^<]+)", IGNORECASE)
+	artist_name = compile(r"<div\sclass=.artist-name[^>]+>([^<]+)", IGNORECASE)
 
 	image_regex = compile(r"<img\ssrc=.(?=[^\"']+coverart)([^\"']+)", IGNORECASE)
 
