@@ -40,7 +40,7 @@ def construct_html(list_item: Item):
 
 	_date = "<p>Date published: <i>%s</i></p>" % list_item.getAge().strftime("%d/%m/%Y")
 
-	_image = "<p><img src='%s' /></p>" % list_item.getImage(True)
+	_image = "<p><img src='%s' /></p>" % "http://placekitten.com/g/300/300"
 
 	_top_ten_row_template = "<tr><td>%s</td><td>%s</td><td><img src='%s' /></td></tr>"
 	_top_ten = """

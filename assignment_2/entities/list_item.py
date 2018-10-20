@@ -1,3 +1,4 @@
+import tkinter as tk
 from datetime import datetime
 from os import listdir
 from re import sub, match, search, compile
@@ -15,15 +16,23 @@ class BaseItem:
 	def __init__(self, data):
 		self._data = data
 
-	def getImage(self, source=False):
-		# TODO: this should return a PhotoImage
-		return self._data.get("image")
+		self.image = tk.PhotoImage(file="assets/%s.gif" % self.getFriendlyName())
+
+	def getImage(self):
+		return self.image
 
 	def getLink(self):
 		return self._data.get("link")
 
 	def getName(self):
 		return self._data.get("name")
+
+	def getFriendlyName(self):
+		return sub(
+			r"\s",
+			"_",
+			self.getName().lower()
+		)
 
 
 class Item(BaseItem):
@@ -55,11 +64,7 @@ class Item(BaseItem):
 		return self._data.get("parser")(self.getContent())[:count]
 
 	def _discoverPrevious(self):
-		friendlyName = sub(
-			r"\s",
-			"_",
-			self.getName().lower()
-		)
+		friendlyName = self.getFriendlyName()
 
 		currentFileLookupRegex = compile("^%s_%s\.html$" % (friendlyName, DATE_REGEX))
 

@@ -48,7 +48,7 @@ class NavItem(tk.Frame):
 		pass
 
 	def render(self):
-		tk.Label(self, text=self.image) \
+		tk.Label(self, image=self.image) \
 			.grid(row=0, column=0, columnspan=2)
 
 		tk.Label(self, text=self.name, justify=tk.CENTER, anchor=tk.W) \

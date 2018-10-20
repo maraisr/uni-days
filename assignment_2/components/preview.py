@@ -9,10 +9,11 @@ class Preview(tk.Frame):
 
 		self.pack(expand=1, fill=tk.BOTH)
 
-		tk.Label(self, text=list_item.getImage()) \
+		self.image = list_item.getImage()
+
+		tk.Label(self, image=self.image) \
 			.grid(row=0, column=0, rowspan=2)
 
-		# TODO: Style me
 		tk.Label(self, text=list_item.getName()) \
 			.grid(row=0, column=1)
 

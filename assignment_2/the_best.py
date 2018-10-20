@@ -41,16 +41,16 @@ from components.menu import Menu
 # [x] you select a "old" saved copy and preview it (heading, as a tk.Label, and a numbered list)
 # [x] you select a "live" copy and preview it (heading, as a tk.Label, and a numbered list)
 # [x] you get to export either a live, or previous copy (html export)
-# [ ] get a logo in there
-# [ ] get all the images working
+# [x] get a logo in there
+# [x] get all the images working
 # [ ] popular music parser written
 # [ ] popular movies parser written
+# [ ] An image characterising the list, downloaded from online when the generated HTML document is viewed (i.e., not from a local file on the host computer).
 # [ ] you could current the live copy to a sqlite db
 # [ ] you could previous the live copy to a sqlite db
 # [ ] code cleanup
 # [ ] comment everything
 # [x] rename entry to "the_best.py"
-# [ ] uniform the app names
 # [ ] check that all things are done for the assignment
 
 class App(tk.Frame):
@@ -63,6 +63,6 @@ class App(tk.Frame):
 
 if __name__ == '__main__':
 	root = tk.Tk()
-	root.title("Best of the Best")
+	root.title("The Best Damn Thing")
 	App(root).grid(sticky=tk.NSEW, padx=10, pady=(0, 20))
 	root.mainloop()
