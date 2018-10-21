@@ -50,6 +50,7 @@ from components.menu import Menu
 # [x] An image characterising the list, downloaded from online when the generated HTML document is viewed (i.e., not from a local file on the host computer).
 # [ ] code cleanup
 # [ ] comment everything
+# [ ] move everything to the one file
 # [x] rename entry to "the_best.py"
 # [ ] check that all things are done for the assignment
 # [ ] (maybe) The publication date for the list, extracted from the source document (not just the date when the file was downloaded because they may not be the same).
