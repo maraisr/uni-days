@@ -222,7 +222,7 @@ class Item(AbstractBaseItem):
 		# we only care about the first item we find
 		[workingFile] = maybeFile
 
-		# TODO: Get the date from the contents itself. youre safe to use the get_content method
+		# TODO: Get the date from the contents itself. you're safe to use the get_content method.
 		nakedDate = search(compile("_(%s)" % DATE_REGEX), workingFile).group(1)
 
 		return [
@@ -233,8 +233,8 @@ class Item(AbstractBaseItem):
 
 # @description
 # The class used by our app, that acts as the list itself, and both its previous and current version.
-# TODO: Refactor this more to be more oop, but hey it works.
 class ListItem(AbstractBaseItem):
+	# TODO: Refactor this more to be more oop, but hey it works.
 
 	def getPrevious(self):
 		return Item(self._data, PREVIOUS)
