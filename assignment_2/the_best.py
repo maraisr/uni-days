@@ -44,8 +44,8 @@ from uuid import uuid4
 
 from web_doc_downloader import download
 
-CURRENT = "current"
-PREVIOUS = "previous"
+CURRENT = "Current"
+PREVIOUS = "Previous"
 
 DATE_REGEX = r"([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))"
 
@@ -126,13 +126,22 @@ class Item(AbstractBaseItem):
 		self._tempName = "temp/%s.html" % uuid4()
 
 	# @description
+	# Gets us the mode of the list, either previous or current
+	#
+	# @getter
+	#
+	# @returns {string}
+	def getMode(self):
+		return self._mode
+
+	# @description
 	# Gets us the age of the list.
 	#
 	# @getter
 	#
 	# @returns {datetime}
 	def getAge(self):
-		return datetime.now() if self._mode == CURRENT else self._discoverPrevious()[0]
+		return datetime.now() if self.getMode() == CURRENT else self._discoverPrevious()[0]
 
 	# @description
 	# Gets us the filename of the list.
@@ -141,7 +150,7 @@ class Item(AbstractBaseItem):
 	#
 	# @returns {string}
 	def getFilename(self):
-		return self._tempName if self._mode == CURRENT else self._discoverPrevious()[1]
+		return self._tempName if self.getMode() == CURRENT else self._discoverPrevious()[1]
 
 	# @description
 	# Gets us the content of the list - for the current, it'll be a freshly downlaoded copy, and for the prvious,
@@ -151,7 +160,7 @@ class Item(AbstractBaseItem):
 	#
 	# @returns {string}
 	def getContent(self):
-		if self._mode == CURRENT:
+		if self.getMode() == CURRENT:
 			download(self.getLink(), "downloads/%s" % self._tempName, '')
 
 		file_stream = open("downloads/%s" % self.getFilename(), encoding="utf8", mode="r")
@@ -414,7 +423,7 @@ class Preview(tk.Frame):
 			.grid(row=0, column=0, rowspan=2)
 
 		# the title for the preview
-		tk.Label(self, text=list_item.getName(), font=("Arial", 12, "bold")) \
+		tk.Label(self, text="%s %s" % (list_item.getMode(), list_item.getName()), font=("Arial", 12, "bold")) \
 			.grid(row=0, column=1)
 
 		preview_list = tk.Frame(self)
