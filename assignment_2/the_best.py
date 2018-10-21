@@ -276,7 +276,7 @@ class Menu(tk.Frame):
 		self.grid(row=1, column=2)
 
 		# This is the so called entry point for our data for the app. This method could in the future, get its data from
-		# a db, or config file of some nature. @see #data.get_data
+		# a db, or config file of some nature. @see #get_data
 		self._data = get_data()
 
 		# ... and finally, we render out our data.
@@ -287,7 +287,7 @@ class Menu(tk.Frame):
 	# @description
 	# A method that when called passing in a collection of list_items, renders them one after the other.
 	#
-	# @see #entities.list_item.ListItem
+	# @see #ListItem
 	#
 	# @param nav_items {[ListItem]} a collection of items to render
 	#
@@ -323,8 +323,8 @@ class NavItem(tk.Frame):
 	# As the concept of using the same class to track the previous and current list, this method is a mere after thought
 	# that is used to return either the previous or current list class, depending on a string.
 	#
-	# @see #entities.list_item.{CURRENT, PREVIOUS}
-	# @see #entities.list_item.Item
+	# @see #{CURRENT, PREVIOUS}
+	# @see #Item
 	#
 	# @param which {string} return the CURRENT, or the PREVIOUS
 	#
@@ -335,7 +335,7 @@ class NavItem(tk.Frame):
 	# @description
 	# An action method, that when called opens a new child window, and renders the Preview component in it.
 	#
-	# @see #components.preview.Preview
+	# @see #Preview
 	#
 	# @param which {string} show me the CURRENT, or the PREVIOUS
 	#
@@ -349,7 +349,7 @@ class NavItem(tk.Frame):
 	# An action method, that when called triggers a html export of the "which" parameter for this list. And then also
 	# opens the constructed html in the operating systems default browser.
 	#
-	# @see #helpers.construct_html.construct_html
+	# @see #construct_html
 	#
 	# @param which {string} show me the CURRENT, or the PREVIOUS
 	#
@@ -357,8 +357,7 @@ class NavItem(tk.Frame):
 	def _action_export(self, which: str):
 		html = construct_html(self._get_previous_or_current_node(which))
 
-		# TODO: Pick a better export name here
-		filename = "downloads/temp/%s.html" % uuid4()
+		filename = "downloads/temp/exported_%s_%s.html" % (self._item.getFriendlyName(), uuid4())
 		tempfile = open(filename, "x")  # x == write mode
 		tempfile.write(html)
 		tempfile.close()
@@ -369,7 +368,7 @@ class NavItem(tk.Frame):
 	# @description
 	# An action method, that when called saves the selected list to the sqlite database for further querying.
 	#
-	# @see #helpers.db.save_to_db
+	# @see #save_to_db
 	#
 	# @param which {string} show me the CURRENT, or the PREVIOUS
 	#
@@ -412,7 +411,8 @@ class NavItem(tk.Frame):
 		return self
 
 
-# TODO: Comment me
+# @description
+# A UI component that renders the image, and accompanying things for the preview window.
 class Preview(tk.Frame):
 	def __init__(self, container, list_item: Item, *args, **kwargs):
 		tk.Frame.__init__(self, container, *args, **kwargs)
@@ -421,15 +421,18 @@ class Preview(tk.Frame):
 
 		self.image = list_item.getImage()
 
+		# the image for this list
 		tk.Label(self, image=self.image) \
 			.grid(row=0, column=0, rowspan=2)
 
+		# the title for the preview
 		tk.Label(self, text=list_item.getName(), font=("Arial", 12, "bold")) \
 			.grid(row=0, column=1)
 
 		preview_list = tk.Frame(self)
 		preview_list.grid(row=1, column=1)
 
+		# list all the top 10 items for this list
 		for (idx, (name, image)) in enumerate(list_item.getItems()):
 			tk.Label(preview_list, text="[%s] %s" % (idx + 1, name)).grid(row=idx, column=0, sticky=tk.W)
 
@@ -438,19 +441,35 @@ class Preview(tk.Frame):
 # Parsers
 # ---------------------------------------------------------------------------------------------------------------------#
 
-# TODO: Comment
+# @description
+# Parses the content for our popular games list, and returns a list of tuples, for its name, and the image attribute.
+#
+# @param content {string} the content of the html
+#
+# @returns {[(name: string, image: string)]} a collection of name, image tuples.
 def parse_popular_games(content: str):
 	title_regex = compile(r"<span\sclass=.title[^>]+>([^<]+)", IGNORECASE)
 
-	image_regex = compile(r"col\ssearch_capsule.*img\ssrc=['\"](.*)['\"]", IGNORECASE)
+	image_regex = compile(r"col\ssearch_capsule.*img\ssrc=.([^'\"]+)", IGNORECASE)
 
+	# gets a map of all titles, and image matches for the content
 	results = map(partial(findall, string=content), [title_regex, image_regex])
 
+	# to create the tuple, we simple zip, the first item of the first list, with the first item of the second list, and
+	# so on... eg: [a, b, c], [1, 2, 3] => [a1, b2, c3]
 	return list(zip(*results))
 
 
-# TODO: Comment
+# @description
+# Parses the content for our popular movies list, and returns a list of tuples, for its name, and the image attribute.
+#
+# @param content {string} the content of the html
+#
+# @returns {[(name: string, image: string)]} a collection of name, image tuples.
 def parse_popular_movies(content: str):
+
+	# INFO: a lot of what happens in this file, can be explained in the #parse_popular_games method.
+
 	titles_regex = compile(r"<a\s.*(?=title\sresult)[^>]+>([^<]+)", IGNORECASE)
 	images_regex = compile(r"<img\sclass=.poster.*(?=data-src)data-src=.([^'\"]+)", IGNORECASE)
 
@@ -459,26 +478,39 @@ def parse_popular_movies(content: str):
 	return list(zip(*results))
 
 
-# TODO: Comment
+# @description
+# Parses the content for our popular music list, and returns a list of tuples, for its name, and the image attribute.
+#
+# @param content {string} the content of the html
+#
+# @returns {[(name: string, image: string)]} a collection of name, image tuples.
 def parse_popular_music(content: str):
 	song_name = compile(r"<div\sclass=.item-title[^>]+>([^<]+)", IGNORECASE)
 	artist_name = compile(r"<div\sclass=.artist-name[^>]+>([^<]+)", IGNORECASE)
 
+	# I'll explain the regex here, as its in my mind the most complex one in this file, but roughly applies to all the
+	# parser regex's here. So to start:
+	# we find the characters <,i,m,g that exist in that sequence exactly, followed by a \s (\s,\n,\t) or any other space
+	# like character. Once again, the characters s,r,c and = in that exact order. So right now we have <img src= matched.
+	# Then any character ".", as we cant assume a single or double quote, but html spec will ensure its either one of
+	# those 2. We then do a positive lookahead to see if we should continue matching or not, by basically checking if the
+	# "source" of the image contains the word "coverart", if so, (and fyi, we're back at the src=), we recursively give
+	# back characters that isnt either a single or a double quote - one or more times.
 	image_regex = compile(r"<img\ssrc=.(?=[^\"']+coverart)([^\"']+)", IGNORECASE)
 
+	# we then find all 3 of those regex's in the content of this list
 	(song_names, artist_names, images) = list(
 		map(partial(findall, string=content), [song_name, artist_name, image_regex])
 	)
 
-	# Now we need to zip the song_name and the artist_name in a str
+	# wow we need to zip the song_name and the artist_name, to join them together in a nice string
+	song_to_artist = map(
+		lambda node: "%s - %s" % node,
+		zip(song_names, artist_names)
+	)
 
-	return list(zip(
-		map(
-			lambda node: "%s - %s" % node,
-			zip(song_names, artist_names)
-		),
-		images
-	))
+	# and finally, at those song to artist strings, to its accompanying image
+	return list(zip(song_to_artist, images))
 
 
 # ---------------------------------------------------------------------------------------------------------------------#
