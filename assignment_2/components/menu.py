@@ -33,7 +33,5 @@ class Menu(tk.Frame):
 	#
 	# @returns {void}
 	def render(self, nav_items: [ListItem]):
-		[
-			item.render().grid(in_=self, row=0, column=idx, padx=10) \
-			for (idx, item) in enumerate(nav_items)
-		]
+		for (idx, item) in enumerate(nav_items):
+			item.render().grid(in_=self, row=0, column=idx, padx=10)
