@@ -38,6 +38,7 @@ from functools import partial
 from os import listdir, path
 from re import IGNORECASE, findall, sub, compile, match, search
 from sqlite3 import connect
+from tkinter import messagebox
 from urllib.request import pathname2url
 from uuid import uuid4
 
@@ -48,24 +49,6 @@ PREVIOUS = "previous"
 
 DATE_REGEX = r"([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))"
 
-
-# TODO:
-# [x] you select a "old" saved copy and preview it (heading, as a tk.Label, and a numbered list)
-# [x] you select a "live" copy and preview it (heading, as a tk.Label, and a numbered list)
-# [x] you get to export either a live, or previous copy (html export)
-# [x] get a logo in there
-# [x] get all the images working
-# [x] popular music parser written
-# [x] popular movies parser written
-# [x] you could current the live copy to a sqlite db
-# [x] you could previous the live copy to a sqlite db
-# [x] An image characterising the list, downloaded from online when the generated HTML document is viewed (i.e., not from a local file on the host computer).
-# [x] code cleanup
-# [x] comment everything
-# [x] move everything to the one file
-# [x] rename entry to "the_best.py"
-# [ ] check that all things are done for the assignment
-# [ ] (maybe) The publication date for the list, extracted from the source document (not just the date when the file was downloaded because they may not be the same).
 
 # ---------------------------------------------------------------------------------------------------------------------#
 # Entities
@@ -373,7 +356,13 @@ class NavItem(tk.Frame):
 	#
 	# @returns {void}
 	def _action_save(self, which: str):
-		save_to_db(self._get_previous_or_current_node(which))
+		items = self._get_previous_or_current_node(which)
+
+		try:
+			save_to_db(items)
+			messagebox.showinfo("Success!", "Successfully saved %s to the sqlite database!" % items.getName())
+		except Exception as e:
+			messagebox.showerror("Error!", "Error saving %s to the sqlite database!" % items.getName())
 
 	# @description
 	# A method that renders servers as the single point where we define sub widgets this component renders.
