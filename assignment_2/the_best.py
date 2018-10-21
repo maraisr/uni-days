@@ -58,6 +58,7 @@ DATE_REGEX = r"([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))"
 # @description
 # A class that acts as the base of shared code for our lists, and is the root class - mainly static things go in here.
 class AbstractBaseItem:
+
 	def __init__(self, data):
 		self._data = data
 
@@ -116,6 +117,7 @@ class AbstractBaseItem:
 # @description
 # A class that houses the logic for a list, things like age computation, downloading, and content parsing.
 class Item(AbstractBaseItem):
+
 	def __init__(self, data, mode):
 		AbstractBaseItem.__init__(self, data)
 
@@ -241,6 +243,7 @@ class ListItem(AbstractBaseItem):
 # @description
 # A UI component render class that houses the logic for our header, which extends the tkinter Frame widget.
 class Header(tk.Frame):
+
 	def __init__(self, *args, **kwargs):
 		tk.Frame.__init__(self, *args, **kwargs)
 
@@ -260,6 +263,7 @@ class Header(tk.Frame):
 # A UI component render class that houses the logic for our menu, the three frames you'll find visually. This extends
 # the tkinter Frame widget.
 class Menu(tk.Frame):
+
 	def __init__(self, parent, *args, **kwargs):
 		tk.Frame.__init__(self, parent, *args, **kwargs)
 
@@ -292,6 +296,7 @@ class Menu(tk.Frame):
 # A UI component render class that houses the logic for each of our nav items, that appear in the menu. Each nav item
 # extends the tkinter Frame widget.
 class NavItem(tk.Frame):
+
 	def __init__(self, list_item: ListItem, *args, **kwargs):
 		tk.Frame.__init__(self, *args, **kwargs)
 
@@ -412,6 +417,7 @@ class NavItem(tk.Frame):
 # @description
 # A UI component that renders the image, and accompanying things for the preview window.
 class Preview(tk.Frame):
+
 	def __init__(self, container, list_item: Item, *args, **kwargs):
 		tk.Frame.__init__(self, container, *args, **kwargs)
 
