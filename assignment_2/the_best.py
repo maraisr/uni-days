@@ -372,6 +372,7 @@ class NavItem(tk.Frame):
 			messagebox.showinfo("Success!", "Successfully saved %s to the sqlite database!" % items.getName())
 		except Exception as e:
 			messagebox.showerror("Error!", "Error saving %s to the sqlite database!" % items.getName())
+			raise
 
 	# @description
 	# A method that renders servers as the single point where we define sub widgets this component renders.
