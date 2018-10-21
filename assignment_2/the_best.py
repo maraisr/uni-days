@@ -222,7 +222,6 @@ class Item(AbstractBaseItem):
 		# we only care about the first item we find
 		[workingFile] = maybeFile
 
-		# TODO: Get the date from the contents itself. you're safe to use the get_content method.
 		nakedDate = search(compile("_(%s)" % DATE_REGEX), workingFile).group(1)
 
 		return [
@@ -357,8 +356,8 @@ class NavItem(tk.Frame):
 	def _action_export(self, which: str):
 		html = construct_html(self._get_previous_or_current_node(which))
 
-		filename = "downloads/temp/exported_%s_%s.html" % (self._item.getFriendlyName(), uuid4())
-		tempfile = open(filename, "x")  # x == write mode
+		filename = "exported_%s_%s.html" % (self._item.getFriendlyName(), uuid4())
+		tempfile = open(filename, "x", encoding="utf-8")  # x == write mode
 		tempfile.write(html)
 		tempfile.close()
 
@@ -577,7 +576,7 @@ def construct_html(list_item: Item):
 			</tbody>
 		</table>
 	""".format(''.join([
-		_top_ten_row_template % (idx + 1, name, image) for (idx, (name, image)) in enumerate(list_item.getItems())
+		_top_ten_row_template % (idx + 1, name, image) for (idx, (name, image)) in enumerate(list_item.getItems(-1))
 	]))
 
 	return TEMPLATE % (
