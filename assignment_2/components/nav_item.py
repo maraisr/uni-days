@@ -13,7 +13,7 @@ from helpers.new_window import NewWindow
 
 
 class NavItem(tk.Frame):
-	def __init__(self, *args, **kwargs):
+	def __init__(self, list_item: ListItem, *args, **kwargs):
 		tk.Frame.__init__(self, *args, **kwargs)
 
 		self.config(relief=tk.SUNKEN, bd=2)
@@ -21,22 +21,22 @@ class NavItem(tk.Frame):
 		self.previous_current = tk.StringVar(self)
 		self.previous_current.set(PREVIOUS)
 
-	def setup(self, list_item: ListItem):
 		self._item = list_item
 
 		self.image = self._item.getImage()
 		self.name = self._item.getName()
 
-		return self
+	def _get_previous_or_current_node(self, which: str):
+		return self._item.getCurrent() if which == CURRENT else self._item.getPrevious()
 
-	def _preview(self, which: str):
+	def _action_preview(self, which: str):
 		# create a new window, then pass a lambda that renders a component in it
 		NewWindow("Preview | %s" % self.name) \
 			.render(
-			partial(Preview, list_item=self._item.getCurrent() if which == CURRENT else self._item.getPrevious()))
+			partial(Preview, list_item=self._get_previous_or_current_node(which)))
 
-	def _export(self, which: str):
-		html = construct_html(self._item.getCurrent() if which == CURRENT else self._item.getPrevious())
+	def _action_export(self, which: str):
+		html = construct_html(self._get_previous_or_current_node(which))
 
 		filename = "downloads/temp/%s.html" % uuid4()
 		tempfile = open(filename, "x")
@@ -45,8 +45,8 @@ class NavItem(tk.Frame):
 
 		webbrowser.open('file:%s' % pathname2url(os.path.abspath(filename)))
 
-	def _save(self, which: str):
-		save_to_db(self._item.getCurrent() if which == CURRENT else self._item.getPrevious())
+	def _action_save(self, which: str):
+		save_to_db(self._get_previous_or_current_node(which))
 
 	def render(self):
 		tk.Label(self, image=self.image) \
@@ -60,13 +60,13 @@ class NavItem(tk.Frame):
 		tk.Radiobutton(self, text="Current", variable=self.previous_current, value=CURRENT) \
 			.grid(row=3, column=1)
 
-		tk.Button(self, text="Preview", command=lambda: self._preview(self.previous_current.get())) \
+		tk.Button(self, text="Preview", command=lambda: self._action_preview(self.previous_current.get())) \
 			.grid(row=4, column=0)
 
-		tk.Button(self, text="Export", command=lambda: self._export(self.previous_current.get())) \
+		tk.Button(self, text="Export", command=lambda: self._action_export(self.previous_current.get())) \
 			.grid(row=4, column=1)
 
-		tk.Button(self, text="Save", command=lambda: self._save(self.previous_current.get())) \
+		tk.Button(self, text="Save", command=lambda: self._action_save(self.previous_current.get())) \
 			.grid(row=5, column=0, columnspan=2)
 
 		return self
