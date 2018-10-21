@@ -2,7 +2,7 @@ import tkinter as tk
 
 
 # @description
-# A component render class that houses the logic for our header, which extends the tkinter Frame widget.
+# A UI component render class that houses the logic for our header, which extends the tkinter Frame widget.
 class Header(tk.Frame):
 	def __init__(self, *args, **kwargs):
 		tk.Frame.__init__(self, *args, **kwargs)

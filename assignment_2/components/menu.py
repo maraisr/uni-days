@@ -6,8 +6,8 @@ from entities.list_item import ListItem
 
 
 # @description
-# A component render class that houses the logic for our menu, the three frames you'll find visually. This extends the
-# tkinter Frame widget.
+# A UI component render class that houses the logic for our menu, the three frames you'll find visually. This extends
+# the tkinter Frame widget.
 class Menu(tk.Frame):
 	def __init__(self, parent, *args, **kwargs):
 		tk.Frame.__init__(self, parent, *args, **kwargs)
