@@ -60,8 +60,8 @@ DATE_REGEX = r"([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))"
 # [x] you could current the live copy to a sqlite db
 # [x] you could previous the live copy to a sqlite db
 # [x] An image characterising the list, downloaded from online when the generated HTML document is viewed (i.e., not from a local file on the host computer).
-# [ ] code cleanup
-# [ ] comment everything
+# [x] code cleanup
+# [x] comment everything
 # [x] move everything to the one file
 # [x] rename entry to "the_best.py"
 # [ ] check that all things are done for the assignment
@@ -467,7 +467,6 @@ def parse_popular_games(content: str):
 #
 # @returns {[(name: string, image: string)]} a collection of name, image tuples.
 def parse_popular_movies(content: str):
-
 	# INFO: a lot of what happens in this file, can be explained in the #parse_popular_games method.
 
 	titles_regex = compile(r"<a\s.*(?=title\sresult)[^>]+>([^<]+)", IGNORECASE)
@@ -517,8 +516,16 @@ def parse_popular_music(content: str):
 # Helpers
 # ---------------------------------------------------------------------------------------------------------------------#
 
-# TODO: Comment
+# @description
+# Constructs a html string for a specific list.
+#
+# @see #Item
+#
+# @param list_item {Item} the item to construct a html for
+#
+# @returns {string} the html for the list
 def construct_html(list_item: Item):
+	# a template to use
 	TEMPLATE = """
 
 	<html>
@@ -538,18 +545,23 @@ def construct_html(list_item: Item):
 
 	"""
 
+	# the heading of the html
 	_heading = "<h1 class=\"display-4\">{:s}</h1>".format(list_item.getName())
 
+	# the file path of the original document
 	filepath = "downloads/{:s}".format(list_item.getFilename())
 	_filename = "<p>Filename: <i><a href='%s' target='_blank'>%s</a></i></p>" % (
 		('file:{:s}'.format(pathname2url(path.abspath(filepath)))),
 		("downloads/{:s}".format(list_item.getFilename()))
 	)
 
+	# the date line
 	_date = "<p>Date published: <i>{:s}</i></p>".format(list_item.getAge().strftime("%d/%m/%Y"))
 
+	# the list image line
 	_image = "<p><img src='{:s}' style='width: 100%' /></p>".format(list_item.getStaticImage())
 
+	# the top ten table, that we generate here
 	_top_ten_row_template = "<tr><td>%s</td><td>%s</td><td><img src='%s' /></td></tr>"
 	_top_ten = """
 		<table class="table">
@@ -574,14 +586,24 @@ def construct_html(list_item: Item):
 	)
 
 
-# TODO: Comment
+# @description
+# Saves a specific list to the sqlite db
+#
+# @see #Item
+#
+# @param list_item {Item} the item to construct a html for
+#
+# @returns {void}
 def save_to_db(list_item: Item):
+	# connects to the db
 	db_instance = connect("top_ten.db")
 
+	# see what rows we need to insert into the db
 	sql_to_run = []
 	for (key, (name, image)) in enumerate(list_item.getItems()):
 		sql_to_run.append((list_item.getAge().strftime("%d/%m/%Y"), key + 1, name, image))
 
+	# actually run the insertion script
 	db_instance.execute("""
 	INSERT INTO top_ten (publication_date, ranking, item, main_attribute) VALUES %s
 	""" % ', '.join([
@@ -590,12 +612,16 @@ def save_to_db(list_item: Item):
 		]
 	]))
 
+	# save the sqlite db file
 	db_instance.commit()
 
+	# and close
 	db_instance.close()
 
 
-# TODO: Comment me
+# @description
+# Opens a new tkinter window, which extends the tkinter top level class of this session. When calling the render method,
+# you'll render any sub widget in here.
 class NewWindow(tk.Toplevel):
 
 	def __init__(self, title, *args, **kwargs):
@@ -606,11 +632,21 @@ class NewWindow(tk.Toplevel):
 		self.frame = tk.Frame(self)
 		self.frame.grid(sticky=tk.NSEW)
 
+	# @description
+	# Renders any input lambda's ouput to this context.
+	#
+	# @param render_fnc {function => void}
+	#
+	# @returns {void}
 	def render(self, render_fnc):
+		# sends in the frame of this window
 		render_fnc(self.frame)
 
 
-# TODO: Comment me
+# @description
+# Returns a fresh copy of our lists
+#
+# @returns {[ListItem]}
 def get_data():
 	return [
 		ListItem({
@@ -634,7 +670,6 @@ def get_data():
 	]
 
 
-# TODO: Comment
 class App(tk.Frame):
 	def __init__(self, parent, *args, **kwargs):
 		tk.Frame.__init__(self, parent, *args, **kwargs)
