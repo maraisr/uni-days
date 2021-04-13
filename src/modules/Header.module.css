@@ -1,0 +1,31 @@
+.root {
+	position: sticky;
+	top: 0;
+	width: 100%;
+	background: #ffffff;
+	box-shadow: inset 0px -1px 0px #e2e2ea;
+
+	padding: 0.65rem 2rem;
+	display: grid;
+	grid-template-columns: min-content min-content 1fr auto;
+	grid-gap: 2rem;
+	align-items: center;
+}
+
+.nav {
+	display: flex;
+	gap: 0.25rem;
+
+	& a {
+		border-radius: 0.5rem;
+		padding: 0.5rem 0.85rem;
+
+		background-color: rgba(0, 98, 255, 0);
+
+		transition: background-color 0.1s linear;
+
+		&:hover {
+			background-color: rgba(0, 98, 255, 0.1);
+		}
+	}
+}
