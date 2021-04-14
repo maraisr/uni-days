@@ -1,21 +1,37 @@
 import * as React from 'react';
-import { lazy } from 'react';
+import { lazy, LazyExoticComponent, memo } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { withRequiredAuthentication } from './lib/auth';
 import { AsyncBoundary } from './modules/Boundaries';
+import { Layout } from './modules/Layout';
 
-const SafeApp = lazy(() => import('./SafeApp'));
+const DashboardPage = lazy(() => import('./pages/Dashboard'));
 
-const AuthProtectedApp = withRequiredAuthentication(() => <SafeApp />);
+const SuspensefullPage = memo<{ importee: LazyExoticComponent<any> }>(
+	({ importee: Importee }) => (
+		<AsyncBoundary>
+			<Importee />
+		</AsyncBoundary>
+	),
+);
 
-export const App = () => <>
+export const App = () => (
 	<Routes>
+		<Route path="/login" element={<p>login</p>} />
+		<Route path="/register" element={<p>registration</p>} />
 		<Route
-			path='/login'
-			element={<p>login</p>}
+			path="/*"
+			element={
+				<Layout>
+					<Routes>
+						<Route
+							path="/dashboard"
+							element={
+								<SuspensefullPage importee={DashboardPage} />
+							}
+						/>
+					</Routes>
+				</Layout>
+			}
 		/>
 	</Routes>
-	<AsyncBoundary>
-		<AuthProtectedApp />
-	</AsyncBoundary>
-</>;
+);

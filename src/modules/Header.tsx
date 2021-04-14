@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { SearchInput } from '../components/Search';
+import { SearchInput } from './Search/SearchInput';
 import styles from './Header.module.css';
 
 export const Header = () => (
