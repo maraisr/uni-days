@@ -220,6 +220,11 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@heroicons/react@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@heroicons/react/-/react-1.0.0.tgz#16a6147f665434b68f401f050a6cb1d68cf819bc"
+  integrity sha512-BHu+zsJ37B8RsspItwn2yTrph1Jj+k8YhVGV/UmAbxjhphC+RPdYMKzAJm9kGtA526loPtP+FYQM9GdMYTe13Q==
+
 "@marais/tsconfig@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@marais/tsconfig/-/tsconfig-0.0.1.tgz#32c6610e4790052e9259aea2bb85f33cf56f308f"

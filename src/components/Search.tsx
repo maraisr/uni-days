@@ -8,6 +8,7 @@ import {
 	useEffect,
 } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { SearchIcon } from '@heroicons/react/outline';
 
 import styles from './Search.module.css';
 
@@ -64,11 +65,14 @@ export const SearchInput = () => {
 	);
 
 	return (
-		<input
-			className={styles.component}
-			placeholder="Search..."
-			value={currentSearchTerm}
-			onChange={onChangeHandler}
-		/>
+		<div className={styles.component}>
+			<input
+				className={styles.input}
+				placeholder="Search..."
+				value={currentSearchTerm}
+				onChange={onChangeHandler}
+			/>
+			<SearchIcon width="24px" />
+		</div>
 	);
 };
