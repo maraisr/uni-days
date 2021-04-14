@@ -1,18 +1,11 @@
 {
-  "name": "my-vue-app",
+  "name": "cab230-assignment-1",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "format": "prettier --write {*,src/**/*}.{tsx,ts,css}"
-  },
-  "dependencies": {
-    "history": "^5.0.0",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0",
-    "react-router": "^6.0.0-beta.0",
-    "react-router-dom": "^6.0.0-beta.0"
+    "format": "prettier --write \"{*,src/**/*}.{tsx,ts,css}\""
   },
   "prettier": {
     "bracketSpacing": true,
@@ -22,6 +15,13 @@
     "tabWidth": 4,
     "trailingComma": "all",
     "useTabs": true
+  },
+  "dependencies": {
+    "history": "^5.0.0",
+    "react": "^0.0.0-experimental-84c06fef8",
+    "react-dom": "^0.0.0-experimental-84c06fef8",
+    "react-router": "^6.0.0-beta.0",
+    "react-router-dom": "^6.0.0-beta.0"
   },
   "devDependencies": {
     "@marais/tsconfig": "^0.0.1",

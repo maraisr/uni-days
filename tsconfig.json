@@ -3,7 +3,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "types": ["vite/client"],
+    "types": ["vite/client", "@types/react/experimental", "@types/react-dom/experimental"],
     "noEmit": true,
     "jsx": "react"
   },

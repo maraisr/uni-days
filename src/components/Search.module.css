@@ -1,0 +1,23 @@
+.component {
+	display: block;
+	width: 100%;
+	max-width: 720px;
+	margin: 0 auto;
+	appearance: none;
+	background: #fafafb;
+	border: 1px solid #f1f1f5;
+	box-sizing: border-box;
+	border-radius: 15px;
+
+	padding: 13px 15px;
+	outline: none;
+
+	&::placeholder {
+		font-size: 14px;
+		line-height: 24px;
+
+		letter-spacing: 0.1px;
+
+		color: #92929d;
+	}
+}

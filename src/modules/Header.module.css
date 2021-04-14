@@ -24,7 +24,8 @@
 
 		transition: background-color 0.1s linear;
 
-		&:hover {
+		&:hover,
+		&:active {
 			background-color: rgba(0, 98, 255, 0.1);
 		}
 	}
