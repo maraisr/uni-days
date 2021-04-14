@@ -273,6 +273,11 @@ ansi-styles@^3.2.1:
   dependencies:
     color-convert "^1.9.0"
 
+async-boundary@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/async-boundary/-/async-boundary-0.0.1.tgz#a1b85d1f299caddaa9caf1d3fdecbf5785a461e8"
+  integrity sha512-tLYLcehipcw3f98JUiG3loF3XrKeoTaVCi24RMTOr3Saw02ebyXLxX02DPkGfua6H9upNr7xFbBO/bCo8GjZDw==
+
 browserslist@^4.14.5:
   version "4.16.4"
   resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.16.4.tgz#7ebf913487f40caf4637b892b268069951c35d58"
