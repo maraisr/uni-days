@@ -1,7 +1,9 @@
 import { ExclamationIcon } from '@heroicons/react/outline';
+import { AsyncBoundary } from 'async-boundary';
 import clsx from 'clsx';
 import type { FunctionComponent } from 'react';
 import * as React from 'react';
+import { memo } from 'react';
 import { useAuth } from '../lib/auth';
 import { defineLoader, useDataLoader } from '../lib/dataLoader';
 import type { RankData } from '../types';
@@ -9,11 +11,15 @@ import styles from './CountryCard.module.css';
 import { Ring } from './Ring';
 import { Spline } from './Spline';
 
-export type CountryCardData = Aggregate & RankData;
-
-interface Aggregate {
-	points: number[];
-}
+const splineDataLoader = defineLoader<{ country: string }, RankData[]>({
+	family: 'ranking.country.trend',
+	getKey({ country }) {
+		return country;
+	},
+	getData({ country }, api) {
+		return api.rankings({ country });
+	},
+});
 
 const Metric: FunctionComponent<{ label: string; alignLeft?: boolean }> = ({
 	label,
@@ -26,14 +32,32 @@ const Metric: FunctionComponent<{ label: string; alignLeft?: boolean }> = ({
 	</div>
 );
 
-export const CountryCard: FunctionComponent<{ data: CountryCardData }> = ({
+const SplineData: FunctionComponent<{ country: string }> = ({ country }) => {
+	const data = useDataLoader(splineDataLoader, { country });
+
+	const points = data.map((i) => i.rank);
+	return points.length > 1 ? (
+		<Metric label={`${points.length} year trend`} alignLeft>
+			<Spline points={points} />
+		</Metric>
+	) : (
+		<span></span>
+	);
+};
+
+const SplineLoader = memo(() => (
+	<Metric label="10 year trend" alignLeft>
+		<Spline loading points={[2, 1, 5, 1, 3, 3, 6, 5, 3, 7]} />
+	</Metric>
+));
+
+export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 	data,
 }) => {
 	const { isAuthenticated } = useAuth();
+
 	const score = Number.parseFloat(data.score);
 	const score_percent = score / 10;
-
-	const has_spline = data.points.length > 1;
 
 	return (
 		<div className={styles.component}>
@@ -47,17 +71,10 @@ export const CountryCard: FunctionComponent<{ data: CountryCardData }> = ({
 					{data.rank}
 				</div>
 			</div>
-			<div
-				className={clsx(styles.metrics, !has_spline && styles.noSpline)}
-			>
-				{has_spline ? (
-					<Metric
-						label={`${data.points.length} year trend`}
-						alignLeft
-					>
-						<Spline reverse points={data.points} />
-					</Metric>
-				) : null}
+			<div className={clsx(styles.metrics)}>
+				<AsyncBoundary fallback={<SplineLoader />} errorFallback={null}>
+					<SplineData country={data.country} />
+				</AsyncBoundary>
 				<Metric label={'Happiness score'}>
 					<Ring value={score_percent} label={score.toFixed(1)} />
 				</Metric>

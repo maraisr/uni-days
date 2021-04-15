@@ -1,72 +1,75 @@
 import { AsyncBoundary } from 'async-boundary';
 import * as React from 'react';
-import { useMemo } from 'react';
+import {
+	ChangeEventHandler,
+	unstable_startTransition,
+	useCallback,
+	useEffect,
+	useState,
+} from 'react';
 import { defineLoader, useDataLoader } from '../lib/dataLoader';
-import { CountryCard, CountryCardData } from '../modules/CountryCard';
+import { CountryCard } from '../modules/CountryCard';
 import { PageFrame } from '../modules/PageFrame';
-import { useDebouncedSearchTerm } from '../modules/Search/hooks';
-import { collectTerms } from '../modules/Search/processing';
+import { useProcessedSearchTerm } from '../modules/Search/hooks';
 import type { RankData } from '../types';
 
 import styles from './Dashboard.module.css';
 
-const loader = defineLoader<{ searchTerm: string }, RankData[]>({
+const loader = defineLoader<{ year: string; countries: string[] }, RankData[]>({
 	family: 'ranking',
-	getKey({ searchTerm }) {
-		return searchTerm;
+	getKey({ year, countries }) {
+		return year + countries.join('');
 	},
-	getData({ searchTerm }, api) {
-		const outcome = collectTerms(searchTerm);
-
-		if (outcome) {
-			const { countries, year } = outcome;
-			if (countries.length > 0) {
-				return countries.map((country) =>
-					api.rankings({ year, country }),
-				);
-			} else {
-				return api.rankings({ year });
-			}
-		}
-
-		return null;
+	getData({ countries, year }, api) {
+		return countries.length
+			? countries.map((country) => api.rankings({ year, country }))
+			: api.rankings({ year });
 	},
 });
 
+const years = new Array(6).fill(1).map((_, i) => (2020 - i).toString());
+
 export default () => {
-	const searchTerm = useDebouncedSearchTerm();
-	const data = useDataLoader(loader, { searchTerm });
+	const { countries = [], year: searchYear = years[0] } =
+		useProcessedSearchTerm() ?? {};
+	const [year, setYear] = useState(searchYear);
 
-	// TODO: We should sort this, by rank, by country. Maybe even send all country data into card, and not just single payload
-	const result = useMemo(() => {
-		const result: CountryCardData[] = [];
+	const data = useDataLoader(loader, { year, countries });
 
-		for (const country of data) {
-			let probe = result.find((item) => item.country === country.country);
+	const updateYear = useCallback((year: string) => {
+		unstable_startTransition(() => {
+			setYear(year);
+		});
+	}, []);
 
-			if (!probe) {
-				result.push(
-					(probe = {
-						...country,
-						points: [],
-					}),
-				);
-			}
+	const onYearChangeHandler = useCallback<
+		ChangeEventHandler<HTMLSelectElement>
+	>((e) => {
+		const value = e.currentTarget.value;
+		updateYear(value);
+	}, []);
 
-			probe.points.push(country.rank);
-		}
-
-		return result;
-	}, [data]);
+	useEffect(() => {
+		updateYear(searchYear);
+	}, [searchYear]);
 
 	// TODO: we need a spinner for this async-boundary
 
 	return (
 		<PageFrame>
+			<div>
+				<select value={year} onChange={onYearChangeHandler}>
+					{years.map((i) => (
+						<option key={i} value={i}>
+							{i}
+						</option>
+					))}
+				</select>
+			</div>
 			<div className={styles.grid}>
-				{result.map((data) => (
-					<AsyncBoundary key={data.country}>
-						<CountryCard data={data} />
+				{data.slice(0, 10).map((item) => (
+					<AsyncBoundary key={item.country}>
+						<CountryCard data={item} />
 					</AsyncBoundary>
 				))}
 			</div>

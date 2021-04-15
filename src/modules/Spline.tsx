@@ -56,8 +56,8 @@ const svgPath = (points: CoordTuple[]) => {
 
 export const Spline: FunctionComponent<{
 	points: number[];
-	reverse: boolean;
-}> = ({ points, reverse = false }) => {
+	loading?: boolean;
+}> = ({ points, loading }) => {
 	const max = Math.max(...points);
 	const interval = WIDTH / points.length;
 
@@ -70,7 +70,7 @@ export const Spline: FunctionComponent<{
 		<svg viewBox={`-8 -8 ${WIDTH + 8} ${HEIGHT + 16}`}>
 			<path
 				fill="none"
-				stroke="#0062FF"
+				stroke={loading ? '#EEEEEE' : '#0062FF'}
 				strokeWidth={STROKE_WIDTH}
 				strokeLinejoin="round"
 				strokeLinecap="round"
