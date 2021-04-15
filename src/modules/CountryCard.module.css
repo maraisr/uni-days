@@ -1,0 +1,57 @@
+.component {
+	display: inline-grid;
+	grid-row-gap: 1rem;
+	padding: 1.25rem;
+
+	border-radius: 0.5rem;
+	background-color: white;
+}
+
+.headline,
+.metrics {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	grid-gap: 1rem;
+	align-items: center;
+	width: 100%;
+	min-width: 0;
+}
+
+.headline {
+	font-size: 1.25rem;
+}
+
+.name {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+
+	& > span {
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		max-width: 100%;
+	}
+}
+
+.year {
+	font-size: 60%;
+	color: #696974;
+}
+
+.rank {
+	display: flex;
+	align-self: flex-start;
+	align-items: flex-start;
+
+	& > span {
+		font-size: 60%;
+		color: #696974;
+	}
+}
+
+.metrics {
+}
+
+.cta {
+}

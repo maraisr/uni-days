@@ -1,9 +1,14 @@
 import * as React from 'react';
 import { defineLoader, useDataLoader } from '../lib/dataLoader';
+import { CountryCard } from '../modules/CountryCard';
+import { PageFrame } from '../modules/PageFrame';
 import { useDebouncedSearchTerm } from '../modules/Search/hooks';
 import { collectTerms } from '../modules/Search/processing';
+import type { RankData } from '../types';
 
-const loader = defineLoader<{ searchTerm: string }>({
+import styles from './Dashboard.module.css';
+
+const loader = defineLoader<{ searchTerm: string }, RankData[]>({
 	family: 'ranking',
 	getKey({ searchTerm }) {
 		return searchTerm;
@@ -30,5 +35,13 @@ export default () => {
 	const searchTerm = useDebouncedSearchTerm();
 	const data = useDataLoader(loader, { searchTerm });
 
-	return <pre>{JSON.stringify(data, null, 4)}</pre>;
+	return (
+		<PageFrame>
+			<div className={styles.grid}>
+				{data.map((data) => (
+					<CountryCard key={data.country} data={data} />
+				))}
+			</div>
+		</PageFrame>
+	);
 };

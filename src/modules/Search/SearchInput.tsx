@@ -50,7 +50,7 @@ export const SearchInput = () => {
 				value={currentSearchTerm}
 				onChange={onChangeHandler}
 			/>
-			<SearchIcon width="24px" />
+			<SearchIcon width="20px" />
 		</div>
 	);
 };

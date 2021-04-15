@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { lazy, LazyExoticComponent, memo } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import { AsyncBoundary } from './modules/Boundaries';
 import { Layout } from './modules/Layout';
 
@@ -29,6 +29,7 @@ export const App = () => (
 								<SuspensefullPage importee={DashboardPage} />
 							}
 						/>
+						<Route element={<Navigate to="/dashboard" />} />
 					</Routes>
 				</Layout>
 			}

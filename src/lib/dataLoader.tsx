@@ -51,11 +51,11 @@ export const DataLoaderProvider: FunctionComponent<{
 	return <context.Provider value={value}>{children}</context.Provider>;
 };
 
-const readLoader = (
-	loader: LoaderDefinition,
+const readLoader = <T extends LoaderDefinition>(
+	loader: T,
 	params: any,
 	context: ContextValue,
-) => {
+): T extends LoaderDefinition<any, infer U> ? U : never => {
 	const key = `${loader.family}~${loader.getKey(params)}`;
 	const probe = context.cache.get(key);
 
