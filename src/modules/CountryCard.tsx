@@ -1,8 +1,9 @@
-import * as React from 'react';
 import type { FunctionComponent } from 'react';
+import * as React from 'react';
 import type { RankData } from '../types';
 import styles from './CountryCard.module.css';
 import { Ring } from './Ring';
+import { Spline } from './Spline';
 
 export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 	data,
@@ -22,13 +23,13 @@ export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 				</div>
 			</div>
 			<div className={styles.metrics}>
-				<div>spline</div>
-				<div>
-					<Ring
-						value={score_percent}
-						label={`${(score_percent * 100).toFixed(1)}%`}
-					/>
-				</div>
+				<Spline
+					points={[120, 60, 80, 20, 80, 80, 0, 100, 100, 120, 80]}
+				/>
+				<Ring
+					value={score_percent}
+					label={`${(score_percent * 100).toFixed(1)}%`}
+				/>
 			</div>
 			<div className={styles.cta}>
 				<button>View Factors</button>

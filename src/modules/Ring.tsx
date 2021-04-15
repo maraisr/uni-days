@@ -23,7 +23,7 @@ export const Ring: FunctionComponent<{ value: number; label: string }> = ({
 					r={radius}
 					cx={center}
 					cy={center}
-				></circle>
+				/>
 				<circle
 					stroke="#0062FF"
 					fill="transparent"
@@ -34,7 +34,7 @@ export const Ring: FunctionComponent<{ value: number; label: string }> = ({
 					cx={center}
 					cy={center}
 					strokeDashoffset={circumference - value * circumference}
-				></circle>
+				/>
 			</svg>
 			<figcaption>{label}</figcaption>
 		</figure>
