@@ -27,31 +27,35 @@
 	flex-direction: column;
 	min-width: 0;
 
-	& > span {
+	& .country {
+		font-weight: 700;
 		text-overflow: ellipsis;
 		overflow: hidden;
 		white-space: nowrap;
 		max-width: 100%;
 	}
-}
 
-.year {
-	font-size: 60%;
-	color: #696974;
+	& .year {
+		font-size: 60%;
+		color: #696974;
+	}
 }
 
 .rank {
 	display: flex;
 	align-self: flex-start;
 	align-items: flex-start;
+	font-weight: 700;
 
 	& > span {
+		font-weight: 400;
 		font-size: 60%;
 		color: #696974;
 	}
 }
 
 .metrics {
+	grid-template-columns: 1fr 0.6fr;
 }
 
 .cta {

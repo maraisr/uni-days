@@ -2,6 +2,7 @@ import * as React from 'react';
 import type { FunctionComponent } from 'react';
 import type { RankData } from '../types';
 import styles from './CountryCard.module.css';
+import { Ring } from './Ring';
 
 export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 	data,
@@ -12,7 +13,7 @@ export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 		<div className={styles.component}>
 			<div className={styles.headline}>
 				<div className={styles.name}>
-					<span>{data.country}</span>
+					<span className={styles.country}>{data.country}</span>
 					<span className={styles.year}>{data.year}</span>
 				</div>
 				<div className={styles.rank}>
@@ -22,7 +23,12 @@ export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 			</div>
 			<div className={styles.metrics}>
 				<div>spline</div>
-				<div>progress ring {score_percent * 100}%</div>
+				<div>
+					<Ring
+						value={score_percent}
+						label={`${(score_percent * 100).toFixed(1)}%`}
+					/>
+				</div>
 			</div>
 			<div className={styles.cta}>
 				<button>View Factors</button>
