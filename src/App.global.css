@@ -27,7 +27,8 @@ strong {
 	font-weight: bold;
 }
 
-figure {
+figure,
+p {
 	margin: 0;
 }
 

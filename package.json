@@ -19,6 +19,7 @@
   "dependencies": {
     "@heroicons/react": "^1.0.0",
     "async-boundary": "^0.0.1",
+    "clsx": "^1.1.1",
     "history": "^5.0.0",
     "react": "^0.0.0-experimental-84c06fef8",
     "react-dom": "^0.0.0-experimental-84c06fef8",
