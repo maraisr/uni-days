@@ -10,7 +10,7 @@ const context = createContext<AuthContext | null>(null);
 
 export const AuthProvider: FunctionComponent = ({ children }) => {
 	return (
-		<context.Provider value={{ isAuthenticated: false }}>
+		<context.Provider value={{ isAuthenticated: true }}>
 			{children}
 		</context.Provider>
 	);

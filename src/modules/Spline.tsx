@@ -54,13 +54,16 @@ const svgPath = (points: CoordTuple[]) => {
 	);
 };
 
-export const Spline: FunctionComponent<{ points: number[] }> = ({ points }) => {
+export const Spline: FunctionComponent<{
+	points: number[];
+	reverse: boolean;
+}> = ({ points, reverse = false }) => {
 	const max = Math.max(...points);
 	const interval = WIDTH / points.length;
 
 	const coords: CoordTuple[] = points.map((v, i) => [
 		interval * i,
-		(v / max) * HEIGHT,
+		((max - v) / max) * HEIGHT,
 	]);
 
 	return (

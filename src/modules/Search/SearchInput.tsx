@@ -47,7 +47,7 @@ export const SearchInput = () => {
 			<input
 				className={styles.input}
 				placeholder="Search... eg. Denmark and Finland in 2017"
-				value={currentSearchTerm}
+				defaultValue={currentSearchTerm}
 				onChange={onChangeHandler}
 			/>
 			<SearchIcon width="20px" />

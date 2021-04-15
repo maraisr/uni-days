@@ -3,10 +3,17 @@ import clsx from 'clsx';
 import type { FunctionComponent } from 'react';
 import * as React from 'react';
 import { useAuth } from '../lib/auth';
+import { defineLoader, useDataLoader } from '../lib/dataLoader';
 import type { RankData } from '../types';
 import styles from './CountryCard.module.css';
 import { Ring } from './Ring';
 import { Spline } from './Spline';
+
+export type CountryCardData = Aggregate & RankData;
+
+interface Aggregate {
+	points: number[];
+}
 
 const Metric: FunctionComponent<{ label: string; alignLeft?: boolean }> = ({
 	label,
@@ -19,12 +26,14 @@ const Metric: FunctionComponent<{ label: string; alignLeft?: boolean }> = ({
 	</div>
 );
 
-export const CountryCard: FunctionComponent<{ data: RankData }> = ({
+export const CountryCard: FunctionComponent<{ data: CountryCardData }> = ({
 	data,
 }) => {
 	const { isAuthenticated } = useAuth();
 	const score = Number.parseFloat(data.score);
 	const score_percent = score / 10;
+
+	const has_spline = data.points.length > 1;
 
 	return (
 		<div className={styles.component}>
@@ -38,13 +47,18 @@ export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 					{data.rank}
 				</div>
 			</div>
-			<div className={styles.metrics}>
-				<Metric label={'5 year trend'} alignLeft>
-					<Spline
-						points={[120, 60, 80, 20, 80, 80, 0, 100, 100, 120, 80]}
-					/>
-				</Metric>
-				<Metric label={'Cumulative score'}>
+			<div
+				className={clsx(styles.metrics, !has_spline && styles.noSpline)}
+			>
+				{has_spline ? (
+					<Metric
+						label={`${data.points.length} year trend`}
+						alignLeft
+					>
+						<Spline reverse points={data.points} />
+					</Metric>
+				) : null}
+				<Metric label={'Happiness score'}>
 					<Ring value={score_percent} label={score.toFixed(1)} />
 				</Metric>
 			</div>
