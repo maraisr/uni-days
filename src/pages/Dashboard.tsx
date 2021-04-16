@@ -1,8 +1,8 @@
+import type { ChangeEventHandler } from 'react';
 import * as React from 'react';
 import {
-	ChangeEventHandler,
 	memo,
-	unstable_startTransition,
+	unstable_useDeferredValue,
 	useCallback,
 	useEffect,
 	useMemo,
@@ -53,15 +53,14 @@ export default memo(() => {
 	const { countries = [], year: searchYear = years[0] } =
 		useProcessedSearchTerm() ?? {};
 	const [year, setYear] = useState(searchYear);
+	const yearForApi = unstable_useDeferredValue(year);
 	const [page, setPage] = useState(1);
 
-	const data = useDataLoader(loader, { year, countries });
+	const data = useDataLoader(loader, { year: yearForApi, countries });
 
 	const updateYear = useCallback((year: string) => {
-		unstable_startTransition(() => {
-			setPage(1);
-			setYear(year);
-		});
+		setYear(year);
+		setPage(1);
 	}, []);
 
 	const onYearChangeHandler = useCallback<
