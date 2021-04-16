@@ -78,7 +78,17 @@ export default memo(() => {
 		setPage((page) => page + 1);
 	}, []);
 
-	const result = useMemo(() => data.slice(0, page * PAGE_SIZE), [data, page]);
+	const sortedData = useMemo(
+		() =>
+			data.sort((a, b) =>
+				a.rank === b.rank ? 0 : a.rank > b.rank ? 1 : -1,
+			),
+		[data],
+	);
+	const result = useMemo(() => sortedData.slice(0, page * PAGE_SIZE), [
+		sortedData,
+		page,
+	]);
 
 	const has_more = result.length < data.length;
 	const has_results = data.length > 0;

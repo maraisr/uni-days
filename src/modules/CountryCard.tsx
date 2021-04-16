@@ -1,4 +1,4 @@
-import { ExclamationIcon } from '@heroicons/react/outline';
+import { ExclamationIcon, XCircleIcon } from '@heroicons/react/outline';
 import { AsyncBoundary } from 'async-boundary';
 import clsx from 'clsx';
 import type { FunctionComponent } from 'react';
@@ -6,7 +6,7 @@ import * as React from 'react';
 import { memo } from 'react';
 import { useAuth } from '../lib/auth';
 import { defineLoader, useDataLoader } from '../lib/dataLoader';
-import type { RankData } from '../types';
+import type { FactorsData, RankData } from '../types';
 import styles from './CountryCard.module.css';
 import { Ring } from './Ring';
 import { Spline } from './Spline';
@@ -18,6 +18,19 @@ const splineDataLoader = defineLoader<{ country: string }, RankData[]>({
 	},
 	getData({ country }, api) {
 		return api.rankings({ country });
+	},
+});
+
+const factorsDataLoader = defineLoader<
+	{ country: string; year: string },
+	FactorsData[]
+>({
+	family: 'factors.country',
+	getKey({ country, year }) {
+		return country + year;
+	},
+	getData({ country, year }, api) {
+		return api.factors({ country, year });
 	},
 });
 
@@ -42,6 +55,77 @@ const SplineData: FunctionComponent<{ country: string }> = ({ country }) => {
 		</Metric>
 	) : null;
 };
+
+const Factors: FunctionComponent<{ country: string; year: number }> = ({
+	country,
+	year,
+}) => {
+	const data = useDataLoader(factorsDataLoader, {
+		country,
+		year: year.toString(),
+	})[0];
+
+	const score = Number.parseFloat(data.score);
+
+	// Number is how much it had contributed to the score
+	// @see
+	// https://worldhappiness.report/faq/#what-is-the-original-source-of-the-data-for-figure-21-how-are-the-rankings-calculated
+	const calcLabel = (value: number) => ((value / score) * 10).toFixed(1);
+
+	return (
+		<div className={styles.factors}>
+			<Metric label={'Economy'}>
+				<Ring
+					value={data.economy / score}
+					label={calcLabel(data.economy)}
+					colour={'#10B981'}
+				/>
+			</Metric>
+			<Metric label={'Family'}>
+				<Ring
+					value={data.family / score}
+					label={calcLabel(data.family)}
+					colour={'#D97706'}
+				/>
+			</Metric>
+			<Metric label={'Health'}>
+				<Ring
+					value={data.health / score}
+					label={calcLabel(data.health)}
+					colour={'#EF4444'}
+				/>
+			</Metric>
+			<Metric label={'Freedom'}>
+				<Ring
+					value={data.freedom / score}
+					label={calcLabel(data.freedom)}
+					colour={'#FBBF24'}
+				/>
+			</Metric>
+			<Metric label={'Generosity'}>
+				<Ring
+					value={data.generosity / score}
+					label={calcLabel(data.generosity)}
+					colour={'#7C3AED'}
+				/>
+			</Metric>
+			<Metric label={'Trust'}>
+				<Ring
+					value={data.trust / score}
+					label={calcLabel(data.trust)}
+					colour={'#EC4899'}
+				/>
+			</Metric>
+		</div>
+	);
+};
+
+const FactorsError = memo(() => (
+	<p className={clsx(styles.small, styles.smallError)}>
+		<XCircleIcon />
+		Failed to retrieve factors, please login.
+	</p>
+));
 
 const SplineLoader = memo(() => (
 	<Metric label="10 year trend" alignLeft>
@@ -77,51 +161,13 @@ export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 					<Ring value={score_percent} label={score.toFixed(1)} />
 				</Metric>
 			</div>
-			{isAuthenticated ? (
-				<div className={styles.factors}>
-					<Metric label={'Economy'}>
-						<Ring
-							value={score_percent}
-							label={'1.2'}
-							colour={'#10B981'}
-						/>
-					</Metric>
-					<Metric label={'Family'}>
-						<Ring
-							value={score_percent}
-							label={'1.2'}
-							colour={'#D97706'}
-						/>
-					</Metric>
-					<Metric label={'Health'}>
-						<Ring
-							value={score_percent}
-							label={'1.2'}
-							colour={'#EF4444'}
-						/>
-					</Metric>
-					<Metric label={'Freedom'}>
-						<Ring
-							value={score_percent}
-							label={'1.2'}
-							colour={'#FBBF24'}
-						/>
-					</Metric>
-					<Metric label={'Generosity'}>
-						<Ring
-							value={score_percent}
-							label={'1.2'}
-							colour={'#7C3AED'}
-						/>
-					</Metric>
-					<Metric label={'Trust'}>
-						<Ring
-							value={score_percent}
-							label={'1.2'}
-							colour={'#EC4899'}
-						/>
-					</Metric>
-				</div>
+			{isAuthenticated() ? (
+				<AsyncBoundary
+					fallback={<SplineLoader />}
+					errorFallback={FactorsError}
+				>
+					<Factors country={data.country} year={data.year} />
+				</AsyncBoundary>
 			) : (
 				<p className={styles.small}>
 					<ExclamationIcon />

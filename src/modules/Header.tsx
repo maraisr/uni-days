@@ -19,7 +19,7 @@ export const Header = () => {
 			<div>
 				<SearchInput />
 			</div>
-			{isAuthenticated ? (
+			{isAuthenticated() ? (
 				<Button>Logout</Button>
 			) : (
 				<Link to="/login" className={buttonStyles}>

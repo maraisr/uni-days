@@ -1,35 +1,19 @@
-import type { FunctionComponent } from 'react';
-import * as React from 'react';
-import { createContext, useContext } from 'react';
-
-// check https://github.com/auth0/auth0-spa-js/blob/e4b04f3f74fd54e5ed27bc48e01ba03c6655667d/src/cache.ts#L134
-
-interface AuthContext {
-	isAuthenticated: boolean;
-}
-
-interface AuthClient {
+export interface AuthClient {
 	isAuthenticated(): boolean;
 
-	getToken(): Promise<string>;
+	getToken(): string;
 
-	login(username: string, password: string): Promise<boolean>;
+	login(username: string, password: string): Promise<string>;
+
+	register(username: string, password: string): Promise<string>;
 
 	logout(): boolean;
-
-	register(username: string, password: string): Promise<boolean>;
 }
 
-const context = createContext<AuthContext | null>(null);
+let currentAuthClient: AuthClient = null;
 
-export const AuthProvider: FunctionComponent = ({ children }) => {
-	return (
-		<context.Provider value={{ isAuthenticated: false }}>
-			{children}
-		</context.Provider>
-	);
-};
+export const getCurrentAuthClient = () => currentAuthClient;
+export const setAuthClient = (client: AuthClient) =>
+	(currentAuthClient = client);
 
-// Hooks
-
-export const useAuth = () => useContext(context);
+export const useAuth = () => getCurrentAuthClient();

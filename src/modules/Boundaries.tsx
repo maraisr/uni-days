@@ -1,4 +1,4 @@
-import { AsyncBoundary as AsyncBoundaryImpl } from 'async-boundary';
+import { AsyncBoundary } from 'async-boundary';
 import type { FunctionComponent } from 'react';
 import * as React from 'react';
 
@@ -8,13 +8,11 @@ const PageError = () => (
 const FullPageLoader = () => <p>Loading...</p>;
 
 export const ApplicationBoundary: FunctionComponent = ({ children }) => (
-	<AsyncBoundaryImpl
+	<AsyncBoundary
 		errorFallback={PageError}
 		onError={console.error}
 		fallback={<FullPageLoader />}
 	>
 		{children}
-	</AsyncBoundaryImpl>
+	</AsyncBoundary>
 );
-
-export const AsyncBoundary = AsyncBoundaryImpl;

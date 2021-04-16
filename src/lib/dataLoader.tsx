@@ -1,12 +1,6 @@
 import type { FunctionComponent } from 'react';
 import * as React from 'react';
-import {
-	ContextType,
-	createContext,
-	useContext,
-	useMemo,
-	useState,
-} from 'react';
+import { ContextType, createContext, useContext, useMemo } from 'react';
 
 type Cache = Map<string, any>;
 
@@ -37,16 +31,14 @@ interface LoaderFn {
 export const defineLoader: LoaderFn = (config) => config;
 
 export const DataLoaderProvider: FunctionComponent<{
-	apiClient: ApiClients;
-}> = ({ children, apiClient }) => {
-	const [cache] = useState(() => new Map());
-
+	client: ApiClients;
+}> = ({ children, client }) => {
 	const value = useMemo(() => {
 		return {
-			cache,
-			api: apiClient,
+			cache: new Map(),
+			api: client,
 		};
-	}, [apiClient, cache]);
+	}, [client]);
 
 	return <context.Provider value={value}>{children}</context.Provider>;
 };
@@ -57,21 +49,18 @@ const readLoader = <T extends LoaderDefinition>(
 	context: ContextValue,
 ): T extends LoaderDefinition<any, infer U> ? U : never => {
 	const key = `${loader.family}~${loader.getKey(params)}`;
-	const probe = context.cache.get(key);
 
-	if (probe !== undefined) {
-		if (typeof probe.then === 'function') throw probe;
-		return probe;
+	const cachedValue = context.cache.get(key);
+
+	if (cachedValue !== undefined) {
+		if (typeof cachedValue.then === 'function') throw cachedValue;
+		if (cachedValue instanceof Error) throw cachedValue;
+		return cachedValue;
 	}
 
-	// TODO: Try and re-use existing in-flight loaders
 	const networkPromise = loader.getData(params, context.api);
-	if (networkPromise === null) {
-		context.cache.set(key, null);
-		return null;
-	}
 
-	let promise = Array.isArray(networkPromise)
+	const promise = Array.isArray(networkPromise)
 		? Promise.all(networkPromise).then((data) => data.flat())
 		: networkPromise;
 
@@ -79,10 +68,9 @@ const readLoader = <T extends LoaderDefinition>(
 		.then((data) => {
 			context.cache.set(key, data);
 		})
-		.catch((e) => {
-			throw e;
+		.catch((error) => {
+			context.cache.set(key, error);
 		});
-
 	context.cache.set(key, promise);
 
 	throw promise;
@@ -92,6 +80,6 @@ export const useDataLoader = <T extends LoaderDefinition>(
 	loader: T,
 	params?: T extends LoaderDefinition<infer U, any> ? U : never,
 ) => {
-	const cache = useContext(context)!;
-	return readLoader(loader, params, cache);
+	const contextValue = useContext(context)!;
+	return readLoader(loader, params, contextValue);
 };

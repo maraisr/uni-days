@@ -1,7 +1,7 @@
+import { AsyncBoundary } from 'async-boundary';
 import * as React from 'react';
 import { lazy, LazyExoticComponent, memo } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { AsyncBoundary } from './modules/Boundaries';
 import { Layout } from './modules/Layout';
 import { Spinner } from './modules/Spinner';
 

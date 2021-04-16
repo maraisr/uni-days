@@ -2,10 +2,10 @@
   "name": "cab230-assignment-1",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
     "build": "tsc && vite build",
-    "serve": "vite preview",
-    "format": "prettier --write \"{*,src/**/*}.{tsx,ts,css}\""
+    "dev": "vite",
+    "format": "prettier --write \"{*,src/**/*}.{tsx,ts,css}\"",
+    "serve": "vite preview"
   },
   "prettier": {
     "bracketSpacing": true,
@@ -17,8 +17,8 @@
     "useTabs": true
   },
   "dependencies": {
-    "@heroicons/react": "^1.0.0",
-    "async-boundary": "^0.0.1",
+    "@heroicons/react": "^1.0.1",
+    "async-boundary": "^0.0.3",
     "clsx": "^1.1.1",
     "history": "^5.0.0",
     "react": "^0.0.0-experimental-84c06fef8",
