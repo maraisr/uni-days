@@ -15,9 +15,6 @@ export const Header = () => {
 				<Link to="/dashboard" className={buttonStyles}>
 					Dashboard
 				</Link>
-				<Link to="/rankings" className={buttonStyles}>
-					Rankings
-				</Link>
 			</nav>
 			<div>
 				<SearchInput />

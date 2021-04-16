@@ -1,0 +1,10 @@
+.component {
+	width: 100%;
+	margin: 0 auto;
+	max-width: 350px;
+
+	padding: 1.25rem;
+	border-radius: 1.25rem;
+
+	background-color: white;
+}

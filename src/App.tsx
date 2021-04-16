@@ -6,6 +6,8 @@ import { Layout } from './modules/Layout';
 import { Spinner } from './modules/Spinner';
 
 const DashboardPage = lazy(() => import('./pages/Dashboard'));
+const LoginPage = lazy(() => import('./pages/Login'));
+const RegisterPage = lazy(() => import('./pages/Register'));
 
 const SuspensefullPage = memo<{ importee: LazyExoticComponent<any> }>(
 	({ importee: Importee }) => (
@@ -16,27 +18,21 @@ const SuspensefullPage = memo<{ importee: LazyExoticComponent<any> }>(
 );
 
 export const App = () => (
-	<Routes>
-		<Route path="/login" element={<p>login</p>} />
-		<Route path="/register" element={<p>registration</p>} />
-		<Route
-			path="/*"
-			element={
-				<Layout>
-					<Routes>
-						<Route
-							path="/dashboard"
-							element={
-								<SuspensefullPage importee={DashboardPage} />
-							}
-						/>
-						<Route
-							path="/*"
-							element={<Navigate to="/dashboard" />}
-						/>
-					</Routes>
-				</Layout>
-			}
-		/>
-	</Routes>
+	<Layout>
+		<Routes>
+			<Route
+				path="/login"
+				element={<SuspensefullPage importee={LoginPage} />}
+			/>
+			<Route
+				path="/register"
+				element={<SuspensefullPage importee={RegisterPage} />}
+			/>
+			<Route
+				path="/dashboard"
+				element={<SuspensefullPage importee={DashboardPage} />}
+			/>
+			<Route path="/*" element={<Navigate to="/dashboard" />} />
+		</Routes>
+	</Layout>
 );
