@@ -1,6 +1,6 @@
 .component {
 	display: grid;
-	grid-template-columns: 1fr auto;
+	grid-template-columns: auto 1fr;
 	grid-gap: 0.25rem;
 
 	width: 100%;
@@ -16,6 +16,10 @@
 
 	&:focus-within {
 		box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+	}
+
+	& svg {
+		color: #92929d;
 	}
 }
 

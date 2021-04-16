@@ -3,12 +3,12 @@ import * as React from 'react';
 
 import styles from './Button.module.css';
 
+export const buttonStyles = styles.component;
+
 export const Button: FunctionComponent<{
 	onClick?: MouseEventHandler<HTMLButtonElement>;
-}> = ({ children, onClick }) => {
-	return (
-		<button className={styles.component} onClick={onClick}>
-			{children}
-		</button>
-	);
-};
+}> = ({ children, onClick }) => (
+	<button className={buttonStyles} onClick={onClick}>
+		{children}
+	</button>
+);

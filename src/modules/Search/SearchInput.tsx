@@ -47,13 +47,13 @@ export const SearchInput = () => {
 
 	return (
 		<div className={styles.component}>
+			<SearchIcon width="20px" />
 			<input
 				className={styles.input}
 				placeholder="Search... eg. Denmark and Finland in 2017"
 				defaultValue={loadedSearchTerm}
 				onChange={onChangeHandler}
 			/>
-			<SearchIcon width="20px" />
 		</div>
 	);
 };

@@ -40,9 +40,7 @@ const SplineData: FunctionComponent<{ country: string }> = ({ country }) => {
 		<Metric label={`${points.length} year trend`} alignLeft>
 			<Spline points={points} />
 		</Metric>
-	) : (
-		<span></span>
-	);
+	) : null;
 };
 
 const SplineLoader = memo(() => (
@@ -71,7 +69,7 @@ export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 					{data.rank}
 				</div>
 			</div>
-			<div className={clsx(styles.metrics)}>
+			<div className={styles.metrics}>
 				<AsyncBoundary fallback={<SplineLoader />} errorFallback={null}>
 					<SplineData country={data.country} />
 				</AsyncBoundary>
