@@ -1,29 +1,32 @@
+import { SearchIcon } from '@heroicons/react/outline';
 import type { ChangeEventHandler } from 'react';
 import * as React from 'react';
-import { useCallback, unstable_startTransition } from 'react';
+import {
+	unstable_startTransition,
+	useCallback,
+	useEffect,
+	useState,
+} from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { SearchIcon } from '@heroicons/react/outline';
 
 import styles from './SearchInput.module.css';
 
 export const SearchInput = () => {
 	const navigate = useNavigate();
 	const [params] = useSearchParams();
-	const currentSearchTerm = params.get('q') ?? '';
-	// TODO: Little bug here, try and correct string partially
+	const [loadedSearchTerm] = useState(() => params.get('q') ?? '');
+	const [search, setSearchValue] = useState(loadedSearchTerm);
 
-	const onChangeHandler = useCallback<ChangeEventHandler<HTMLInputElement>>(
-		(e) => {
+	useEffect(() => {
+		const tm = setTimeout(() => {
 			const replace = /dashboard$/.test(window.location.pathname);
 
 			unstable_startTransition(() => {
-				if (e.currentTarget.value) {
+				if (search) {
 					navigate(
 						{
 							pathname: '/dashboard',
-							search: `?q=${encodeURIComponent(
-								e.currentTarget.value,
-							)}`,
+							search: `?q=${encodeURIComponent(search)}`,
 						},
 						{
 							replace,
@@ -38,6 +41,14 @@ export const SearchInput = () => {
 					);
 				}
 			});
+		}, 300);
+
+		return () => void clearTimeout(tm);
+	}, [search]);
+
+	const onChangeHandler = useCallback<ChangeEventHandler<HTMLInputElement>>(
+		(e) => {
+			setSearchValue(e.currentTarget.value);
 		},
 		[],
 	);
@@ -47,7 +58,7 @@ export const SearchInput = () => {
 			<input
 				className={styles.input}
 				placeholder="Search... eg. Denmark and Finland in 2017"
-				defaultValue={currentSearchTerm}
+				defaultValue={loadedSearchTerm}
 				onChange={onChangeHandler}
 			/>
 			<SearchIcon width="20px" />

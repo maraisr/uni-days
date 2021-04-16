@@ -19,4 +19,8 @@ export default {
 		const req = await fetch(apiEndpoint.toString());
 		return req.json();
 	},
+	async countries() {
+		const req = await fetch('http://131.181.190.87:3000/countries');
+		return req.json();
+	},
 } as ApiClients;

@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { lazy, LazyExoticComponent, memo } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { AsyncBoundary } from './modules/Boundaries';
 import { Layout } from './modules/Layout';
+import { Spinner } from './modules/Spinner';
 
 const DashboardPage = lazy(() => import('./pages/Dashboard'));
 
 const SuspensefullPage = memo<{ importee: LazyExoticComponent<any> }>(
 	({ importee: Importee }) => (
-		<AsyncBoundary>
+		<AsyncBoundary fallback={<Spinner />}>
 			<Importee />
 		</AsyncBoundary>
 	),
@@ -29,7 +30,10 @@ export const App = () => (
 								<SuspensefullPage importee={DashboardPage} />
 							}
 						/>
-						<Route element={<Navigate to="/dashboard" />} />
+						<Route
+							path="/*"
+							element={<Navigate to="/dashboard" />}
+						/>
 					</Routes>
 				</Layout>
 			}

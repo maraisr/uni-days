@@ -17,7 +17,7 @@ const context = createContext<{
 type ContextValue = ContextType<typeof context>;
 
 export interface ApiClients {
-	[endpoint: string]: (params: any) => Promise<any>;
+	[endpoint: string]: (params?: any) => Promise<any>;
 }
 
 interface LoaderDefinition<P = any, Result = unknown> {
@@ -90,7 +90,7 @@ const readLoader = <T extends LoaderDefinition>(
 
 export const useDataLoader = <T extends LoaderDefinition>(
 	loader: T,
-	params: T extends LoaderDefinition<infer U, any> ? U : never,
+	params?: T extends LoaderDefinition<infer U, any> ? U : never,
 ) => {
 	const cache = useContext(context)!;
 	return readLoader(loader, params, cache);
