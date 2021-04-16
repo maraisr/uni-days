@@ -1,4 +1,3 @@
-import { useLayoutEffect, useState } from 'react';
 import type { FunctionComponent } from 'react';
 import * as React from 'react';
 

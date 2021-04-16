@@ -10,9 +10,13 @@ interface AuthContext {
 
 interface AuthClient {
 	isAuthenticated(): boolean;
+
 	getToken(): Promise<string>;
+
 	login(username: string, password: string): Promise<boolean>;
+
 	logout(): boolean;
+
 	register(username: string, password: string): Promise<boolean>;
 }
 
