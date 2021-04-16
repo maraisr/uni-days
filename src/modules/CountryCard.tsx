@@ -1,4 +1,10 @@
-import { ExclamationIcon, XCircleIcon } from '@heroicons/react/outline';
+import {
+	BanIcon,
+	DotsHorizontalIcon,
+	ExclamationIcon,
+	TrendingDownIcon,
+	TrendingUpIcon,
+} from '@heroicons/react/outline';
 import { AsyncBoundary } from 'async-boundary';
 import clsx from 'clsx';
 import type { FunctionComponent } from 'react';
@@ -6,9 +12,11 @@ import * as React from 'react';
 import { memo } from 'react';
 import { useAuth } from '../lib/auth';
 import { defineLoader, useDataLoader } from '../lib/dataLoader';
+import { isIncreasingSequence } from '../lib/helpers';
 import type { FactorsData, RankData } from '../types';
 import styles from './CountryCard.module.css';
 import { Ring } from './Ring';
+import { Spinner } from './Spinner';
 import { Spline } from './Spline';
 
 const splineDataLoader = defineLoader<{ country: string }, RankData[]>({
@@ -34,6 +42,11 @@ const factorsDataLoader = defineLoader<
 	},
 });
 
+const sortByYear = (data: RankData[]) =>
+	data.sort((a, b) => {
+		return a.year - b.year;
+	});
+
 const Metric: FunctionComponent<{ label: string; alignLeft?: boolean }> = ({
 	label,
 	alignLeft = false,
@@ -45,16 +58,29 @@ const Metric: FunctionComponent<{ label: string; alignLeft?: boolean }> = ({
 	</div>
 );
 
-const SplineData: FunctionComponent<{ country: string }> = ({ country }) => {
+const TrendingIndicator = memo<{ country: string }>(({ country }) => {
 	const data = useDataLoader(splineDataLoader, { country });
 
-	const points = data.map((i) => i.rank);
+	const points = sortByYear(data).map((i) => i.rank);
+	return points.length > 1 ? (
+		isIncreasingSequence(points) ? (
+			<TrendingUpIcon width="1rem" color="#10B981" />
+		) : (
+			<TrendingDownIcon width="1rem" color="#EF4444" />
+		)
+	) : null;
+});
+
+const SplineData = memo<{ country: string }>(({ country }) => {
+	const data = useDataLoader(splineDataLoader, { country });
+
+	const points = sortByYear(data).map((i) => i.rank);
 	return points.length > 1 ? (
 		<Metric label={`${points.length} year trend`} alignLeft>
 			<Spline points={points} />
 		</Metric>
 	) : null;
-};
+});
 
 const Factors: FunctionComponent<{ country: string; year: number }> = ({
 	country,
@@ -122,7 +148,7 @@ const Factors: FunctionComponent<{ country: string; year: number }> = ({
 
 const FactorsError = memo(() => (
 	<p className={clsx(styles.small, styles.smallError)}>
-		<XCircleIcon />
+		<BanIcon />
 		Failed to retrieve factors, please login.
 	</p>
 ));
@@ -144,6 +170,14 @@ export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 	return (
 		<div className={styles.component}>
 			<div className={styles.headline}>
+				<AsyncBoundary
+					fallback={
+						<DotsHorizontalIcon width="1rem" color="#EEEEEE" />
+					}
+					errorFallback={null}
+				>
+					<TrendingIndicator country={data.country} />
+				</AsyncBoundary>
 				<div className={styles.name}>
 					<span className={styles.country}>{data.country}</span>
 					<span className={styles.year}>{data.year}</span>
@@ -157,13 +191,13 @@ export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 				<AsyncBoundary fallback={<SplineLoader />} errorFallback={null}>
 					<SplineData country={data.country} />
 				</AsyncBoundary>
-				<Metric label={'Happiness score'}>
+				<Metric label="Happiness score">
 					<Ring value={score_percent} label={score.toFixed(1)} />
 				</Metric>
 			</div>
 			{isAuthenticated() ? (
 				<AsyncBoundary
-					fallback={<SplineLoader />}
+					fallback={<Spinner />}
 					errorFallback={FactorsError}
 				>
 					<Factors country={data.country} year={data.year} />

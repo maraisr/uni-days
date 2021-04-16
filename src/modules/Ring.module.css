@@ -5,7 +5,7 @@
 	height: 0;
 	padding-top: 100%;
 
-	& svg {
+	svg {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -14,7 +14,7 @@
 		transform-origin: 50% 50%;
 	}
 
-	& figcaption {
+	figcaption {
 		position: absolute;
 		display: grid;
 		justify-content: center;
@@ -26,7 +26,7 @@
 		font-weight: 700;
 	}
 
-	& circle {
+	circle {
 		transition: stroke-dashoffset 0.5s;
 	}
 }

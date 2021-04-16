@@ -5,7 +5,7 @@ export default defineConfig({
 	plugins: [reactRefresh()],
 	css: {
 		postcss: {
-			plugins: [require('postcss-nesting')],
+			plugins: [require('postcss-nested')],
 		},
 	},
 });

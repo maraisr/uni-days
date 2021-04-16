@@ -63,7 +63,7 @@ export const Spline: FunctionComponent<{
 
 	const coords: CoordTuple[] = points.map((v, i) => [
 		interval * i,
-		((max - v) / max) * HEIGHT,
+		(v / max) * HEIGHT,
 	]);
 
 	return (

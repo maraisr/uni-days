@@ -11,7 +11,7 @@
 .headline,
 .metrics {
 	display: grid;
-	grid-template-columns: 1fr auto;
+	grid-template-columns: auto 1fr auto;
 	grid-gap: 1rem;
 	width: 100%;
 	min-width: 0;
@@ -27,7 +27,7 @@
 	flex-direction: column;
 	min-width: 0;
 
-	& .country {
+	.country {
 		font-weight: 700;
 		text-overflow: ellipsis;
 		overflow: hidden;
@@ -35,19 +35,20 @@
 		max-width: 100%;
 	}
 
-	& .year {
+	.year {
 		font-size: 60%;
 		color: #696974;
 	}
 }
 
 .rank {
+	grid-column: 3;
 	display: flex;
 	align-self: flex-start;
 	align-items: flex-start;
 	font-weight: 700;
 
-	& > span {
+	> span {
 		font-weight: 400;
 		font-size: 60%;
 		color: #696974;
@@ -56,10 +57,6 @@
 
 .metrics {
 	grid-template-columns: 1fr 0.6fr;
-
-	&.noSpline {
-		grid-template-columns: 0.6fr 1fr;
-	}
 }
 
 .factors {
@@ -69,7 +66,7 @@
 	grid-gap: 1.7rem;
 	grid-template-columns: repeat(3, 1fr);
 
-	& > .metric {
+	> .metric {
 		display: inline-flex;
 		grid-row-gap: 1rem;
 		flex-direction: column;
@@ -81,10 +78,17 @@
 .metric {
 	display: contents;
 
-	& > span {
+	&.left {
+		> span {
+			text-align: left;
+		}
+	}
+
+	> span {
 		grid-row: 2;
 		font-size: 0.8rem;
 		color: #696974;
+		text-align: center;
 	}
 }
 
@@ -97,12 +101,12 @@
 	color: #696974;
 
 	&.smallError {
-		& > svg {
+		> svg {
 			color: #dc2626;
 		}
 	}
 
-	& > svg {
+	> svg {
 		color: #fbbf24;
 		width: 16px;
 	}
