@@ -1,3 +1,15 @@
+/**
+ * This file houses the dataLoader a mechanism that enables fetch, or REST style apis to share their promises with
+ * sibling's enabling minimal network traffic and caching. Currently only families will have their responses cached,
+ * but not the underlying transport.
+ *
+ * There are hopes in the near future for this to facilitate request sharing, caching eviction and so on. But
+ * ultimately we should aim for a normalized store such that 2 different families can ask the store for a ranking of
+ * year+country, and if that data is in the store maybe from another family, to return it. This does mean that
+ * components are reference tracked and updated when pieces of information changes. But that journey is far to involved
+ * for an assessment like this.
+ */
+
 import type { FunctionComponent } from 'react';
 import * as React from 'react';
 import { ContextType, createContext, useContext, useMemo } from 'react';
@@ -15,10 +27,19 @@ export interface ApiClients {
 }
 
 interface LoaderDefinition<P = any, Result = unknown> {
+	/**
+	 * The family this loader belongs to.
+	 */
 	family: string;
 
+	/**
+	 * The key, or think of this as the member within that family.
+	 */
 	getKey(params: P): string;
 
+	/**
+	 * Instrumenting the transport.
+	 */
 	getData(params: P, api: ApiClients): Promise<Result> | Promise<Result>[];
 }
 
@@ -30,6 +51,9 @@ interface LoaderFn {
 
 export const defineLoader: LoaderFn = (config) => config;
 
+/**
+ * Configures and sets up an api cache boundary.
+ */
 export const DataLoaderProvider: FunctionComponent<{
 	client: ApiClients;
 }> = ({ children, client }) => {
@@ -43,6 +67,10 @@ export const DataLoaderProvider: FunctionComponent<{
 	return <context.Provider value={value}>{children}</context.Provider>;
 };
 
+/**
+ * Reads an inflight resolved value, or throws a promise. This function is more bound to React ways of doing things,
+ * particularly around suspense for data fetching.
+ */
 const readLoader = <T extends LoaderDefinition>(
 	loader: T,
 	params: any,
@@ -76,6 +104,9 @@ const readLoader = <T extends LoaderDefinition>(
 	throw promise;
 };
 
+/**
+ * Reads data from a loader hooked up to variables, this hook will suspend.
+ */
 export const useDataLoader = <T extends LoaderDefinition>(
 	loader: T,
 	params?: T extends LoaderDefinition<infer U, any> ? U : never,

@@ -2,12 +2,12 @@ import { AsyncBoundary } from 'async-boundary';
 import * as React from 'react';
 import { lazy, LazyExoticComponent, memo } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { Layout } from './modules/Layout';
-import { Spinner } from './modules/Spinner';
+import { Layout } from './Layout';
+import { Spinner } from './Spinner';
 
-const DashboardPage = lazy(() => import('./pages/Dashboard'));
-const LoginPage = lazy(() => import('./pages/Login'));
-const RegisterPage = lazy(() => import('./pages/Register'));
+const DashboardPage = lazy(() => import('../pages/Dashboard'));
+const LoginPage = lazy(() => import('../pages/Login'));
+const RegisterPage = lazy(() => import('../pages/Register'));
 
 const SuspensefullPage = memo<{ importee: LazyExoticComponent<any> }>(
 	({ importee: Importee }) => (

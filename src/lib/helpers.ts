@@ -1,3 +1,6 @@
+/**
+ * A function that will cause non 200 series responses to throw exceptions.
+ */
 export const fetchWithThrow = async <T>(
 	fetcher: ReturnType<typeof fetch>,
 ): Promise<T> => {
@@ -7,7 +10,11 @@ export const fetchWithThrow = async <T>(
 	return req.json();
 };
 
-// Inspiration from https://stackoverflow.com/a/30651864/2609301
+/**
+ * A function that will tell you if a sequence of numbers are trending up (true for up, false for down)
+ *
+ * Algorithm inspired by @see https://stackoverflow.com/a/30651864/2609301
+ */
 export const isIncreasingSequence = (numbers: number[]) => {
 	const total = numbers.length;
 	const [C, D] = numbers.reduce(

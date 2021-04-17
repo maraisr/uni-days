@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
 import { Button, buttonStyles } from './Button';
 import styles from './Header.module.css';
-import { SearchInput } from './Search/SearchInput';
+import { SearchInput } from './SearchInput';
 
 export const Header = () => {
 	const { isAuthenticated } = useAuth();
@@ -16,9 +16,7 @@ export const Header = () => {
 					Dashboard
 				</Link>
 			</nav>
-			<div>
-				<SearchInput />
-			</div>
+			<SearchInput />
 			{isAuthenticated() ? (
 				<Button>Logout</Button>
 			) : (

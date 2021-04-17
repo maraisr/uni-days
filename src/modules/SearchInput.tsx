@@ -1,10 +1,43 @@
 import { SearchIcon } from '@heroicons/react/outline';
 import type { ChangeEventHandler } from 'react';
 import * as React from 'react';
-import { unstable_startTransition, useCallback, useRef, useState } from 'react';
+import {
+	unstable_startTransition,
+	unstable_useDeferredValue,
+	useCallback,
+	useRef,
+	useState,
+} from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import styles from './SearchInput.module.css';
+
+export const useSearchTerm = () => {
+	const [params] = useSearchParams();
+	return unstable_useDeferredValue(params.get('q') ?? '');
+};
+
+export const useProcessedSearchTerm = () => {
+	const searchTerm = useSearchTerm();
+
+	const returns: { year: string; countries: string[] } = {
+		year: '',
+		countries: [],
+	};
+
+	const searchTermMatches = searchTerm.match(
+		/(?:(?<c>[a-z]+)\s?((?=and)and\s?(?<c2>[a-z]+))?\s?(?:in|for|at)?\s?)?(?<y>[0-9]{4})?/i,
+	);
+	if (searchTermMatches) {
+		const { groups } = searchTermMatches;
+		returns.countries = [groups.c, groups.c2].filter(Boolean);
+		returns.year = groups.y;
+
+		return returns;
+	}
+
+	return null;
+};
 
 export const SearchInput = () => {
 	const navigate = useNavigate();

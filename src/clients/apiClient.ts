@@ -3,6 +3,9 @@ import { getCurrentAuthClient } from '../lib/auth';
 import type { ApiClients } from '../lib/dataLoader';
 import { fetchWithThrow } from '../lib/helpers';
 
+/**
+ * The client that interacts with our api.
+ */
 export default {
 	async rankings({ country, year }) {
 		const apiEndpoint = new URL(`${API_HOST}/rankings`);

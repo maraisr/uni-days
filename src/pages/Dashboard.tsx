@@ -12,7 +12,7 @@ import { defineLoader, useDataLoader } from '../lib/dataLoader';
 import { Button } from '../modules/Button';
 import { CountryCard } from '../modules/CountryCard';
 import { PageFrame } from '../modules/PageFrame';
-import { useProcessedSearchTerm, useSearchTerm } from '../modules/Search/hooks';
+import { useProcessedSearchTerm, useSearchTerm } from '../modules/SearchInput';
 import { Select } from '../modules/Select';
 import type { RankData } from '../types';
 

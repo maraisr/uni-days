@@ -1,0 +1,19 @@
+.component {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	font-size: 0.7rem;
+	color: #696974;
+
+	&.error {
+		> svg {
+			color: #dc2626;
+		}
+	}
+
+	> svg {
+		color: #fbbf24;
+		width: 16px;
+	}
+}
