@@ -6,10 +6,10 @@ export type RankData = {
 };
 
 export type FactorsData = {
-	economy: number;
-	family: number;
-	health: number;
-	freedom: number;
-	generosity: number;
-	trust: number;
+	economy: string;
+	family: string;
+	health: string;
+	freedom: string;
+	generosity: string;
+	trust: string;
 } & Exclude<RankData, 'year'>;

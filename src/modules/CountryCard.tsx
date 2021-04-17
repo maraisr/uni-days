@@ -82,6 +82,15 @@ const SplineData = memo<{ country: string }>(({ country }) => {
 	) : null;
 });
 
+const factorsKeys = [
+	'economy',
+	'family',
+	'health',
+	'freedom',
+	'generosity',
+	'trust',
+] as const;
+
 const Factors: FunctionComponent<{ country: string; year: number }> = ({
 	country,
 	year,
@@ -91,54 +100,62 @@ const Factors: FunctionComponent<{ country: string; year: number }> = ({
 		year: year.toString(),
 	})[0];
 
-	const score = Number.parseFloat(data.score);
-
-	// Number is how much it had contributed to the score
+	// Number is how much it had contributed to the score - dystopia
 	// @see
 	// https://worldhappiness.report/faq/#what-is-the-original-source-of-the-data-for-figure-21-how-are-the-rankings-calculated
-	const calcLabel = (value: number) => ((value / score) * 10).toFixed(1);
+	const factors = factorsKeys.reduce(
+		(acc, i) => ({
+			...acc,
+			[i]: Number.parseFloat(data[i]),
+		}),
+		{} as Record<typeof factorsKeys[number], number>,
+	);
+	const out_of = factorsKeys.reduce((acc, i) => acc + factors[i], 0);
+
+	const calcLabel = (value: number) => value.toFixed(2);
+	const calcPercent = (value: number) => value / out_of;
 
 	return (
 		<div className={styles.factors}>
 			<Metric label={'Economy'}>
 				<Ring
-					value={data.economy / score}
-					label={calcLabel(data.economy)}
+					value={calcPercent(factors['economy'])}
+					label={calcLabel(factors['economy'])}
 					colour={'#10B981'}
 				/>
 			</Metric>
 			<Metric label={'Family'}>
 				<Ring
-					value={data.family / score}
-					label={calcLabel(data.family)}
+					value={calcPercent(factors['family'])}
+					label={calcLabel(factors['family'])}
 					colour={'#D97706'}
 				/>
 			</Metric>
 			<Metric label={'Health'}>
 				<Ring
-					value={data.health / score}
-					label={calcLabel(data.health)}
+					value={calcPercent(factors['health'])}
+					label={calcLabel(factors['health'])}
 					colour={'#EF4444'}
 				/>
 			</Metric>
 			<Metric label={'Freedom'}>
 				<Ring
-					value={data.freedom / score}
-					label={calcLabel(data.freedom)}
+					value={calcPercent(factors['freedom'])}
+					label={calcLabel(factors['freedom'])}
 					colour={'#FBBF24'}
 				/>
 			</Metric>
 			<Metric label={'Generosity'}>
 				<Ring
-					value={data.generosity / score}
-					label={calcLabel(data.generosity)}
+					value={calcPercent(factors['generosity'])}
+					label={calcLabel(factors['generosity'])}
 					colour={'#7C3AED'}
 				/>
 			</Metric>
 			<Metric label={'Trust'}>
 				<Ring
-					value={data.trust / score}
-					label={calcLabel(data.trust)}
+					value={calcPercent(factors['trust'])}
+					label={calcLabel(factors['trust'])}
 					colour={'#EC4899'}
 				/>
 			</Metric>
@@ -192,7 +209,7 @@ export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 					<SplineData country={data.country} />
 				</AsyncBoundary>
 				<Metric label="Happiness score">
-					<Ring value={score_percent} label={score.toFixed(1)} />
+					<Ring value={score_percent} label={score.toFixed(2)} />
 				</Metric>
 			</div>
 			{isAuthenticated() ? (
