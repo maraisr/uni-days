@@ -15,7 +15,10 @@ export const Ring: FunctionComponent<{
 	colour?: string;
 }> = ({ value, label, colour = '#0062FF' }) => (
 	<figure className={styles.component}>
-		<svg viewBox={`0 0 ${SIZE} ${SIZE}`}>
+		<svg
+			viewBox={`0 0 ${SIZE} ${SIZE}`}
+			preserveAspectRatio="xMinYMin meet"
+		>
 			<circle
 				stroke={colour}
 				opacity={0.1}

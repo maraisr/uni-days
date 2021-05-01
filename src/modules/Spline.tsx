@@ -67,7 +67,10 @@ export const Spline: FunctionComponent<{
 	]);
 
 	return (
-		<svg viewBox={`-8 -8 ${WIDTH + 8} ${HEIGHT + 16}`}>
+		<svg
+			viewBox={`-8 -8 ${WIDTH + 8} ${HEIGHT + 16}`}
+			preserveAspectRatio="xMinYMin meet"
+		>
 			<path
 				fill="none"
 				stroke={loading ? '#EEEEEE' : '#0062FF'}

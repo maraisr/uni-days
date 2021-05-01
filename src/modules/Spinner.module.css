@@ -9,6 +9,7 @@
 
 .loader {
 	margin: 60px auto;
+	overflow: hidden;
 	font-size: 10px;
 	position: relative;
 	text-indent: -9999em;
