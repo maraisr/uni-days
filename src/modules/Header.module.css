@@ -25,3 +25,9 @@
 	display: flex;
 	gap: 1rem;
 }
+
+.profile {
+	display: flex;
+	gap: 0.55rem;
+	align-items: center;
+}

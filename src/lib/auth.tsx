@@ -9,6 +9,10 @@ import {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+export interface User {
+	email: string;
+}
+
 export interface AuthClient {
 	isAuthenticated(): boolean;
 
@@ -23,6 +27,8 @@ export interface AuthClient {
 
 interface AuthState extends Omit<AuthClient, 'isAuthenticated'> {
 	isAuthenticated: boolean;
+
+	user?: User;
 }
 
 const context = createContext<AuthState | null>(null);
@@ -34,8 +40,14 @@ export const AuthProvider: FunctionComponent<{ client: AuthClient }> = ({
 	children,
 }) => {
 	const navigate = useNavigate();
-	const [isAuthenticated, setIsAuthenticated] = useState(() => {
-		return client.isAuthenticated();
+	const [isAuthenticated, setIsAuthenticated] = useState(() =>
+		client.isAuthenticated(),
+	);
+	const [user, setUser] = useState<User | undefined>(() => {
+		if (isAuthenticated) {
+			return getUserObjectFromJWT(client.getToken());
+		}
+		return undefined;
 	});
 
 	const logout = useCallback(() => {
@@ -49,23 +61,44 @@ export const AuthProvider: FunctionComponent<{ client: AuthClient }> = ({
 
 	const login = useCallback(
 		(username: string, password: string) => {
-			return client.login(username, password).then((returns) => {
-				setIsAuthenticated(client.isAuthenticated());
-				return returns;
+			return client.login(username, password).then((token) => {
+				const isAuthed = client.isAuthenticated();
+				setIsAuthenticated(isAuthed);
+				if (isAuthed) {
+					setUser(getUserObjectFromJWT(token));
+				}
+				return token;
 			});
 		},
 		[client],
 	);
 
-	const value = useMemo<AuthState>(() => {
-		return {
+	const value = useMemo<AuthState>(
+		() => ({
+			getToken: client.getToken,
+			isAuthenticated,
 			login,
 			logout,
-			getToken: client.getToken,
 			register: client.register,
-			isAuthenticated,
-		};
-	}, [isAuthenticated, login, logout, client]);
+			user,
+		}),
+		[client, isAuthenticated, login, logout, user],
+	);
 
 	return <context.Provider value={value}>{children}</context.Provider>;
+};
+
+const getUserObjectFromJWT = (token?: string) => {
+	if (!token) return undefined;
+
+	try {
+		const encoded_data = token.split('.')[1];
+		const decoded_data = atob(encoded_data);
+		const data = JSON.parse(decoded_data);
+		return {
+			email: data.email,
+		};
+	} catch (e) {
+		return undefined;
+	}
 };
