@@ -48,16 +48,23 @@ const TrendingIndicator = memo<{ country: string }>(({ country }) => {
 	) : null;
 });
 
-const SplineData = memo<{ country: string }>(({ country }) => {
-	const data = useDataLoader(splineDataLoader, { country });
+const SplineData = memo<{ country: string; year: number }>(
+	({ country, year }) => {
+		const data = useDataLoader(splineDataLoader, { country });
 
-	const points = sortByYear(data).map((i) => i.rank);
-	return points.length > 1 ? (
-		<Metric label={`${points.length} year trend`} alignLeft>
-			<Spline points={points} />
-		</Metric>
-	) : null;
-});
+		const points = sortByYear(data);
+		const markPoint = points.findIndex((i) => i.year === year);
+
+		return points.length > 1 ? (
+			<Metric label={`${points.length} year trend`} alignLeft>
+				<Spline
+					points={points.map((i) => i.rank)}
+					markPoint={markPoint}
+				/>
+			</Metric>
+		) : null;
+	},
+);
 
 const SplineLoader = memo(() => (
 	<Metric label="10 year trend" alignLeft>
@@ -95,7 +102,7 @@ export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 			</div>
 			<div className={styles.metrics}>
 				<AsyncBoundary fallback={<SplineLoader />} errorFallback={null}>
-					<SplineData country={data.country} />
+					<SplineData country={data.country} year={data.year} />
 				</AsyncBoundary>
 				<Metric label="Happiness score">
 					<Ring value={score_percent} label={score.toFixed(2)} />

@@ -1,5 +1,6 @@
 import type { FunctionComponent } from 'react';
 import * as React from 'react';
+import styles from './styles/Spline.module.css';
 
 type CoordTuple = [x: number, y: number];
 
@@ -56,8 +57,9 @@ const svgPath = (points: CoordTuple[]) => {
 
 export const Spline: FunctionComponent<{
 	points: number[];
+	markPoint?: number;
 	loading?: boolean;
-}> = ({ points, loading }) => {
+}> = ({ points, markPoint, loading }) => {
 	const max = Math.max(...points);
 	const interval = WIDTH / points.length;
 
@@ -65,6 +67,9 @@ export const Spline: FunctionComponent<{
 		interval * i,
 		(v / max) * HEIGHT,
 	]);
+
+	const renderMarkedPoint =
+		typeof markPoint === 'number' ? coords[markPoint] : null;
 
 	return (
 		<svg
@@ -79,6 +84,17 @@ export const Spline: FunctionComponent<{
 				strokeLinecap="round"
 				d={svgPath(coords)}
 			/>
+			{renderMarkedPoint ? (
+				<circle
+					className={styles.indicator}
+					cx={renderMarkedPoint[0]}
+					cy={renderMarkedPoint[1]}
+					r="3"
+					stroke="white"
+					stroke-width="1"
+					fill="#0062FF"
+				/>
+			) : null}
 		</svg>
 	);
 };
