@@ -6,7 +6,7 @@ import styles from './Header.module.css';
 import { SearchInput } from './SearchInput';
 
 export const Header = () => {
-	const { isAuthenticated } = useAuth();
+	const { isAuthenticated, logout } = useAuth();
 
 	return (
 		<div className={styles.root}>
@@ -17,8 +17,8 @@ export const Header = () => {
 				</Link>
 			</nav>
 			<SearchInput />
-			{isAuthenticated() ? (
-				<Button>Logout</Button>
+			{isAuthenticated ? (
+				<Button onClick={logout}>Logout</Button>
 			) : (
 				<Link to="/login" className={buttonStyles}>
 					Login

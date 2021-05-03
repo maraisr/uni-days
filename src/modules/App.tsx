@@ -17,7 +17,13 @@ const SuspensefullPage = memo<{ importee: LazyExoticComponent<any> }>(
 	),
 );
 
-export const App = () => (
+/*
+You're probably wondering why this component is being memo'd? Let me tell you, this component _should_ be mounted
+directly after the transport and auth providers, auth and data providers _may_ cause some re-renders from time to time
+(especially the auth provider) and instead of running the entire render phase from react, let React simply walk the
+Fibre tree instead—allowing for surgical updates.
+ */
+export const App = memo(() => (
 	<Layout>
 		<Routes>
 			<Route
@@ -35,4 +41,4 @@ export const App = () => (
 			<Route path="/*" element={<Navigate to="/dashboard" />} />
 		</Routes>
 	</Layout>
-);
+));

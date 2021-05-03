@@ -5,8 +5,18 @@ export const fetchWithThrow = async <T>(
 	fetcher: ReturnType<typeof fetch>,
 ): Promise<T> => {
 	const req = await fetcher;
-	if (!req.ok || req.status < 200 || req.status > 400)
-		throw new Error(await req.text());
+	if (!req.ok || req.status < 200 || req.status > 400) {
+		let error = 'Something bad happened';
+		try {
+			const maybeError = await req.json();
+			if (maybeError.error && maybeError.message) {
+				error = maybeError.message;
+			}
+		} catch (e) {
+			error = await req.text();
+		}
+		throw new Error(error);
+	}
 	return req.json();
 };
 

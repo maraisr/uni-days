@@ -101,7 +101,7 @@ export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 					<Ring value={score_percent} label={score.toFixed(2)} />
 				</Metric>
 			</div>
-			{isAuthenticated() ? (
+			{isAuthenticated ? (
 				<AsyncBoundary
 					fallback={<Spinner />}
 					errorFallback={FactorsError}

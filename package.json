@@ -23,6 +23,7 @@
     "history": "^5.0.0",
     "react": "^0.0.0-experimental-84c06fef8",
     "react-dom": "^0.0.0-experimental-84c06fef8",
+    "react-hook-form": "^7.3.6",
     "react-router": "^6.0.0-beta.0",
     "react-router-dom": "^6.0.0-beta.0"
   },

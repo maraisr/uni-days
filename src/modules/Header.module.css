@@ -11,6 +11,14 @@
 	grid-template-columns: min-content min-content 1fr auto;
 	grid-gap: 2rem;
 	align-items: center;
+
+	a {
+		color: inherit;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
 }
 
 .nav {

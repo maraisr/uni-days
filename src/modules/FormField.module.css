@@ -1,0 +1,25 @@
+.component {
+	display: grid;
+	grid-row-gap: 0.3rem;
+
+	> label {
+		font-size: 0.8rem;
+		color: #696974;
+	}
+
+	input {
+		appearance: none;
+		outline: none;
+
+		padding: 0.5rem;
+
+		background: #fafafb;
+		border: 1px solid #f1f1f5;
+		border-radius: 0.5rem;
+	}
+}
+
+.error {
+	color: #dc2626;
+	font-size: 0.85rem;
+}

@@ -1,7 +1,6 @@
 .component {
 	display: inline-flex;
 	appearance: none;
-	border: none;
 	align-items: center;
 	justify-content: center;
 	border-radius: 0.5rem;

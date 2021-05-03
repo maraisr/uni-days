@@ -1,0 +1,11 @@
+.formError {
+	padding: 1rem 1.4rem;
+	margin-top: 1.25rem;
+	background-color: #fef2f2;
+	border: 1px solid #fecaca;
+}
+
+.form {
+	display: grid;
+	grid-row-gap: 1rem;
+}

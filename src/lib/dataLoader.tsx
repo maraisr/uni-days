@@ -12,7 +12,7 @@
 
 import type { FunctionComponent } from 'react';
 import * as React from 'react';
-import { ContextType, createContext, useContext, useMemo } from 'react';
+import { ContextType, createContext, useContext, useRef } from 'react';
 
 type Cache = Map<string, any>;
 
@@ -57,14 +57,18 @@ export const defineLoader: LoaderFn = (config) => config;
 export const DataLoaderProvider: FunctionComponent<{
 	client: ApiClients;
 }> = ({ children, client }) => {
-	const value = useMemo(() => {
-		return {
+	const value = useRef<ContextValue>(null);
+
+	if (value.current === null || value.current.api !== client) {
+		value.current = {
 			cache: new Map(),
 			api: client,
 		};
-	}, [client]);
+	}
 
-	return <context.Provider value={value}>{children}</context.Provider>;
+	return (
+		<context.Provider value={value.current}>{children}</context.Provider>
+	);
 };
 
 /**
@@ -110,7 +114,4 @@ const readLoader = <T extends LoaderDefinition>(
 export const useDataLoader = <T extends LoaderDefinition>(
 	loader: T,
 	params?: T extends LoaderDefinition<infer U, any> ? U : never,
-) => {
-	const contextValue = useContext(context)!;
-	return readLoader(loader, params, contextValue);
-};
+) => readLoader(loader, params, useContext(context)!);

@@ -8,6 +8,7 @@ import {
 	useMemo,
 	useState,
 } from 'react';
+import { APP_TITLE } from '../consts';
 import { defineLoader, useDataLoader } from '../lib/dataLoader';
 import { Button } from '../modules/Button';
 import { CountryCard } from '../modules/CountryCard';
@@ -73,6 +74,10 @@ export default memo(() => {
 	useEffect(() => {
 		if (searchYear !== year) updateYear(searchYear);
 	}, [searchYear]);
+
+	useEffect(() => {
+		document.title = `Dashboard | ${APP_TITLE}`;
+	}, []);
 
 	const loadMoreHandler = useCallback(() => {
 		setPage((page) => page + 1);
