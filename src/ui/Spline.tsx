@@ -91,7 +91,7 @@ export const Spline: FunctionComponent<{
 					cy={renderMarkedPoint[1]}
 					r="3"
 					stroke="white"
-					stroke-width="1"
+					strokeWidth="1"
 					fill="#0062FF"
 				/>
 			) : null}
