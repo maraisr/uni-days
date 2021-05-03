@@ -56,46 +56,46 @@ export const Factors: FunctionComponent<{ country: string; year: number }> = ({
 
 	return (
 		<div className={styles.component}>
-			<Metric label={'Economy'} className={styles.metric}>
+			<Metric label="Economy" className={styles.metric}>
 				<Ring
 					value={calcPercent(factors['economy'])}
 					label={calcLabel(factors['economy'])}
-					colour={'#10B981'}
+					colour="#10B981"
 				/>
 			</Metric>
-			<Metric label={'Family'} className={styles.metric}>
+			<Metric label="Family" className={styles.metric}>
 				<Ring
 					value={calcPercent(factors['family'])}
 					label={calcLabel(factors['family'])}
-					colour={'#D97706'}
+					colour="#D97706"
 				/>
 			</Metric>
-			<Metric label={'Health'} className={styles.metric}>
+			<Metric label="Health" className={styles.metric}>
 				<Ring
 					value={calcPercent(factors['health'])}
 					label={calcLabel(factors['health'])}
-					colour={'#EF4444'}
+					colour="#EF4444"
 				/>
 			</Metric>
-			<Metric label={'Freedom'} className={styles.metric}>
+			<Metric label="Freedom" className={styles.metric}>
 				<Ring
 					value={calcPercent(factors['freedom'])}
 					label={calcLabel(factors['freedom'])}
-					colour={'#FBBF24'}
+					colour="#FBBF24"
 				/>
 			</Metric>
-			<Metric label={'Generosity'} className={styles.metric}>
+			<Metric label="Generosity" className={styles.metric}>
 				<Ring
 					value={calcPercent(factors['generosity'])}
 					label={calcLabel(factors['generosity'])}
-					colour={'#7C3AED'}
+					colour="#7C3AED"
 				/>
 			</Metric>
-			<Metric label={'Trust'} className={styles.metric}>
+			<Metric label="Trust" className={styles.metric}>
 				<Ring
 					value={calcPercent(factors['trust'])}
 					label={calcLabel(factors['trust'])}
-					colour={'#EC4899'}
+					colour="#EC4899"
 				/>
 			</Metric>
 		</div>
