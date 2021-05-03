@@ -2,7 +2,7 @@ import { ChevronDownIcon } from '@heroicons/react/outline';
 import type { ChangeEventHandler, FunctionComponent } from 'react';
 import * as React from 'react';
 
-import styles from './Select.module.css';
+import styles from './styles/Select.module.css';
 
 export const Select: FunctionComponent<{
 	value: string;

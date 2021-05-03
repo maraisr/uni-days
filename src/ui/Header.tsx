@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
+import { SearchInput } from '../modules/SearchInput';
 import { Button, buttonStyles } from './Button';
-import styles from './Header.module.css';
-import { SearchInput } from './SearchInput';
+import styles from './styles/Header.module.css';
 
 export const Header = () => {
 	const { isAuthenticated, logout, user } = useAuth();

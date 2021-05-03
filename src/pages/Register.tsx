@@ -5,13 +5,13 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { APP_TITLE, emailRegex } from '../consts';
 import { useAuth } from '../lib/auth';
-import { buttonStyles } from '../modules/Button';
-import formStyles from '../modules/Form.module.css';
-import { FormField } from '../modules/FormField';
-import { FormWrapper } from '../modules/FormWrapper';
-import { PageFrame } from '../modules/PageFrame';
+import { buttonStyles } from '../ui/Button';
+import { FormField } from '../ui/FormField';
+import { FormWrapper } from '../ui/FormWrapper';
+import { PageFrame } from '../ui/PageFrame';
+import formStyles from '../ui/styles/Form.module.css';
 
-import styles from './Register.module.css';
+import styles from './styles/Register.module.css';
 
 interface FormValues {
 	username: string;

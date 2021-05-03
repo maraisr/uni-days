@@ -33,8 +33,15 @@ interface AuthState extends Omit<AuthClient, 'isAuthenticated'> {
 
 const context = createContext<AuthState | null>(null);
 
+/**
+ * Gives you access to the scoped auth client
+ */
 export const useAuth = () => useContext(context)!;
 
+/**
+ * Provides the application with auth functionality connected to React. The client _may_ be used without this provider
+ * for direct access.
+ */
 export const AuthProvider: FunctionComponent<{ client: AuthClient }> = ({
 	client,
 	children,

@@ -1,7 +1,7 @@
 import type { FunctionComponent } from 'react';
 import * as React from 'react';
 
-import styles from './Ring.module.css';
+import styles from './styles/Ring.module.css';
 
 const SIZE = 250;
 const STROKE_WIDTH = 16;

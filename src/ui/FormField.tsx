@@ -1,6 +1,6 @@
 import type { FunctionComponent } from 'react';
 import * as React from 'react';
-import styles from './FormField.module.css';
+import styles from './styles/FormField.module.css';
 
 export const FormField: FunctionComponent<{
 	id: string;

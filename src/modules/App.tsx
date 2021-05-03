@@ -2,8 +2,8 @@ import { AsyncBoundary } from 'async-boundary';
 import * as React from 'react';
 import { lazy, LazyExoticComponent, memo } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { Layout } from './Layout';
-import { Spinner } from './Spinner';
+import { Layout } from '../ui/Layout';
+import { Spinner } from '../ui/Spinner';
 
 const DashboardPage = lazy(() => import('../pages/Dashboard'));
 const LoginPage = lazy(() => import('../pages/Login'));

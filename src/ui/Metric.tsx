@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
-import styles from './Metric.module.css';
+import styles from './styles/Metric.module.css';
 
 export const Metric: FunctionComponent<{
 	className?: string;

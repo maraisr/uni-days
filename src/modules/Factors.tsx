@@ -3,10 +3,10 @@ import * as React from 'react';
 import { FunctionComponent, memo } from 'react';
 import { defineLoader, useDataLoader } from '../lib/dataLoader';
 import { FactorsData } from '../types';
-import styles from './Factors.module.css';
-import { Metric } from './Metric';
-import { Ring } from './Ring';
-import { SmallMessage } from './SmallMessage';
+import { Metric } from '../ui/Metric';
+import { Ring } from '../ui/Ring';
+import { SmallMessage } from '../ui/SmallMessage';
+import styles from './styles/Factors.module.css';
 
 const factorsDataLoader = defineLoader<
 	{ country: string; year: string },

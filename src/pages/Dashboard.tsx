@@ -10,14 +10,14 @@ import {
 } from 'react';
 import { APP_TITLE } from '../consts';
 import { defineLoader, useDataLoader } from '../lib/dataLoader';
-import { Button } from '../modules/Button';
 import { CountryCard } from '../modules/CountryCard';
-import { PageFrame } from '../modules/PageFrame';
 import { useProcessedSearchTerm, useSearchTerm } from '../modules/SearchInput';
-import { Select } from '../modules/Select';
 import type { RankData } from '../types';
+import { Button } from '../ui/Button';
+import { PageFrame } from '../ui/PageFrame';
+import { Select } from '../ui/Select';
 
-import styles from './Dashboard.module.css';
+import styles from './styles/Dashboard.module.css';
 
 const years = new Array(6).fill(1).map((_, i) => (2020 - i).toString());
 const PAGE_SIZE = 8;

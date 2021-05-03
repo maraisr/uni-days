@@ -10,7 +10,7 @@ import {
 } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import styles from './SearchInput.module.css';
+import styles from './styles/SearchInput.module.css';
 
 export const useSearchTerm = () => {
 	const [params] = useSearchParams();

@@ -12,13 +12,13 @@ import { useAuth } from '../lib/auth';
 import { defineLoader, useDataLoader } from '../lib/dataLoader';
 import { isIncreasingSequence } from '../lib/helpers';
 import type { RankData } from '../types';
-import styles from './CountryCard.module.css';
+import { Metric } from '../ui/Metric';
+import { Ring } from '../ui/Ring';
+import { SmallMessage } from '../ui/SmallMessage';
+import { Spinner } from '../ui/Spinner';
+import { Spline } from '../ui/Spline';
 import { Factors, FactorsError } from './Factors';
-import { Metric } from './Metric';
-import { Ring } from './Ring';
-import { SmallMessage } from './SmallMessage';
-import { Spinner } from './Spinner';
-import { Spline } from './Spline';
+import styles from './styles/CountryCard.module.css';
 
 const splineDataLoader = defineLoader<{ country: string }, RankData[]>({
 	family: 'ranking.country.trend',
