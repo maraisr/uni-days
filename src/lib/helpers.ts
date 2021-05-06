@@ -1,6 +1,7 @@
 /**
  * A function that will cause non 200 series responses to throw exceptions.
  */
+
 export const fetchWithThrow = async <T>(
 	fetcher: ReturnType<typeof fetch>,
 ): Promise<T> => {

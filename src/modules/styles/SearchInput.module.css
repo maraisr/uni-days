@@ -1,4 +1,5 @@
 .component {
+	position: relative;
 	display: grid;
 	grid-template-columns: auto 1fr;
 	grid-gap: 0.25rem;
@@ -24,12 +25,17 @@
 	}
 }
 
-.input {
+.input,
+.autocomplete {
 	appearance: none;
 	background: transparent;
 	border: none;
 	outline: none;
+	cursor: text;
+	vertical-align: baseline;
+}
 
+.input {
 	padding: 0.65rem 1rem 0.65rem 0;
 
 	&::placeholder {
@@ -39,5 +45,33 @@
 		letter-spacing: 0.1px;
 
 		color: #92929d;
+	}
+}
+
+.autocomplete {
+	position: absolute;
+	display: flex;
+	align-items: center;
+
+	top: 0;
+	/* padding + icon size + gap */
+	left: calc(0.65rem + 20px + 0.25rem);
+	height: 100%;
+	pointer-events: none;
+
+	opacity: 0.6;
+
+	color: transparent;
+
+	> mark {
+		outline: none;
+		border: none;
+
+		background-color: #99bdff;
+
+		border-radius: 4px;
+
+		padding: 2px;
+		margin: 2px;
 	}
 }

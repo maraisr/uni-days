@@ -71,6 +71,8 @@ export const DataLoaderProvider: FunctionComponent<{
 	);
 };
 
+export const useApiClient = () => useContext(context)!;
+
 /**
  * Reads an inflight resolved value, or throws a promise. This function is more bound to React ways of doing things,
  * particularly around suspense for data fetching.
@@ -114,4 +116,4 @@ const readLoader = <T extends LoaderDefinition>(
 export const useDataLoader = <T extends LoaderDefinition>(
 	loader: T,
 	params?: T extends LoaderDefinition<infer U, any> ? U : never,
-) => readLoader(loader, params, useContext(context)!);
+) => readLoader(loader, params, useApiClient());

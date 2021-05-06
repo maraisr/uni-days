@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
 import { SearchInput } from '../modules/SearchInput';
@@ -16,7 +17,9 @@ export const Header = () => {
 					Dashboard
 				</Link>
 			</nav>
-			<SearchInput />
+			<Suspense fallback={null}>
+				<SearchInput />
+			</Suspense>
 			{isAuthenticated ? (
 				<div className={styles.profile}>
 					{user ? <p>{user.email}</p> : null}

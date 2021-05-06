@@ -21,7 +21,7 @@ import { Factors, FactorsError } from './Factors';
 import styles from './styles/CountryCard.module.css';
 
 const splineDataLoader = defineLoader<{ country: string }, RankData[]>({
-	family: 'ranking.country.trend',
+	family: 'countrycard.trend',
 	getKey({ country }) {
 		return country;
 	},

@@ -8,7 +8,7 @@ import {
 	useMemo,
 	useState,
 } from 'react';
-import { APP_TITLE } from '../consts';
+import { APP_TITLE, YEARS } from '../consts';
 import { defineLoader, useDataLoader } from '../lib/dataLoader';
 import { CountryCard } from '../modules/CountryCard';
 import { useProcessedSearchTerm, useSearchTerm } from '../modules/SearchInput';
@@ -19,11 +19,10 @@ import { Select } from '../ui/Select';
 
 import styles from './styles/Dashboard.module.css';
 
-const years = new Array(6).fill(1).map((_, i) => (2020 - i).toString());
 const PAGE_SIZE = 8;
 
 const loader = defineLoader<{ year: string; countries: string[] }, RankData[]>({
-	family: 'ranking',
+	family: 'dashboard.rankings',
 	getKey({ year, countries }) {
 		return year + countries.join('');
 	},
@@ -51,7 +50,7 @@ const NoResults = () => {
 export default memo(() => {
 	// TODO: Figure out why this component has 3+ renders on load
 
-	const { countries = [], year: searchYear = years[0] } =
+	const { countries = [], year: searchYear = YEARS[0] } =
 		useProcessedSearchTerm() ?? {};
 	const [year, setYear] = useState(searchYear);
 	const yearForApi = unstable_useDeferredValue(year);
@@ -103,7 +102,7 @@ export default memo(() => {
 			<div className={styles.stack}>
 				<div className={styles.toolbar}>
 					<Select value={year} onChange={onYearChangeHandler}>
-						{years.map((i) => (
+						{YEARS.map((i) => (
 							<option key={i} value={i}>
 								{i}
 							</option>
