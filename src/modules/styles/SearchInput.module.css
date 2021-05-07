@@ -7,12 +7,13 @@
 
 	width: 100%;
 	max-width: 720px;
+	padding-left: 0.65rem;
 	margin: 0 auto;
 	background: #fafafb;
 	border: 1px solid #f1f1f5;
 	border-radius: 0.5rem;
 
-	padding-left: 0.65rem;
+	overflow: hidden;
 
 	transition: box-shadow 0.1s;
 
@@ -62,6 +63,8 @@
 	opacity: 0.6;
 
 	color: transparent;
+
+	white-space: nowrap;
 
 	> mark {
 		outline: none;
