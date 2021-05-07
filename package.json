@@ -20,6 +20,7 @@
     "@heroicons/react": "^1.0.1",
     "async-boundary": "^0.0.5",
     "clsx": "^1.1.1",
+    "flru": "^1.0.2",
     "history": "^5.0.0",
     "react": "^0.0.0-experimental-84c06fef8",
     "react-dom": "^0.0.0-experimental-84c06fef8",

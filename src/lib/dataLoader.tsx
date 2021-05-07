@@ -10,11 +10,11 @@
  * for an assessment like this.
  */
 
+import flru from 'flru';
 import type { FunctionComponent } from 'react';
 import * as React from 'react';
 import { ContextType, createContext, useContext, useRef } from 'react';
-
-type Cache = Map<string, any>;
+import type { flruCache as Cache } from 'flru';
 
 const context = createContext<{
 	cache: Cache;
@@ -61,7 +61,7 @@ export const DataLoaderProvider: FunctionComponent<{
 
 	if (value.current === null || value.current.api !== client) {
 		value.current = {
-			cache: new Map(),
+			cache: flru(150),
 			api: client,
 		};
 	}
