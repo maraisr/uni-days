@@ -1,7 +1,13 @@
 import { SearchIcon } from '@heroicons/react/outline';
 import type { ChangeEventHandler } from 'react';
 import * as React from 'react';
-import { unstable_startTransition, unstable_useDeferredValue, useEffect, useRef, useState } from 'react';
+import {
+	unstable_startTransition,
+	unstable_useDeferredValue,
+	useEffect,
+	useRef,
+	useState,
+} from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { YEARS } from '../consts';
@@ -195,14 +201,14 @@ export const SearchInput = () => {
 
 	return (
 		<div className={styles.component}>
-			<SearchIcon width='20px' />
+			<SearchIcon width="20px" />
 			<div className={styles.autocomplete}>
 				{value}
 				{suggest ? <mark>{suggest}</mark> : null}
 			</div>
 			<input
 				className={styles.input}
-				placeholder='Search... eg. Denmark and Finland in 2017'
+				placeholder="Search... eg. Denmark and Finland in 2017"
 				value={value}
 				onChange={onChangeHandler}
 			/>

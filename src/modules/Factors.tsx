@@ -8,8 +8,10 @@ import { Ring } from '../ui/Ring';
 import { SmallMessage } from '../ui/SmallMessage';
 import styles from './styles/Factors.module.css';
 
-const factorsDataLoader = defineLoader<{ country: string; year: string },
-	FactorsData[]>({
+const factorsDataLoader = defineLoader<
+	{ country: string; year: string },
+	FactorsData[]
+>({
 	family: 'factors.country',
 	getKey({ country, year }) {
 		return country + year;
@@ -31,8 +33,10 @@ const factorsKeys = [
 /**
  * Maps the metric to a label + colour
  */
-const metricMapping: Record<typeof factorsKeys[number],
-	{ colour: string; label: string }> = {
+const metricMapping: Record<
+	typeof factorsKeys[number],
+	{ colour: string; label: string }
+> = {
 	economy: { label: 'Economy', colour: '#10B981' },
 	family: { label: 'Family', colour: '#D97706' },
 	health: { label: 'Health', colour: '#EF4444' },
@@ -40,10 +44,12 @@ const metricMapping: Record<typeof factorsKeys[number],
 	generosity: { label: 'Generosity', colour: '#7C3AED' },
 	trust: { label: 'Trust', colour: '#EC4899' },
 } as const;
-const metricMappingIterable = Object.entries(metricMapping) as Array<[
-	keyof typeof metricMapping,
-	typeof metricMapping[keyof typeof metricMapping],
-]>; // sigh.. Object.entries isn't type-safe.
+const metricMappingIterable = Object.entries(metricMapping) as Array<
+	[
+		keyof typeof metricMapping,
+		typeof metricMapping[keyof typeof metricMapping],
+	]
+>; // sigh.. Object.entries isn't type-safe.
 
 /**
  * Factors is the component that paints pretty rings for each of the contributing factoring. Component requires auth,

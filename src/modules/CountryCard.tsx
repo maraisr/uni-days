@@ -33,8 +33,7 @@ const splineDataLoader = defineLoader<{ country: string }, RankData[]>({
 /**
  * Sorts rank data by year descending
  */
-const sortByYear = (data: RankData[]) =>
-	data.sort((a, b) => a.year - b.year);
+const sortByYear = (data: RankData[]) => data.sort((a, b) => a.year - b.year);
 
 const TrendingIndicator = memo<{ country: string }>(({ country }) => {
 	const data = useDataLoader(splineDataLoader, { country });
@@ -68,9 +67,11 @@ const SplineData = memo<{ country: string; year: number }>(
 	},
 );
 
-const SplineLoader = <Metric label="10 year trend" alignLeft>
-	<Spline loading points={[2, 1, 5, 1, 3, 3, 6, 5, 3, 7]} />
-</Metric>;
+const SplineLoader = (
+	<Metric label="10 year trend" alignLeft>
+		<Spline loading points={[2, 1, 5, 1, 3, 3, 6, 5, 3, 7]} />
+	</Metric>
+);
 
 /**
  * The main "card" component that tells the country story.
