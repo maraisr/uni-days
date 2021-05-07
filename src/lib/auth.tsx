@@ -99,9 +99,9 @@ const getUserObjectFromJWT = (token?: string) => {
 	if (!token) return undefined;
 
 	try {
-		const encoded_data = token.split('.')[1];
-		const decoded_data = atob(encoded_data);
-		const data = JSON.parse(decoded_data);
+		const encodedData = token.split('.')[1];
+		const decodedData = atob(encodedData);
+		const data = JSON.parse(decodedData);
 		return {
 			email: data.email,
 		};

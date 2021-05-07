@@ -94,8 +94,8 @@ export default memo(() => {
 		page,
 	]);
 
-	const has_more = result.length < data.length;
-	const has_results = data.length > 0;
+	const hasMore = result.length < data.length;
+	const hasResults = data.length > 0;
 
 	return (
 		<PageFrame>
@@ -109,7 +109,7 @@ export default memo(() => {
 						))}
 					</Select>
 				</div>
-				{has_results ? (
+				{hasResults ? (
 					<>
 						<div className={styles.grid}>
 							{result.map((item) => (
@@ -117,7 +117,7 @@ export default memo(() => {
 							))}
 						</div>
 						<div className={styles.center}>
-							{has_more ? (
+							{hasMore ? (
 								<Button onClick={loadMoreHandler}>
 									Load More
 								</Button>

@@ -21,14 +21,14 @@ export const useSearchTerm = () => {
 };
 
 export const useProcessedSearchTerm = () => {
-	const search_term = useSearchTerm();
+	const searchTerm = useSearchTerm();
 
 	const returns: { year: string; countries: string[] } = {
 		year: undefined,
 		countries: [],
 	};
 
-	const terms = search_term.split(' ');
+	const terms = searchTerm.split(' ');
 	let i = 0;
 	for (; i < terms.length; i++) {
 		const term = terms[i];
@@ -77,24 +77,24 @@ export const SearchInput = () => {
 	const navigate = useNavigate();
 	const [params] = useSearchParams();
 	const [value, setValue] = useState(() => params.get('q') ?? '');
-	const search_value = unstable_useDeferredValue(value);
+	const searchValue = unstable_useDeferredValue(value);
 	const changeRef = useRef<number>();
 	const [suggest, setSuggest] = useState('');
-	const tracking_suggest = useRef<string>(suggest);
+	const trackingSuggest = useRef<string>(suggest);
 
 	// Sigh...
-	tracking_suggest.current = suggest;
+	trackingSuggest.current = suggest;
 
 	const countries = useDataLoader(loader);
 
 	useEffect(() => {
 		const handler = (event: KeyboardEvent) => {
 			if (event.key === 'ArrowRight' || event.key === 'Tab') {
-				const suggest_value = tracking_suggest.current;
-				if (suggest_value.length > 0) {
+				const suggestValue = trackingSuggest.current;
+				if (suggestValue.length > 0) {
 					event.preventDefault();
 					unstable_batchedUpdates(() => {
-						setValue((prev) => prev + suggest_value);
+						setValue((prev) => prev + suggestValue);
 						setSuggest('');
 					});
 				}
@@ -109,7 +109,7 @@ export const SearchInput = () => {
 	}, []);
 
 	useEffect(() => {
-		let term = search_value.trim();
+		let term = searchValue.trim();
 		if (term.includes(' ')) {
 			term = term.split(' ').pop();
 		}
@@ -117,13 +117,13 @@ export const SearchInput = () => {
 		if (term?.length > 1) {
 			let haystack = countries;
 			if (term[0] === '2') haystack = YEARS;
-			const maybe_suggest = haystack.find((c) =>
+			const maybeSuggest = haystack.find((c) =>
 				c.startsWith(term.toLowerCase()),
 			);
 
-			if (maybe_suggest && maybe_suggest !== term) {
-				const trimLength = maybe_suggest.length - term.length;
-				setSuggest(maybe_suggest.substr(-trimLength));
+			if (maybeSuggest && maybeSuggest !== term) {
+				const trimLength = maybeSuggest.length - term.length;
+				setSuggest(maybeSuggest.substr(-trimLength));
 			} else {
 				setSuggest('');
 			}
@@ -137,12 +137,12 @@ export const SearchInput = () => {
 			const replace = /dashboard$/.test(window.location.pathname);
 
 			unstable_startTransition(() => {
-				if (search_value) {
+				if (searchValue) {
 					navigate(
 						{
 							pathname: '/dashboard',
 							search: `?q=${encodeURIComponent(
-								search_value.trim(),
+								searchValue.trim(),
 							)}`,
 						},
 						{
@@ -159,7 +159,7 @@ export const SearchInput = () => {
 				}
 			});
 		}, 300);
-	}, [countries, search_value]);
+	}, [countries, searchValue]);
 
 	const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (event) => {
 		setValue(event.target.value);

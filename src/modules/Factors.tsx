@@ -67,10 +67,10 @@ export const Factors: FunctionComponent<{ country: string; year: number }> = ({
 		}),
 		{} as Record<typeof factorsKeys[number], number>,
 	);
-	const out_of = factorsKeys.reduce((acc, i) => acc + factors[i], 0);
+	const outOf = factorsKeys.reduce((acc, i) => acc + factors[i], 0);
 
 	const calcLabel = (value: number) => value.toFixed(2);
-	const calcPercent = (value: number) => value / out_of;
+	const calcPercent = (value: number) => value / outOf;
 
 	return (
 		<div className={styles.component}>

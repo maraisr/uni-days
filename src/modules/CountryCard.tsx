@@ -78,7 +78,7 @@ export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 	const { isAuthenticated } = useAuth();
 
 	const score = Number.parseFloat(data.score);
-	const score_percent = score / 10;
+	const scorePercent = score / 10;
 
 	return (
 		<div className={styles.component}>
@@ -105,7 +105,7 @@ export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 					<SplineData country={data.country} year={data.year} />
 				</AsyncBoundary>
 				<Metric label="Happiness score">
-					<Ring value={score_percent} label={score.toFixed(2)} />
+					<Ring value={scorePercent} label={score.toFixed(2)} />
 				</Metric>
 			</div>
 			{isAuthenticated ? (
