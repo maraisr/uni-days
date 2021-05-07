@@ -1,7 +1,6 @@
 /**
  * A function that will cause non 200 series responses to throw exceptions.
  */
-
 export const fetchWithThrow = async <T>(
 	fetcher: ReturnType<typeof fetch>,
 ): Promise<T> => {
@@ -21,6 +20,36 @@ export const fetchWithThrow = async <T>(
 	return req.json();
 };
 
+type FetchParams = Parameters<typeof fetch>;
+/**
+ * A method that wraps `fetch` but times the fetch out, aborting it.
+ */
+export const timeoutFetch = async (
+	input: FetchParams[0],
+	init?: FetchParams[1],
+	timeout: number = 5e3,
+): Promise<any> => {
+	const abort = new AbortController();
+	const timeoutTracker = setTimeout(() => {
+		abort.abort();
+	}, timeout);
+
+	return fetch(input, {
+		...init,
+		signal: abort.signal,
+	}).then((r) => {
+		timeoutTracker && clearTimeout(timeoutTracker);
+		return r;
+	});
+};
+
+/**
+ * A wrapper error instance with a new name, so we know which errors are "remote" vs other errors.
+ *
+ * @example
+ *
+ * if (error instanceof FetchError) console.log('remote error');
+ */
 export class FetchError extends Error {}
 
 /**

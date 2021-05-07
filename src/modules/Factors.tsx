@@ -8,10 +8,8 @@ import { Ring } from '../ui/Ring';
 import { SmallMessage } from '../ui/SmallMessage';
 import styles from './styles/Factors.module.css';
 
-const factorsDataLoader = defineLoader<
-	{ country: string; year: string },
-	FactorsData[]
->({
+const factorsDataLoader = defineLoader<{ country: string; year: string },
+	FactorsData[]>({
 	family: 'factors.country',
 	getKey({ country, year }) {
 		return country + year;
@@ -30,10 +28,11 @@ const factorsKeys = [
 	'trust',
 ] as const;
 
-const metricMapping: Record<
-	typeof factorsKeys[number],
-	{ colour: string; label: string }
-> = {
+/**
+ * Maps the metric to a label + colour
+ */
+const metricMapping: Record<typeof factorsKeys[number],
+	{ colour: string; label: string }> = {
 	economy: { label: 'Economy', colour: '#10B981' },
 	family: { label: 'Family', colour: '#D97706' },
 	health: { label: 'Health', colour: '#EF4444' },
@@ -41,13 +40,15 @@ const metricMapping: Record<
 	generosity: { label: 'Generosity', colour: '#7C3AED' },
 	trust: { label: 'Trust', colour: '#EC4899' },
 } as const;
-const metricMappingIterable = Object.entries(metricMapping) as Array<
-	[
-		keyof typeof metricMapping,
-		typeof metricMapping[keyof typeof metricMapping],
-	]
->;
+const metricMappingIterable = Object.entries(metricMapping) as Array<[
+	keyof typeof metricMapping,
+	typeof metricMapping[keyof typeof metricMapping],
+]>; // sigh.. Object.entries isn't type-safe.
 
+/**
+ * Factors is the component that paints pretty rings for each of the contributing factoring. Component requires auth,
+ * if failing to auth this will Suspend with an error.
+ */
 export const Factors: FunctionComponent<{ country: string; year: number }> = ({
 	country,
 	year,
@@ -57,9 +58,7 @@ export const Factors: FunctionComponent<{ country: string; year: number }> = ({
 		year: year.toString(),
 	})[0];
 
-	// Number is how much it had contributed to the score - dystopia
-	// @see
-	// https://worldhappiness.report/faq/#what-is-the-original-source-of-the-data-for-figure-21-how-are-the-rankings-calculated
+	// Just parses the factors as a number (api returns strings)
 	const factors = factorsKeys.reduce(
 		(acc, i) => ({
 			...acc,
@@ -67,6 +66,10 @@ export const Factors: FunctionComponent<{ country: string; year: number }> = ({
 		}),
 		{} as Record<typeof factorsKeys[number], number>,
 	);
+
+	// Factors is calculated by seeing how much it had contributed to the score minus dystopia
+	// @see
+	// https://worldhappiness.report/faq/#what-is-the-original-source-of-the-data-for-figure-21-how-are-the-rankings-calculated
 	const outOf = factorsKeys.reduce((acc, i) => acc + factors[i], 0);
 
 	const calcLabel = (value: number) => value.toFixed(2);

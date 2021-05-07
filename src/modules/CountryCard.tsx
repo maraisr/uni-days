@@ -30,10 +30,11 @@ const splineDataLoader = defineLoader<{ country: string }, RankData[]>({
 	},
 });
 
+/**
+ * Sorts rank data by year descending
+ */
 const sortByYear = (data: RankData[]) =>
-	data.sort((a, b) => {
-		return a.year - b.year;
-	});
+	data.sort((a, b) => a.year - b.year);
 
 const TrendingIndicator = memo<{ country: string }>(({ country }) => {
 	const data = useDataLoader(splineDataLoader, { country });
@@ -53,6 +54,7 @@ const SplineData = memo<{ country: string; year: number }>(
 		const data = useDataLoader(splineDataLoader, { country });
 
 		const points = sortByYear(data);
+		// mark point is which year we should _highlight_ or "mark"
 		const markPoint = points.findIndex((i) => i.year === year);
 
 		return points.length > 1 ? (
@@ -66,12 +68,13 @@ const SplineData = memo<{ country: string; year: number }>(
 	},
 );
 
-const SplineLoader = memo(() => (
-	<Metric label="10 year trend" alignLeft>
-		<Spline loading points={[2, 1, 5, 1, 3, 3, 6, 5, 3, 7]} />
-	</Metric>
-));
+const SplineLoader = <Metric label="10 year trend" alignLeft>
+	<Spline loading points={[2, 1, 5, 1, 3, 3, 6, 5, 3, 7]} />
+</Metric>;
 
+/**
+ * The main "card" component that tells the country story.
+ */
 export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 	data,
 }) => {
@@ -101,7 +104,7 @@ export const CountryCard: FunctionComponent<{ data: RankData }> = ({
 				</div>
 			</div>
 			<div className={styles.metrics}>
-				<AsyncBoundary fallback={<SplineLoader />} errorFallback={null}>
+				<AsyncBoundary fallback={SplineLoader} errorFallback={null}>
 					<SplineData country={data.country} year={data.year} />
 				</AsyncBoundary>
 				<Metric label="Happiness score">

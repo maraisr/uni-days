@@ -7,6 +7,8 @@ const PageError = () => (
 );
 const FullPageLoader = () => <p>Loading...</p>;
 
+// A special async-boundary that is a "everything" failed, no other boundaries caught the error so we fail to this.
+// Avoids the "white" screen if something breaks.
 export const ApplicationBoundary: FunctionComponent = ({ children }) => (
 	<AsyncBoundary
 		errorFallback={PageError}

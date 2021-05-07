@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { memo, StrictMode, useRef } from 'react';
+import { StrictMode } from 'react';
 import { unstable_createRoot } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -11,26 +11,17 @@ import { DataLoaderProvider } from './lib/dataLoader';
 import { App } from './modules/App';
 import { ApplicationBoundary } from './modules/Boundaries';
 
-const MemoApp = memo(() => {
-	const apiClientRef = useRef(null);
-	if (apiClientRef.current === null) {
-		apiClientRef.current = apiClient(authClient.getToken);
-	}
-
-	return (
-		<AuthProvider client={authClient}>
-			<DataLoaderProvider client={apiClientRef.current}>
-				<App />
-			</DataLoaderProvider>
-		</AuthProvider>
-	);
-});
+const apiClientInstance = apiClient(authClient.getToken);
 
 unstable_createRoot(document.querySelector('#root')).render(
 	<StrictMode>
 		<BrowserRouter>
 			<ApplicationBoundary>
-				<MemoApp />
+				<AuthProvider client={authClient}>
+					<DataLoaderProvider client={apiClientInstance}>
+						<App />
+					</DataLoaderProvider>
+				</AuthProvider>
 			</ApplicationBoundary>
 		</BrowserRouter>
 	</StrictMode>,

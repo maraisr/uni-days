@@ -1,13 +1,7 @@
 import { SearchIcon } from '@heroicons/react/outline';
 import type { ChangeEventHandler } from 'react';
 import * as React from 'react';
-import {
-	unstable_startTransition,
-	unstable_useDeferredValue,
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
+import { unstable_startTransition, unstable_useDeferredValue, useEffect, useRef, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { YEARS } from '../consts';
@@ -15,11 +9,33 @@ import { defineLoader, useDataLoader } from '../lib/dataLoader';
 
 import styles from './styles/SearchInput.module.css';
 
+/**
+ * Returns a slightly delayed value, handy when active fibres exist and helps smoothen out jank. So value may **NOT**
+ * accurently represent search term current entered into input.
+ */
 export const useSearchTerm = () => {
 	const [params] = useSearchParams();
 	return unstable_useDeferredValue(params.get('q') ?? '');
 };
 
+/**
+ * Given a search term, returns a country string array and maybe year. Effectively decodes the search term into tokens
+ * that can be used for searching.
+ *
+ * Processes terms:
+ * "abc" -> {countries: ["abc"]}
+ * "abc xyz" -> {countries: ["abc xyz"]}
+ * "abc and xyz" -> {countries: ["abc", "xyz"]}
+ * "abc and def and hij" -> {countries: ["abc", "def", "hij"]}
+ * "abc in 2017" -> {countries: ["abc"], year: "2017"}
+ *
+ * Known issues;
+ * - Countries with "and" in its name, is treated as 2 countries. eg:
+ *      - Trinidad and Tobago
+ *      - Bosnia and Herzegovina
+ *
+ * But this is a best effort, and gets the point across.
+ */
 export const useProcessedSearchTerm = () => {
 	const searchTerm = useSearchTerm();
 
@@ -32,6 +48,9 @@ export const useProcessedSearchTerm = () => {
 	let i = 0;
 	for (; i < terms.length; i++) {
 		const term = terms[i];
+
+		// Both "in" and "and" should be skipped
+
 		if (term === 'and') continue;
 
 		const maybeHasNextItem = terms[i + 1];
@@ -44,18 +63,23 @@ export const useProcessedSearchTerm = () => {
 				returns.year = maybeHasNextItem;
 			}
 
+			// We break here as if we hit an "in" we look forward for a year, if we have we add. So we can always just
+			// end the loop here.
 			break;
 		}
 
 		if (
 			returns.countries.length > 0 &&
+			// if we have countries, and the last term was either "in" or "and" then we know to _concat_ with previous, rather than push
 			!['in', 'and'].includes(terms[i - 1])
 		) {
+			// `abc xyz` is caught here
 			if (/[a-z]/i.test(term))
 				returns.countries[returns.countries.length - 1] += ` ${term}`;
 			continue;
 		}
 
+		// this will push for `"and abc"` or `"abc"`
 		if (/[a-z]/i.test(term)) returns.countries.push(term);
 	}
 
@@ -88,6 +112,7 @@ export const SearchInput = () => {
 
 	const countries = useDataLoader(loader);
 
+	// A hook to trap for "tab" and arrow keys to "autocomplete" a potential suggestion.
 	useEffect(() => {
 		const handler = (event: KeyboardEvent) => {
 			if (event.key === 'ArrowRight' || event.key === 'Tab') {
@@ -170,14 +195,14 @@ export const SearchInput = () => {
 
 	return (
 		<div className={styles.component}>
-			<SearchIcon width="20px" />
+			<SearchIcon width='20px' />
 			<div className={styles.autocomplete}>
 				{value}
 				{suggest ? <mark>{suggest}</mark> : null}
 			</div>
 			<input
 				className={styles.input}
-				placeholder="Search... eg. Denmark and Finland in 2017"
+				placeholder='Search... eg. Denmark and Finland in 2017'
 				value={value}
 				onChange={onChangeHandler}
 			/>

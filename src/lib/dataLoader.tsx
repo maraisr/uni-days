@@ -87,15 +87,18 @@ const readLoader = <T extends LoaderDefinition>(
 	const cachedValue = context.cache.get(key);
 
 	if (cachedValue !== undefined) {
+		// both errors and promises need to be thrown for Suspense
 		if (typeof cachedValue.then === 'function') throw cachedValue;
 		if (cachedValue instanceof Error) throw cachedValue;
+		// sync return result
 		return cachedValue;
 	}
 
 	const networkPromise = loader.getData(params, context.api);
 
+	// not as generic, but in our case an array of api calls in loaders, we want to flatten.
 	const promise = Array.isArray(networkPromise)
-		? Promise.all(networkPromise).then((data) => data.flat())
+		? Promise.all(networkPromise).then((data) => data.flat()) // !!! Assumption api responses are arrays.
 		: networkPromise;
 
 	promise

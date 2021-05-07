@@ -13,15 +13,32 @@ export interface User {
 	email: string;
 }
 
+// Marker; this may seem excessive, but the jsdoc is super helpful in IDE's
+
 export interface AuthClient {
+	/**
+	 * Is the user logged in?
+	 */
 	isAuthenticated(): boolean;
 
+	/**
+	 * Get the token
+	 */
 	getToken(): string;
 
+	/**
+	 * Log a user in
+	 */
 	login(username: string, password: string): Promise<string>;
 
+	/**
+	 * Register the user
+	 */
 	register(username: string, password: string): Promise<string>;
 
+	/**
+	 * Logout
+	 */
 	logout(): boolean;
 }
 
@@ -95,6 +112,11 @@ export const AuthProvider: FunctionComponent<{ client: AuthClient }> = ({
 	return <context.Provider value={value}>{children}</context.Provider>;
 };
 
+/**
+ * Gets the "payload" from a jwt. I've opted here to simply decode myself, as opposed to crypto safe decode. Seeing as
+ * this is public space data, we don't care if the user "messes with it", they will just be affecting their ui. The
+ * token itself is still validated server side.
+ */
 const getUserObjectFromJWT = (token?: string) => {
 	if (!token) return undefined;
 
