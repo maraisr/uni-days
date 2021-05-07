@@ -146,6 +146,7 @@ export const SearchInput = () => {
 			term = term.split(' ').pop();
 		}
 
+		// Instigates a potential suggestion
 		if (term?.length > 1) {
 			let haystack = countries;
 			// if string starts with 2 its going to be a year
@@ -155,7 +156,13 @@ export const SearchInput = () => {
 				c.startsWith(term.toLowerCase().trim()),
 			);
 
-			if (maybeSuggest && maybeSuggest !== term) {
+			if (
+				maybeSuggest &&
+				maybeSuggest.toLowerCase() !== term.toLowerCase()
+			) {
+				// this trim logic finds the "rest" of the word we matched on
+				// abcdef
+				//    ^
 				const trimLength = maybeSuggest.length - term.length;
 				setSuggest(maybeSuggest.substr(-trimLength));
 			} else {
@@ -165,6 +172,7 @@ export const SearchInput = () => {
 			setSuggest('');
 		}
 
+		// This is here to "update" the url"
 		if (changeRef.current) clearTimeout(changeRef.current);
 
 		changeRef.current = setTimeout(() => {

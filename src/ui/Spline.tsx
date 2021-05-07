@@ -9,7 +9,7 @@ const HEIGHT = 35;
 const STROKE_WIDTH = 2;
 const SMOOTHING = 0.2;
 
-// Line smoothing taken from: https://codepen.io/francoisromain/pen/dzoZZj
+// Line smoothing taken from @see https://codepen.io/francoisromain/pen/dzoZZj
 
 const line = (pointA: CoordTuple, pointB: CoordTuple) => {
 	const lengthX = pointB[0] - pointA[0];
