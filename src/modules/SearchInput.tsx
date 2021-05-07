@@ -28,19 +28,35 @@ export const useProcessedSearchTerm = () => {
 		countries: [],
 	};
 
-	// TODO: Figure out how to invert this regex
-	const matches = search_term
-		.replace(/\b(?<!&) and ?\b(?!&)(?:[^a-z]+[a-z]+)*/gi, '__')
-		.split('__');
+	const terms = search_term.split(' ');
+	let i = 0;
+	for (; i < terms.length; i++) {
+		const term = terms[i];
+		if (term === 'and') continue;
 
-	if (matches[matches.length - 1].includes(' in ')) {
-		const last = matches.pop();
-		const [country, year] = last.split(' in ');
-		matches.push(country);
-		if (year.length === 4) returns.year = year;
+		const maybeHasNextItem = terms[i + 1];
+		if (term === 'in') {
+			if (
+				maybeHasNextItem &&
+				maybeHasNextItem[0] === '2' &&
+				maybeHasNextItem.length === 4
+			) {
+				returns.year = maybeHasNextItem;
+			}
+
+			break;
+		}
+
+		if (
+			returns.countries.length > 0 &&
+			!['in', 'and'].includes(terms[i - 1])
+		) {
+			returns.countries[returns.countries.length - 1] += ` ${term}`;
+			continue;
+		}
+
+		returns.countries.push(term);
 	}
-
-	returns.countries = matches;
 
 	return returns;
 };
@@ -74,12 +90,14 @@ export const SearchInput = () => {
 	useEffect(() => {
 		const handler = (event: KeyboardEvent) => {
 			if (event.key === 'ArrowRight' || event.key === 'Tab') {
-				event.preventDefault();
 				const suggest_value = tracking_suggest.current;
-				unstable_batchedUpdates(() => {
-					setValue((prev) => prev + suggest_value);
-					setSuggest('');
-				});
+				if (suggest_value.length > 0) {
+					event.preventDefault();
+					unstable_batchedUpdates(() => {
+						setValue((prev) => prev + suggest_value);
+						setSuggest('');
+					});
+				}
 			}
 		};
 
@@ -102,10 +120,10 @@ export const SearchInput = () => {
 			const maybe_suggest = haystack.find((c) =>
 				c.startsWith(term.toLowerCase()),
 			);
-			if (maybe_suggest) {
-				setSuggest(
-					maybe_suggest.replace(new RegExp(`(${term})`, 'i'), ''),
-				);
+
+			if (maybe_suggest && maybe_suggest !== term) {
+				const trimLength = maybe_suggest.length - term.length;
+				setSuggest(maybe_suggest.substr(-trimLength));
 			} else {
 				setSuggest('');
 			}
