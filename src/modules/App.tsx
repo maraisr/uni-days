@@ -2,6 +2,7 @@ import { AsyncBoundary } from 'async-boundary';
 import * as React from 'react';
 import { lazy, LazyExoticComponent, memo } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { ErrorFallback } from '../ui/ErrorFallback';
 import { Layout } from '../ui/Layout';
 import { Spinner } from '../ui/Spinner';
 
@@ -11,7 +12,7 @@ const RegisterPage = lazy(() => import('../pages/Register'));
 
 const SuspensefullPage = memo<{ importee: LazyExoticComponent<any> }>(
 	({ importee: Importee }) => (
-		<AsyncBoundary fallback={<Spinner />}>
+		<AsyncBoundary fallback={<Spinner />} errorFallback={ErrorFallback}>
 			<Importee />
 		</AsyncBoundary>
 	),

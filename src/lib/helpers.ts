@@ -16,10 +16,12 @@ export const fetchWithThrow = async <T>(
 		} catch (e) {
 			error = await req.text();
 		}
-		throw new Error(error);
+		throw new FetchError(error);
 	}
 	return req.json();
 };
+
+export class FetchError extends Error {}
 
 /**
  * A function that will tell you if a sequence of numbers are trending up (true for up, false for down)

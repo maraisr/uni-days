@@ -51,11 +51,12 @@ export const useProcessedSearchTerm = () => {
 			returns.countries.length > 0 &&
 			!['in', 'and'].includes(terms[i - 1])
 		) {
-			returns.countries[returns.countries.length - 1] += ` ${term}`;
+			if (/[a-z]/i.test(term))
+				returns.countries[returns.countries.length - 1] += ` ${term}`;
 			continue;
 		}
 
-		returns.countries.push(term);
+		if (/[a-z]/i.test(term)) returns.countries.push(term);
 	}
 
 	return returns;
@@ -109,16 +110,18 @@ export const SearchInput = () => {
 	}, []);
 
 	useEffect(() => {
-		let term = searchValue.trim();
+		let term = searchValue;
 		if (term.includes(' ')) {
 			term = term.split(' ').pop();
 		}
 
 		if (term?.length > 1) {
 			let haystack = countries;
+			// if string starts with 2 its going to be a year
 			if (term[0] === '2') haystack = YEARS;
+
 			const maybeSuggest = haystack.find((c) =>
-				c.startsWith(term.toLowerCase()),
+				c.startsWith(term.toLowerCase().trim()),
 			);
 
 			if (maybeSuggest && maybeSuggest !== term) {
