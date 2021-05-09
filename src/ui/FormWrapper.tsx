@@ -3,6 +3,6 @@ import * as React from 'react';
 
 import styles from './styles/FormWrapper.module.css';
 
-export const FormWrapper: FunctionComponent = ({ children }) => {
-	return <div className={styles.component}>{children}</div>;
-};
+export const FormWrapper: FunctionComponent = ({ children }) => (
+	<div className={styles.component}>{children}</div>
+);

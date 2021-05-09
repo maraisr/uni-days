@@ -64,6 +64,7 @@ export default memo(() => {
 					>
 						<input
 							id="username"
+							type="email"
 							{...register('username', {
 								required: true,
 								validate(v) {

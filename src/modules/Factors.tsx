@@ -8,19 +8,6 @@ import { Ring } from '../ui/Ring';
 import { SmallMessage } from '../ui/SmallMessage';
 import styles from './styles/Factors.module.css';
 
-const factorsDataLoader = defineLoader<
-	{ country: string; year: string },
-	FactorsData[]
->({
-	family: 'factors.country',
-	getKey({ country, year }) {
-		return country + year;
-	},
-	getData({ country, year }, api) {
-		return api.factors({ country, year });
-	},
-});
-
 const factorsKeys = [
 	'economy',
 	'family',
@@ -51,6 +38,30 @@ const metricMappingIterable = Object.entries(metricMapping) as Array<
 	]
 >; // sigh.. Object.entries isn't type-safe.
 
+const factorsDataLoader = defineLoader<
+	{ country: string; year: string },
+	FactorsData[]
+>({
+	family: 'factors.country',
+	getKey({ country, year }) {
+		return country + year;
+	},
+	getData({ country, year }, api) {
+		return api.factors({ country, year }).then((factors) =>
+			// We need to parse the factor keys as numbers, api returns strings
+			factors.map((factor: any) =>
+				factorsKeys.reduce(
+					(acc, factorItem) => ({
+						...acc,
+						[factorItem]: Number.parseFloat(factor[factorItem]),
+					}),
+					factor as FactorsData,
+				),
+			),
+		);
+	},
+});
+
 /**
  * Factors is the component that paints pretty rings for each of the contributing factoring. Component requires auth,
  * if failing to auth this will Suspend with an error.
@@ -59,19 +70,10 @@ export const Factors: FunctionComponent<{ country: string; year: number }> = ({
 	country,
 	year,
 }) => {
-	const data = useDataLoader(factorsDataLoader, {
+	const [factors] = useDataLoader(factorsDataLoader, {
 		country,
 		year: year.toString(),
-	})[0];
-
-	// Just parses the factors as a number (api returns strings)
-	const factors = factorsKeys.reduce(
-		(acc, i) => ({
-			...acc,
-			[i]: Number.parseFloat(data[i]),
-		}),
-		{} as Record<typeof factorsKeys[number], number>,
-	);
+	});
 
 	// Factors is calculated by seeing how much it had contributed to the score minus dystopia
 	// @see

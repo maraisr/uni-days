@@ -1,6 +1,6 @@
-import * as React from 'react';
 import type { ErrorFallbackComponentType } from 'async-boundary';
 import { DefaultErrorFallbackComponent } from 'async-boundary';
+import * as React from 'react';
 
 import styles from './styles/ErrorFallback.module.css';
 

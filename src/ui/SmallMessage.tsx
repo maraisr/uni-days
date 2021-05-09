@@ -6,10 +6,6 @@ import styles from './styles/SmallMessage.module.css';
 export const SmallMessage: FunctionComponent<{ error?: boolean }> = ({
 	error,
 	children,
-}) => {
-	return (
-		<p className={clsx(styles.component, error && styles.error)}>
-			{children}
-		</p>
-	);
-};
+}) => (
+	<p className={clsx(styles.component, error && styles.error)}>{children}</p>
+);

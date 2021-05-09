@@ -17,7 +17,7 @@ import styles from './styles/SearchInput.module.css';
 
 /**
  * Returns a slightly delayed value, handy when active fibres exist and helps smoothen out jank. So value may **NOT**
- * accurently represent search term current entered into input.
+ * accurately represent search term current entered into input.
  */
 export const useSearchTerm = () => {
 	const [params] = useSearchParams();
@@ -50,7 +50,7 @@ export const useProcessedSearchTerm = () => {
 		countries: [],
 	};
 
-	const terms = searchTerm.split(' ');
+	const terms = searchTerm.split(' ').filter(Boolean);
 	let i = 0;
 	for (; i < terms.length; i++) {
 		const term = terms[i];
@@ -76,7 +76,8 @@ export const useProcessedSearchTerm = () => {
 
 		if (
 			returns.countries.length > 0 &&
-			// if we have countries, and the last term was either "in" or "and" then we know to _concat_ with previous, rather than push
+			// if we have countries, and the last term was either "in" or "and" then we know to _concat_ with previous,
+			// rather than push
 			!['in', 'and'].includes(terms[i - 1])
 		) {
 			// `abc xyz` is caught here
@@ -92,15 +93,13 @@ export const useProcessedSearchTerm = () => {
 	return returns;
 };
 
-const loader = defineLoader<never, string[]>({
+const countriesDataLoader = defineLoader<never, string[]>({
 	family: 'countries',
 	getKey() {
 		return '';
 	},
 	getData(_, api) {
-		return api
-			.countries()
-			.then((countries) => countries.map((c: string) => c.toLowerCase()));
+		return api.countries();
 	},
 });
 
@@ -116,7 +115,7 @@ export const SearchInput = () => {
 	// Sigh...
 	trackingSuggest.current = suggest;
 
-	const countries = useDataLoader(loader);
+	const countries = useDataLoader(countriesDataLoader);
 
 	// A hook to trap for "tab" and arrow keys to "autocomplete" a potential suggestion.
 	useEffect(() => {
@@ -141,10 +140,7 @@ export const SearchInput = () => {
 	}, []);
 
 	useEffect(() => {
-		let term = searchValue;
-		if (term.includes(' ')) {
-			term = term.split(' ').pop();
-		}
+		const term = searchValue.split(' ').pop();
 
 		// Instigates a potential suggestion
 		if (term?.length > 1) {
@@ -153,7 +149,7 @@ export const SearchInput = () => {
 			if (term[0] === '2') haystack = YEARS;
 
 			const maybeSuggest = haystack.find((c) =>
-				c.startsWith(term.toLowerCase().trim()),
+				c.toLowerCase().startsWith(term.toLowerCase().trim()),
 			);
 
 			if (

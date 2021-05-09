@@ -21,7 +21,10 @@ import styles from './styles/Dashboard.module.css';
 
 const PAGE_SIZE = 8;
 
-const loader = defineLoader<{ year: string; countries: string[] }, RankData[]>({
+const rankingsDataLoader = defineLoader<
+	{ year: string; countries: string[] },
+	RankData[]
+>({
 	family: 'dashboard.rankings',
 	getKey({ year, countries }) {
 		return year + countries.join('');
@@ -56,7 +59,10 @@ export default memo(() => {
 	const yearForApi = unstable_useDeferredValue(year);
 	const [page, setPage] = useState(1);
 
-	const data = useDataLoader(loader, { year: yearForApi, countries });
+	const data = useDataLoader(rankingsDataLoader, {
+		year: yearForApi,
+		countries,
+	});
 
 	const updateYear = useCallback((year: string) => {
 		setYear(year);

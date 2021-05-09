@@ -10,11 +10,11 @@
  * for an assessment like this.
  */
 
+import type { flruCache as Cache } from 'flru';
 import flru from 'flru';
 import type { FunctionComponent } from 'react';
 import * as React from 'react';
 import { ContextType, createContext, useContext, useRef } from 'react';
-import type { flruCache as Cache } from 'flru';
 
 const context = createContext<{
 	cache: Cache;
