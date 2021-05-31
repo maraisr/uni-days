@@ -33,6 +33,9 @@ export const bootstrap = async (app) => {
 
 	for (const [route, handler] of routes.entries()) {
 		const { default: handle, preflight = [] } = await handler;
+		if (!handle)
+			throw new Error(`Route ${route} requires a default export!`);
+
 		app.use(`/${route}`, ...preflight, route_handler(route, handle));
 	}
 };

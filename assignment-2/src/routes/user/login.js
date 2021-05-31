@@ -45,8 +45,7 @@ const handler = async (req, res, next) => {
 
 	if (!user) {
 		res.status(401);
-		res.send('Incorrect email or password');
-		return;
+		throw new Error('Incorrect email or password');
 	}
 
 	const token = sign({

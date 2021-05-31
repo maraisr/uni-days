@@ -25,7 +25,7 @@ const query_validator = check(
  * TODO
  * @type {Handler[]}
  */
-export const preflight = [jwt_middleware];
+export const preflight = [jwt_middleware()];
 
 /**
  * TODO

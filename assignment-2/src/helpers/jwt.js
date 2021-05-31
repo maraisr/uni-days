@@ -12,7 +12,9 @@ export const sign = (payload) =>
 		expiresIn: expiry,
 	});
 
-export const jwt_middleware = express_jwt({
-	secret: SECRET,
-	algorithms: ['HS256'],
-});
+export const jwt_middleware = (options) =>
+	express_jwt({
+		...options,
+		secret: SECRET,
+		algorithms: ['HS256'],
+	});
