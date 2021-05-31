@@ -16,7 +16,7 @@ const validator = check(
 /**
  * TODO
  * @type {Handler}
- **/
+ */
 const handler = async (req, res, next) => {
 	if (req.method !== 'GET') return next();
 

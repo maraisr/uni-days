@@ -1,4 +1,5 @@
 import { ValidationError } from 'yup';
+import { expiry, sign } from '../../helpers/jwt.js';
 import { check } from '../../helpers/validator.js';
 import { email, password } from '../../helpers/validators.js';
 import { users } from '../../data-access/database.js';
@@ -36,22 +37,26 @@ const handler = async (req, res, next) => {
 		);
 	}
 
-	try {
-		await users().insert({
-			email,
-			password: hash(password), // hashing locally so we dont send plain-text over the wire to database
-		});
-	} catch (e) {
-		if (e.code === 'ER_DUP_ENTRY') {
-			res.status(409);
-			throw new Error('User already exists');
-		}
-		console.error(e);
-		throw new Error('Unknown error');
+	const [user] = await users()
+		.select('email')
+		.where('email', email)
+		.where('password', hash(password))
+		.limit(1);
+
+	if (!user) {
+		res.status(401);
+		res.send('Incorrect email or password');
+		return;
 	}
 
+	const token = sign({
+		email: user.email,
+	});
+
 	res.send({
-		message: 'User created',
+		token,
+		token_type: 'Bearer',
+		expires_in: expiry,
 	});
 };
 

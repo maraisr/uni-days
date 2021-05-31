@@ -5,6 +5,7 @@ import cors from 'cors';
 
 import { bootstrap } from './app.js';
 import { error_middleware } from './middleware/error_middleware.js';
+import { accepts } from './middleware/accepts.js';
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(
 	morgan(
 		'~> [:method] :url -> :status :res[content-length] - :response-time ms',
 	),
+	accepts,
 	express.json(),
 );
 
