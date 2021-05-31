@@ -1,4 +1,5 @@
 import { ValidationError } from 'yup';
+import { UnauthorizedError } from 'express-jwt';
 
 /**
  * @typedef {import("@types/express").ErrorRequestHandler} ErrorHandler
@@ -14,7 +15,34 @@ export const error_middleware = (error, req, res, next) => {
 	}
 
 	if (error instanceof ValidationError) res.status(400);
-	else res.status(500);
+	else if (error instanceof UnauthorizedError) {
+		res.status(401);
+
+		let message;
+		switch (error.code) {
+			case 'credentials_required': {
+				message = "Authorization header ('Bearer token') not found";
+				break;
+			}
+			case 'invalid_token':
+			case 'revoked_token':
+				message = 'Invalid JWT token';
+				break;
+			default:
+				message = 'Authorization header is malformed';
+				break;
+		}
+
+		if (error.inner.name === 'TokenExpiredError') {
+			message = 'JWT token has expired';
+		}
+
+		res.send({
+			error: true,
+			message,
+		});
+		return;
+	} else res.status(500);
 
 	res.send({
 		error: true,

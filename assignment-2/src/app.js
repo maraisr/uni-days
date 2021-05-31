@@ -1,29 +1,38 @@
-import { Router } from 'express';
-import { countries, rankings } from './routes/data.js';
 import { async_handler } from './helpers/async_handler.js';
+
+import { platform } from 'os';
+import { totalist } from 'totalist';
 
 /**
  * @typedef {import("@types/express").Application} ExpressApplication
  */
 
-const public_router = new Router({
-	caseSensitive: true,
-	strict: true,
-});
-const private_router = new Router({
-	caseSensitive: true,
-	strict: true,
-});
-
-// ~> Routes
-
-public_router.get('/rankings', async_handler(rankings));
-public_router.get('/countries', async_handler(countries));
+const route_handler = (_name, handle) => {
+	return async_handler((req, res, next) => {
+		return handle(req, res, next);
+	});
+};
 
 /**
  * TODO
  * @param {ExpressApplication} app
  */
-export const bootstrap = (app) => {
-	app.use(public_router, private_router);
+export const bootstrap = async (app) => {
+	const routes = new Map();
+
+	await totalist('src/routes', (rel, abs) => {
+		if (!/\.[tj]sx?$/.test(rel)) return;
+		const name = rel
+			.replace(/\.[tj]sx?$/, '')
+			.replaceAll(/[\\/]+/g, '/')
+			.replace(/(\/|^)\$/, '$1:');
+
+		if (platform() === 'win32') routes.set(name, import(`file://${abs}`));
+		else routes.set(name, import(abs));
+	});
+
+	for (const [route, handler] of routes.entries()) {
+		const { default: handle, preflight = [] } = await handler;
+		app.use(`/${route}`, ...preflight, route_handler(route, handle));
+	}
 };

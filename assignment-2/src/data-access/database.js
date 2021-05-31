@@ -1,5 +1,4 @@
-import knex_pkg from 'knex/knex.js';
-const { knex } = knex_pkg;
+import knex from 'knex/knex.js';
 
 /**
  * @typedef {import('knex/types/index.d.ts').QueryInterface} QueryInterface

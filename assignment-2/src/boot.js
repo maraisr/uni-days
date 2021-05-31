@@ -17,7 +17,7 @@ app.use(
 	express.json(),
 );
 
-bootstrap(app);
+await bootstrap(app);
 
 app.use(error_middleware);
 
