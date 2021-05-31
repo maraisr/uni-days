@@ -24,8 +24,5 @@ public_router.get('/rankings', async_handler(rankings));
  * @param {ExpressApplication} app
  */
 export const bootstrap = (app) => {
-	app.use(
-		public_router,
-		private_router,
-	);
+	app.use(public_router, private_router);
 };

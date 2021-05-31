@@ -25,7 +25,10 @@ import { isSchema, object } from 'yup';
  */
 export const check = (schema) => {
 	schema = object()
-		.noUnknown(true, 'Invalid query parameters. Only year and country are permitted.')
+		.noUnknown(
+			true,
+			'Invalid query parameters. Only year and country are permitted.',
+		)
 		.shape(schema);
 
 	if (!isSchema(schema)) throw Error('Schema isnt valid');
@@ -35,6 +38,6 @@ export const check = (schema) => {
 		return schema.validateSync(c, {
 			abortEarly: true,
 			strict: true,
-		})
+		});
 	};
 };

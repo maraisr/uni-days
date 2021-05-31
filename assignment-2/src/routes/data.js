@@ -8,8 +8,14 @@ import { number, string } from 'yup';
  */
 
 const validator = check({
-	year: string().matches(/^20[1-9]{2}$/, 'Invalid year format. Format must be yyyy.'),
-	country: string().matches(/[^0-9]/, 'Invalid country format. Country query parameter cannot contain numbers.'),
+	year: string().matches(
+		/^20[1-9]{2}$/,
+		'Invalid year format. Format must be yyyy.',
+	),
+	country: string().matches(
+		/[^0-9]/,
+		'Invalid country format. Country query parameter cannot contain numbers.',
+	),
 });
 
 /**
@@ -27,5 +33,7 @@ export const rankings = async (req, res) => {
 
 	rankings_ids = await rankings_ids;
 
-	res.send(await loaders.rankings.loadMany(rankings_ids.map(row => row.ID)));
+	res.send(
+		await loaders.rankings.loadMany(rankings_ids.map((row) => row.ID)),
+	);
 };

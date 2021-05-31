@@ -9,7 +9,9 @@ const app = express();
 
 app.use(
 	helmet(),
-	morgan('~> [:method] :url -> :status :res[content-length] - :response-time ms'),
+	morgan(
+		'~> [:method] :url -> :status :res[content-length] - :response-time ms',
+	),
 	express.json(),
 );
 
