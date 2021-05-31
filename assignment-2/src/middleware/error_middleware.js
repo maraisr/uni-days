@@ -14,6 +14,8 @@ export const error_middleware = (error, req, res, next) => {
 		return next(error);
 	}
 
+	if (res.statusCode === 200) res.status(500);
+
 	if (error instanceof ValidationError) res.status(400);
 	else if (error instanceof UnauthorizedError) {
 		res.status(401);
@@ -42,8 +44,7 @@ export const error_middleware = (error, req, res, next) => {
 			message,
 		});
 		return;
-	} else res.status(500);
-
+	}
 	res.send({
 		error: true,
 		message: error.message,

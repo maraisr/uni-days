@@ -8,8 +8,8 @@ import { country, year } from '../helpers/validators.js';
 
 const validator = check(
 	{
-		year,
-		country,
+		year: year(),
+		country: country(),
 	},
 	'Invalid query parameters. Only year and country are permitted.',
 );
