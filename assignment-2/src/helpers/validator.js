@@ -22,14 +22,13 @@ import { isSchema, object } from 'yup';
 /**
  * TODO
  * @param {ValidationSchema} schema
+ * @param {string?} invalid_params_message
  */
-export const check = (schema) => {
-	schema = object()
-		.noUnknown(
-			true,
-			'Invalid query parameters. Only year and country are permitted.',
-		)
-		.shape(schema);
+export const check = (
+	schema,
+	invalid_params_message = 'Invalid query parameters. Query parameters are not permitted.',
+) => {
+	schema = object().noUnknown(true, invalid_params_message).shape(schema);
 
 	if (!isSchema(schema)) throw Error('Schema isnt valid');
 

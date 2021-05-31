@@ -1,3 +1,5 @@
+import { ValidationError } from 'yup';
+
 /**
  * @typedef {import("@types/express").ErrorRequestHandler} ErrorHandler
  */
@@ -11,7 +13,9 @@ export const error_middleware = (error, req, res, next) => {
 		return next(error);
 	}
 
-	res.status(500);
+	if (error instanceof ValidationError) res.status(400);
+	else res.status(500);
+
 	res.send({
 		error: true,
 		message: error.message,

@@ -1,6 +1,7 @@
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import cors from 'cors';
 
 import { bootstrap } from './app.js';
 import { error_middleware } from './middleware/error_middleware.js';
@@ -9,6 +10,7 @@ const app = express();
 
 app.use(
 	helmet(),
+	cors(),
 	morgan(
 		'~> [:method] :url -> :status :res[content-length] - :response-time ms',
 	),

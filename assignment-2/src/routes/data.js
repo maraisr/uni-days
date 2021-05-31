@@ -1,39 +1,55 @@
-import { loaders } from '../data-access/loaders.js';
 import { check } from '../helpers/validator.js';
 import { rankings as rankings_table } from '../data-access/database.js';
-import { number, string } from 'yup';
+import { string } from 'yup';
 
 /**
  * @typedef {import("@types/express").Handler} Handler
  */
 
-const validator = check({
-	year: string().matches(
-		/^20[1-9]{2}$/,
-		'Invalid year format. Format must be yyyy.',
-	),
-	country: string().matches(
-		/[^0-9]/,
-		'Invalid country format. Country query parameter cannot contain numbers.',
-	),
-});
+const rankings_validator = check(
+	{
+		year: string().matches(
+			/^20[0-9]{2}$/,
+			'Invalid year format. Format must be yyyy.',
+		),
+		country: string().matches(
+			/[^0-9]/,
+			'Invalid country format. Country query parameter cannot contain numbers.',
+		),
+	},
+	'Invalid query parameters. Only year and country are permitted.',
+);
+
+const countries_validator = check({});
 
 /**
- * The Rankings handler
- *
+ * TODO
  * @type {Handler}
  * */
 export const rankings = async (req, res) => {
-	let { year, country } = validator(req.query);
+	const { year, country } = rankings_validator(req.query);
 
-	let rankings_ids = rankings_table().select('ID');
-
-	if (year) rankings_ids.where('year', year);
-	if (country) rankings_ids.whereRaw('country like ?', country);
-
-	rankings_ids = await rankings_ids;
-
-	res.send(
-		await loaders.rankings.loadMany(rankings_ids.map((row) => row.ID)),
+	const rankings = rankings_table().select(
+		'rank',
+		'country',
+		'score',
+		'year',
 	);
+
+	if (year) rankings.where('year', year);
+	if (country) rankings.whereRaw('country like ?', country);
+
+	res.send(await rankings);
+};
+
+/**
+ * TODO
+ * @type {Handler}
+ * */
+export const countries = async (req, res) => {
+	countries_validator(req.query);
+
+	const countries = await rankings_table().select('country');
+
+	res.send(countries.map((row) => row.country));
 };

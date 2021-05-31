@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { rankings } from './routes/data.js';
+import { countries, rankings } from './routes/data.js';
 import { async_handler } from './helpers/async_handler.js';
 
 /**
@@ -18,6 +18,7 @@ const private_router = new Router({
 // ~> Routes
 
 public_router.get('/rankings', async_handler(rankings));
+public_router.get('/countries', async_handler(countries));
 
 /**
  * TODO
