@@ -1,4 +1,6 @@
-import { createHash } from 'crypto';
+import { createHmac } from 'crypto';
+
+const SECRET = 'wors!heek8loc7THAD';
 
 /**
  * TODO
@@ -6,4 +8,4 @@ import { createHash } from 'crypto';
  * @returns {string}
  */
 export const hash = (payload) =>
-	createHash('sha256').update(payload).digest('hex');
+	createHmac('sha256', SECRET).update(payload).digest('hex');
