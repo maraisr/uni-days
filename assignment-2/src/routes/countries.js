@@ -18,6 +18,7 @@ const handler = async (req, res, next) => {
 
 	const countries = await rankings_table()
 		.select('country')
+		.distinct()
 		.orderBy('country', 'asc');
 
 	res.send(countries.map((row) => row.country));

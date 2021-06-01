@@ -50,6 +50,7 @@ const handler = async (req, res, next) => {
 		throw new Error('Unknown error');
 	}
 
+	res.status(201);
 	res.send({
 		message: 'User created',
 	});

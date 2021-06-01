@@ -8,7 +8,7 @@ export const year = () =>
 
 export const country = () =>
 	string().matches(
-		/[^0-9]/,
+		/^[^0-9]+$/,
 		'Invalid country format. Country query parameter cannot contain numbers.',
 	);
 

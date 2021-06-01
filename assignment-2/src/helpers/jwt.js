@@ -2,9 +2,9 @@ import express_jwt from 'express-jwt';
 import jsonwebtoken from 'jsonwebtoken';
 import { parse } from '@lukeed/ms';
 
-const SECRET = 'psal!camp0wirm-YARM'; // yeah make this come from an env-variable
+const SECRET = 'auWtBrLzs8YM4zunaUCbwJT4sHKQ@3uNv8jETyzUy.yMPGTXrZ'; // yeah make this come from an env-variable
 
-export const expiry = parse('1d');
+export const expiry = parse('1d') / 1000; // in seconds
 
 export const sign = (payload) =>
 	jsonwebtoken.sign(payload, SECRET, {

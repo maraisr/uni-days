@@ -1,6 +1,6 @@
 import { createHmac } from 'crypto';
 
-const SECRET = 'wors!heek8loc7THAD';
+const SECRET = 'wqvX!tfND7BJdizFjLfmvU-yjA!X!BUB_sNMmP.eT*zXhmVYBq'; // yeah make this come from an env-variable
 
 /**
  * TODO

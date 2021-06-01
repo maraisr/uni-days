@@ -9,7 +9,7 @@ import { country, year } from '../helpers/validators.js';
 const validator = check(
 	{
 		year: year(),
-		country: country(),
+		country: country().min(1),
 	},
 	'Invalid query parameters. Only year and country are permitted.',
 );
@@ -21,10 +21,12 @@ const handler = async (req, res, next) => {
 	if (req.method !== 'GET') return next();
 
 	const { year, country } = validator(req.query);
+	console.log({ year, country });
 
 	const rankings = rankings_table()
 		.select('rank', 'country', 'score', 'year')
-		.orderBy('score', 'asc');
+		.orderBy('year', 'desc')
+		.orderBy('rank', 'asc');
 
 	if (year) rankings.where('year', year);
 	if (country) rankings.whereRaw('country like ?', country);

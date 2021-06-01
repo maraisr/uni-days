@@ -22,6 +22,10 @@ export const database = knex({
 	},
 });
 
+database.on('query', ({ sql }) => {
+	console.log(`(SQL) ${sql}`);
+});
+
 /**
  * @returns {QueryInterface}
  */

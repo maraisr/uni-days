@@ -23,8 +23,8 @@ await bootstrap(app);
 
 app.use(error_middleware);
 
-app.listen(8080, (e) => {
+const port = process.env.PORT || 3000;
+app.listen(port, (e) => {
 	if (e) throw e;
-
-	console.log(`~> application ready on port :8080`);
+	console.log(`~> application ready on port :${port}`);
 });

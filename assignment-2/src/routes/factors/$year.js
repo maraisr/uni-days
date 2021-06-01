@@ -49,7 +49,8 @@ const handler = async (req, res, next) => {
 			'generosity',
 			'trust',
 		)
-		.orderBy('score', 'asc');
+		.orderBy('year', 'desc')
+		.orderBy('rank', 'asc');
 
 	if (year) factors.where('year', year);
 	if (country) factors.whereRaw('country like ?', country);
