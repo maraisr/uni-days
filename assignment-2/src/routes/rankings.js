@@ -12,7 +12,7 @@ const validator = check(
 		country: country(),
 	},
 	'Invalid query parameters. Only year and country are permitted.',
-)();
+);
 
 /**
  * TODO

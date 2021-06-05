@@ -1,4 +1,4 @@
-import yup, { isSchema, object, NumberSchema } from 'yup';
+import { isSchema, object } from 'yup';
 
 /**
  * @typedef {import('yup').AnySchema} ValidationSchema
@@ -44,8 +44,8 @@ export const check = (
 
 	if (!isSchema(schema)) throw Error('Schema isnt valid');
 
-	return (cb) => (obj) =>
-		schema.validateSync(cb?.(schema) ?? obj, {
+	return (obj) =>
+		schema.validateSync(obj, {
 			abortEarly: true,
 			recursive: true,
 			strict: true,

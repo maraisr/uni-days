@@ -11,7 +11,7 @@ import { jwt_middleware } from '../../helpers/jwt.js';
 
 const params_validator = check({
 	year: year(),
-})();
+});
 
 const query_validator = check(
 	{
@@ -29,7 +29,7 @@ const query_validator = check(
 	},
 	'Invalid query parameters. Only limit and country are permitted.',
 	undefined,
-)();
+);
 
 /**
  * TODO

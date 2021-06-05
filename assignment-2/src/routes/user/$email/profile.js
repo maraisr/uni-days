@@ -14,7 +14,7 @@ const format_date = tinydate('{YYYY}-{MM}-{DD}');
 
 const validator = check({
 	email: email().required(),
-})();
+});
 
 const put_validator = check(
 	{
@@ -35,7 +35,7 @@ const put_validator = check(
 	},
 	undefined,
 	'Request body invalid, firstName, lastName and address must be strings only.',
-)();
+);
 
 /**
  * TODO

@@ -8,12 +8,12 @@ import { hash } from '../../helpers/hash.js';
  * @typedef {import("@types/express").Handler} Handler
  */
 
-const validator = check({})();
+const validator = check({});
 
 const body_validator = check({
 	email: email().required(),
 	password: password().required(),
-})();
+});
 
 /**
  * TODO

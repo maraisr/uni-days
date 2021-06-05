@@ -5,7 +5,7 @@ import { check } from '../helpers/validator.js';
  * @typedef {import("@types/express").Handler} Handler
  */
 
-const validator = check({})();
+const validator = check({});
 
 /**
  * TODO
