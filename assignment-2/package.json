@@ -35,6 +35,9 @@
     "@types/jsonwebtoken": "^8.5.1",
     "prettier": "^2.3.0"
   },
+  "engines": {
+    "node": ">=16.2"
+  },
   "volta": {
     "node": "16.2.0"
   }
