@@ -4,6 +4,7 @@ import { jwt_middleware } from '../../../helpers/jwt.js';
 import { date, email } from '../../../helpers/validators.js';
 import { users } from '../../../data-access/database.js';
 import { string } from 'yup';
+import { parseISO } from 'date-fns';
 
 const format_date = tinydate('{YYYY}-{MM}-{DD}');
 
@@ -109,6 +110,8 @@ const put = async (req, res) => {
 	// so if owner == email then we know we have a user
 	// NOTE; only time this will change is if an account is deleted after a token was served — but then the auth layer
 	// (jwt_middleware) could feature add to include a test if user exists
+
+	body.dob = body.dob ? format_date(parseISO(body.dob)) : undefined;
 
 	await users().update(body).where('email', owner_email);
 

@@ -16,12 +16,12 @@ export const password = () => string().trim().min(1);
 
 export const date = (fallback_message) =>
 	mixed()
-		.transform((value) => parseISO(value))
 		.test({
 			name: 'date_valid',
 			message: fallback_message,
 			test(value, { originalValue }) {
-				return originalValue.length < 11 && isValid(parseISO(value));
+				//return originalValue.length < 11 && isValid(parseISO(value));
+				return isValid(parseISO(value));
 			},
 		})
 		.test({
