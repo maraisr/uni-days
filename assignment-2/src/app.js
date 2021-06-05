@@ -7,12 +7,6 @@ import { async_handler } from './helpers/async_handler.js';
  * @typedef {import("@types/express").Application} ExpressApplication
  */
 
-const route_handler = (_name, handle) => {
-	return async_handler((req, res, next) => {
-		return handle(req, res, next);
-	});
-};
-
 /**
  * TODO
  * @param {ExpressApplication} app
@@ -32,11 +26,16 @@ export const bootstrap = async (app) => {
 	});
 
 	for (const [route, handler] of routes.entries()) {
-		const { default: handle, preflight = [] } = await handler;
-		if (!handle)
+		const { default: handles } = await handler;
+		if (!handles)
 			throw new Error(`Route ${route} requires a default export!`);
 
-		app.use(`/${route}`, ...preflight, route_handler(route, handle));
+		for (const [verb, handle] of Object.entries(handles)) {
+			const mapped = (Array.isArray(handle) ? handle : [handle]).map(
+				async_handler,
+			);
+			app[verb](`/${route}`, ...mapped);
+		}
 	}
 };
 

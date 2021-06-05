@@ -45,6 +45,7 @@ export const error_middleware = (error, req, res, next) => {
 		});
 		return;
 	}
+
 	res.send({
 		error: true,
 		message: error.message,

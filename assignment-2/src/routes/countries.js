@@ -5,15 +5,13 @@ import { check } from '../helpers/validator.js';
  * @typedef {import("@types/express").Handler} Handler
  */
 
-const validator = check({});
+const validator = check({})();
 
 /**
  * TODO
  * @type {Handler}
  */
 const handler = async (req, res, next) => {
-	if (req.method !== 'GET') return next();
-
 	validator(req.query);
 
 	const countries = await rankings_table()
@@ -24,4 +22,6 @@ const handler = async (req, res, next) => {
 	res.send(countries.map((row) => row.country));
 };
 
-export default handler;
+export default {
+	get: handler,
+};

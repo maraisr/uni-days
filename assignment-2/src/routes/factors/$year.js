@@ -1,4 +1,4 @@
-import { number } from 'yup';
+import { string } from 'yup';
 
 import { check } from '../../helpers/validator.js';
 import { country, year } from '../../helpers/validators.js';
@@ -11,29 +11,31 @@ import { jwt_middleware } from '../../helpers/jwt.js';
 
 const params_validator = check({
 	year: year(),
-});
+})();
 
 const query_validator = check(
 	{
 		country: country(),
-		limit: number().positive().integer(),
+		limit: string()
+			.test({
+				name: 'is_valid',
+				message:
+					'Invalid limit query. Limit must be a positive number.',
+				test: (value) => {
+					return value ? /^[0-9]+$/.test(value) : true;
+				},
+			})
+			.notRequired(),
 	},
 	'Invalid query parameters. Only limit and country are permitted.',
-);
-
-/**
- * TODO
- * @type {Handler[]}
- */
-export const preflight = [jwt_middleware()];
+	undefined,
+)();
 
 /**
  * TODO
  * @type {Handler}
  */
 const handler = async (req, res, next) => {
-	if (req.method !== 'GET') return next();
-
 	const { year } = params_validator(req.params);
 	const { limit, country } = query_validator(req.query);
 
@@ -59,4 +61,6 @@ const handler = async (req, res, next) => {
 	res.send(await factors);
 };
 
-export default handler;
+export default {
+	get: [jwt_middleware(), handler],
+};

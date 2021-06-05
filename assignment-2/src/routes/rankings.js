@@ -12,14 +12,13 @@ const validator = check(
 		country: country(),
 	},
 	'Invalid query parameters. Only year and country are permitted.',
-);
+)();
+
 /**
  * TODO
  * @type {Handler}
  */
 const handler = async (req, res, next) => {
-	if (req.method !== 'GET') return next();
-
 	const { year, country } = validator(req.query);
 
 	const rankings = rankings_table()
@@ -33,4 +32,6 @@ const handler = async (req, res, next) => {
 	res.send(await rankings);
 };
 
-export default handler;
+export default {
+	get: handler,
+};

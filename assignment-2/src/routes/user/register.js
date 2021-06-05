@@ -8,20 +8,18 @@ import { hash } from '../../helpers/hash.js';
  * @typedef {import("@types/express").Handler} Handler
  */
 
-const validator = check({});
+const validator = check({})();
 
 const body_validator = check({
 	email: email().required(),
 	password: password().required(),
-});
+})();
 
 /**
  * TODO
  * @type {Handler}
  */
 const handler = async (req, res, next) => {
-	if (req.method !== 'POST') return next();
-
 	validator(req.query);
 
 	let email, password;
@@ -56,4 +54,6 @@ const handler = async (req, res, next) => {
 	});
 };
 
-export default handler;
+export default {
+	post: handler,
+};
