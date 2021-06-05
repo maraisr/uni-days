@@ -3,6 +3,9 @@
  */
 
 /**
+ * Express' default methods to deal with errors simply doesnt respect async/await.
+ * This is a helper method that wraps a handler in an optional `.catch` that forwards
+ * to the error middleware correctly.
  *
  * @param {Handler} handler
  * @returns {Handler}

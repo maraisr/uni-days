@@ -38,7 +38,9 @@ const put_validator = check(
 );
 
 /**
- * TODO
+ * A small module scoped utility to return a user (if there is one). Handles the
+ * case where authenticated fields _should_ not be returned if there is no owner.
+ *
  * @param {string} user_email
  * @param {string} owner_email
  */
@@ -66,7 +68,6 @@ const getUser = async (user_email, owner_email) => {
 };
 
 /**
- * TODO
  * @type {Handler}
  */
 const get = async (req, res) => {
@@ -90,7 +91,6 @@ const get = async (req, res) => {
 };
 
 /**
- * TODO
  * @type {Handler}
  */
 const put = async (req, res) => {

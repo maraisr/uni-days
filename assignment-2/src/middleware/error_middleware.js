@@ -6,7 +6,10 @@ import { UnauthorizedError } from 'express-jwt';
  */
 
 /**
- * TODO
+ * All errors in our Application is handled through simply throwing them.
+ *
+ * By default we will return the error's message — but for some we apply some overrides.
+ *
  * @type {ErrorHandler}
  */
 export const error_middleware = (error, req, res, next) => {

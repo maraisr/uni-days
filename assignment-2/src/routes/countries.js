@@ -8,7 +8,6 @@ import { check } from '../helpers/validator.js';
 const validator = check({});
 
 /**
- * TODO
  * @type {Handler}
  */
 const handler = async (req, res, next) => {

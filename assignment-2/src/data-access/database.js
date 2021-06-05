@@ -6,6 +6,7 @@ import knex from 'knex/knex.js';
  */
 
 /**
+ * This is our main database connection client
  * @type Knex
  */
 export const database = knex({
@@ -23,11 +24,15 @@ export const database = knex({
 });
 
 /**
+ * Gives access to the `Rankings` table.
+ *
  * @returns {QueryInterface}
  */
 export const rankings = () => database.table('rankings');
 
 /**
+ * Gives access to the `Users` table.
+ *
  * @returns {QueryInterface}
  */
 export const users = () => database.table('users');

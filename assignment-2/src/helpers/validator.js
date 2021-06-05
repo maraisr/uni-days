@@ -7,20 +7,6 @@ import { isSchema, object } from 'yup';
 
 /**
  * TODO
- */
-/*export class ValidatorError extends Error {
-	/!**
-	 * @param {ValidationError} errors
-	 *!/
-	constructor(errors) {
-		// We only care about the first one for the response;
-		const [error] = errors;
-		super(error.message);
-	}
-}*/
-
-/**
- * TODO
  * @param {ValidationSchema} schema
  * @param {string?} invalid_params_message
  * @param {string?} type_error

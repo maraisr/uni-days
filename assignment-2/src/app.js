@@ -1,15 +1,16 @@
-import { platform } from 'os';
-import { lstat, readdir, readFile } from 'fs/promises';
-import { relative, resolve } from 'path';
-import { async_handler } from './helpers/async_handler.js';
+import { readFile } from 'fs/promises';
+import { parse, resolve } from 'path';
 import swaggerUI from 'swagger-ui-express';
+import { collect_routes_for } from './helpers/routing.js';
+import { fileURLToPath } from 'url';
 
 /**
  * @typedef {import("@types/express").Application} ExpressApplication
  */
 
 /**
- * TODO
+ * Bootstrap our application. This is purely "consumer" code and builds out the application.
+ *
  * @param {ExpressApplication} app
  */
 export const bootstrap = async (app) => {
@@ -18,43 +19,14 @@ export const bootstrap = async (app) => {
 	app.use(swaggerUI.serve);
 	app.get('/', swaggerUI.setup(doc));
 
-	const routes = new Map();
+	const routes_folder = resolve(
+		parse(fileURLToPath(import.meta.url)).dir,
+		'routes',
+	);
 
-	await visit_files('src/routes', (rel, abs) => {
-		if (!/\.[tj]sx?$/.test(rel)) return;
-		let name = rel
-			.replace(/\.[tj]sx?$/, '')
-			.replaceAll(/[\\/]+/g, '/')
-			.replace(/(\/|^)\$/, '$1:');
-
-		if (name === 'index') name = '';
-
-		if (platform() === 'win32') routes.set(name, import(`file://${abs}`));
-		else routes.set(name, import(abs));
-	});
-
-	for (const [route, handler] of routes.entries()) {
-		const { default: handles } = await handler;
-		if (!handles)
-			throw new Error(`Route ${route} requires a default export!`);
-
-		for (const [verb, handle] of Object.entries(handles)) {
-			const mapped = (Array.isArray(handle) ? handle : [handle]).map(
-				async_handler,
-			);
-
-			app[verb](`/${route}`, ...mapped);
-		}
-	}
-};
-
-const visit_files = async (directory, visitor, base_directory = directory) => {
-	for (const filename of await readdir(directory)) {
-		const file = resolve(directory, filename);
-		const stat = await lstat(file);
-
-		if (stat.isDirectory())
-			await visit_files(file, visitor, base_directory);
-		else if (stat.isFile()) visitor(relative(base_directory, file), file);
+	for await (const { route, verb, handlers } of collect_routes_for(
+		routes_folder,
+	)) {
+		app[verb](route, ...handlers);
 	}
 };
