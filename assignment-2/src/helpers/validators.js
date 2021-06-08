@@ -20,8 +20,7 @@ export const date = (fallback_message) =>
 			name: 'date_valid',
 			message: fallback_message,
 			test(value, { originalValue }) {
-				//return originalValue.length < 11 && isValid(parseISO(value));
-				return isValid(parseISO(value));
+				return originalValue.length < 11 && isValid(parseISO(value));
 			},
 		})
 		.test({

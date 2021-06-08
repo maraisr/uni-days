@@ -6,7 +6,8 @@ import { isSchema, object } from 'yup';
  */
 
 /**
- * TODO
+ * A checker that receives a target object, and casts and validates against it from an input.
+ *
  * @param {ValidationSchema} schema
  * @param {string?} invalid_params_message
  * @param {string?} type_error
