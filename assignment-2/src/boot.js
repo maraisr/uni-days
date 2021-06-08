@@ -6,8 +6,12 @@ import morgan from 'morgan';
 import cors from 'cors';
 import { readFile } from 'fs/promises';
 
+import dotenv from 'dotenv';
 import { bootstrap } from './app.js';
+
 import { error_middleware } from './middleware/error_middleware.js';
+
+dotenv.config();
 
 const app = express();
 

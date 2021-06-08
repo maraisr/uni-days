@@ -16,10 +16,10 @@ export const database = knex({
 		max: 20,
 	},
 	connection: {
-		host: 'localhost',
-		user: 'root',
-		password: 'password',
-		database: 'happiness',
+		host: process.env.DB_HOST,
+		user: process.env.DB_USERNAME,
+		password: process.env.DB_PASSWORD,
+		database: process.env.DB_DATABASE,
 	},
 });
 
