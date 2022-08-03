@@ -1,0 +1,30 @@
+.component {
+	display: inline-flex;
+	appearance: none;
+	align-items: center;
+	justify-content: center;
+	border-radius: 0.5rem;
+	user-select: none;
+	cursor: pointer;
+	position: relative;
+	white-space: nowrap;
+	vertical-align: middle;
+	width: auto;
+	line-height: 1.2;
+	height: 42px;
+	padding-inline-start: 0.65rem;
+	padding-inline-end: 0.65rem;
+	background-color: white;
+
+	border: 1px solid #e2e2ea;
+
+	transition: background-color 0.1s linear;
+
+	&:hover {
+		background-color: #edf2f7;
+	}
+
+	&:active {
+		background-color: #dde6f0;
+	}
+}

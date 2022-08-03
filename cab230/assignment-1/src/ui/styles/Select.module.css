@@ -1,0 +1,30 @@
+.component {
+	position: relative;
+	display: grid;
+	grid-template-columns: 1fr auto;
+	grid-gap: 0.25rem;
+
+	max-width: 240px;
+	min-height: 2.5rem;
+
+	background: transparent;
+
+	&,
+	select {
+		cursor: pointer;
+	}
+
+	select {
+		appearance: none;
+		border: none;
+		background: transparent;
+		padding: 0 calc(1.2rem + 0.75rem) 0 0.7rem;
+	}
+
+	svg {
+		position: absolute;
+		right: 0.45rem;
+		top: 0.625rem;
+		pointer-events: none;
+	}
+}

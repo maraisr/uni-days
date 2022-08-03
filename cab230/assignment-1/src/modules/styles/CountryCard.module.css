@@ -1,0 +1,60 @@
+.component {
+	display: inline-grid;
+	position: relative;
+	grid-row-gap: 1rem;
+	padding: 1.25rem;
+
+	border-radius: 1.25rem;
+	background-color: white;
+}
+
+.headline,
+.metrics {
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	grid-gap: 1rem;
+	width: 100%;
+	min-width: 0;
+	align-items: center;
+}
+
+.headline {
+	font-size: 1.25rem;
+}
+
+.name {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+
+	.country {
+		font-weight: 700;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		max-width: 100%;
+	}
+
+	.year {
+		font-size: 60%;
+		color: #696974;
+	}
+}
+
+.rank {
+	grid-column: 3;
+	display: flex;
+	align-self: flex-start;
+	align-items: flex-start;
+	font-weight: 700;
+
+	> span {
+		font-weight: 400;
+		font-size: 60%;
+		color: #696974;
+	}
+}
+
+.metrics {
+	grid-template-columns: 1fr 0.6fr;
+}

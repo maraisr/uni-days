@@ -1,0 +1,33 @@
+.root {
+	position: sticky;
+	z-index: 1;
+	top: 0;
+	width: 100%;
+	background: #ffffff;
+	box-shadow: inset 0px -1px 0px #e2e2ea;
+
+	padding: 0.65rem 2rem;
+	display: grid;
+	grid-template-columns: min-content min-content 1fr auto;
+	grid-gap: 2rem;
+	align-items: center;
+
+	a {
+		color: inherit;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}
+
+.nav {
+	display: flex;
+	gap: 1rem;
+}
+
+.profile {
+	display: flex;
+	gap: 0.55rem;
+	align-items: center;
+}

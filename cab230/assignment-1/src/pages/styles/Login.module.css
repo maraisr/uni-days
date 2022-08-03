@@ -1,0 +1,15 @@
+.form {
+	margin-top: 1.25rem;
+}
+
+.tail {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	justify-content: center;
+	grid-gap: 1rem;
+	align-items: center;
+
+	a {
+		font-size: 0.9rem;
+	}
+}

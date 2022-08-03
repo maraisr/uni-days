@@ -1,0 +1,48 @@
+*,
+*::before,
+*::after {
+	font: inherit;
+	box-sizing: border-box;
+	text-rendering: optimizelegibility;
+}
+
+:root {
+	color: #171725;
+	font: 400 16px/1.2 Inter, system-ui, -apple-system, sans-serif;
+}
+
+@supports (font-variation-settings: normal) {
+	:root {
+		font-family: 'Inter var', system-ui, -apple-system, sans-serif;
+	}
+}
+
+body {
+	margin: 0;
+	background-color: #f3f3f5;
+}
+
+b,
+strong {
+	font-weight: bold;
+}
+
+figure,
+p,
+h1 {
+	margin: 0;
+}
+
+a {
+	text-decoration: none;
+	color: #0062ff;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+h1 {
+	font-size: 1rem;
+	font-weight: 700;
+}

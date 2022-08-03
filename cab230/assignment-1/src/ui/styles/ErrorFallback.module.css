@@ -1,0 +1,11 @@
+.component {
+	padding: 2rem;
+
+	pre {
+		padding: 1rem;
+		font-family: monospace;
+		background-color: #fd5657;
+		color: white;
+		border-radius: 0.95rem;
+	}
+}

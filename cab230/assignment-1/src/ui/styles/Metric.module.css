@@ -1,0 +1,16 @@
+.component {
+	display: contents;
+
+	&.left {
+		> span {
+			text-align: left;
+		}
+	}
+
+	> span {
+		grid-row: 2;
+		font-size: 0.8rem;
+		color: #696974;
+		text-align: center;
+	}
+}
